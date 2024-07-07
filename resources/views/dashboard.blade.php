@@ -13,10 +13,8 @@
     @include('partials.navbar')
 
     <div class="container">
-        <header class="my-5">
-            <div class="subtitle mb-0">Portfolio</div>
-            <h1 class="title fw-bold">13045,10</p>
-        </header>
+
+        @include('partials.header', ['header' => '€ 13045,10', 'subheader' => 'Portfolio'])
 
         <div class="row gy-3">
             <div class="col-lg-3 col-md-6">
@@ -56,7 +54,7 @@
             <ul class="list-inline mb-0">
                 <li class="list-inline-item">
                     <div class="d-flex align-items-center">
-                        <div class="bar-legend mr-2 pr-4"></div>
+                        <div class="bar-legend"></div>
                         Aandelen
                     </div>
                 </li>
