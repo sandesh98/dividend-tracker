@@ -1,0 +1,107 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+    --main-color: #282828;
+    --main-color-rgb: 40, 40, 40;
+}
+
+@font-face {
+    font-family: 'AvertaStd';
+    src: url('/fonts/AvertaStd-Regular.woff') format('woff'),
+         url('/fonts/AvertaStd-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AvertaStd';
+    src: url('/fonts/AvertaStd-Semibold.woff') format('woff'),
+         url('/fonts/AvertaStd-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AvertaStd';
+    src: url('/fonts/AvertaStd-Bold.woff') format('woff'),
+         url('/fonts/AvertaStd-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: 'AvertaStd';
+    color: var(--main-color);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.nav-link {
+    color: rgba(var(--main-color-rgb), 0.5);
+}
+
+.title {
+    font-size: 64px;
+}
+
+.subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #7D00E4;
+}
+
+.card {
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.bg-light {
+    background-color: #f2f2f2;
+}
+
+.fw-bold {
+    font-family: 'AvertaStd';
+    font-weight: 700;
+}
+
+.fw-bolder {
+    font-family: 'AvertaStd';
+    font-weight: 600;
+}
+
+.bar {
+    height: 31px;
+    width: 100%;
+}
+
+.bar-legend {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    margin-right: 4px;
+    background-color: #7D00E4;
+}
+
+.bar:nth-child(1) {
+    background-color: #7D00E4;
+}
+
+.bar:nth-child(2) {
+    background-color: #B060F2;
+}
+
+.bar:nth-child(3) {
+    background-color: #E2BFFF;
+}
+
+.list-inline-item:nth-child(1) .bar-legend {
+    background-color: #7D00E4;
+}
+
+.list-inline-item:nth-child(2) .bar-legend {
+    background-color: #B060F2;
+}
+
+.list-inline-item:nth-child(3) .bar-legend {
+    background-color: #E2BFFF;
+}
