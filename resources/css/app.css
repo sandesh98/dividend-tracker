@@ -82,6 +82,20 @@ body {
     background-color: #7D00E4;
 }
 
+.value-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Zorg ervoor dat het de volledige breedte van de parent inneemt */
+}
+
+.currency {
+    margin-right: auto; /* Duwt het euroteken naar links */
+}
+
+.val {
+    margin-left: auto; /* Duwt de waarde naar rechts */
+}
+
 .bar:nth-child(1) {
     background-color: #7D00E4;
 }
