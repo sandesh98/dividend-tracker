@@ -10,4 +10,9 @@ class PortfolioController extends Controller
     {
         return view('portfolio.index');
     }
+
+    public function show()
+    {
+        return view('portfolio.show');
+    }
 }
