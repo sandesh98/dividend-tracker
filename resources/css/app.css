@@ -19,7 +19,7 @@
 }
 
 @font-face {
-    font-family: 'AvertaStd';
+    font-family: 'AvertaStd-Semibold';
     src: url('/fonts/AvertaStd-Semibold.woff') format('woff'),
          url('/fonts/AvertaStd-Semibold.woff2') format('woff2');
     font-weight: 600;
@@ -27,7 +27,7 @@
 }
 
 @font-face {
-    font-family: 'AvertaStd';
+    font-family: 'AvertaStd-Bold';
     src: url('/fonts/AvertaStd-Bold.woff') format('woff'),
          url('/fonts/AvertaStd-Bold.woff2') format('woff2');
     font-weight: 700;
@@ -51,7 +51,6 @@ body {
 
 .subtitle {
     font-size: 24px;
-    font-weight: 600;
     color: #7D00E4;
 }
 
@@ -65,12 +64,12 @@ body {
 }
 
 .fw-bold {
-    font-family: 'AvertaStd';
+    font-family: 'AvertaStd-Bold';
     font-weight: 700;
 }
 
-.fw-bolder {
-    font-family: 'AvertaStd';
+.fw-semibold {
+    font-family: 'AvertaStd-Semibold';
     font-weight: 600;
 }
 

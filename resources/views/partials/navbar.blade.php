@@ -7,10 +7,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Portfolio</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('portfolio.index') }}">Portfolio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Dividend</a>
+                    <a class="nav-link" href="{{ route('portfolio.show') }}">Dividend</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Transacties</a>
