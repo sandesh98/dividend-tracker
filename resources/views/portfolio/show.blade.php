@@ -14,6 +14,8 @@
                     type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Dividenden</a>
             </nav>
 
+            <hr class="border opacity-80">
+
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="transactions"
                     tabindex="0">
@@ -22,7 +24,10 @@
                         <div class="d-flex gap-3 flex-column">
                             <div class="d-flex flex-column gap-1">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="fw-bolder fs-5">5 aandelen gekocht</span>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="dot dot-success"></div>
+                                        <span class="fw-bolder fs-5">5 aandelen gekocht</span>
+                                    </div>
                                     <div class="d-flex gap-2">
                                         <span>10 januari 2020</span>
                                         <span>19:00</span>

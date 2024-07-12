@@ -5,6 +5,9 @@
     --main-color: #282828;
     --main-color-rgb: 40, 40, 40;
 
+    --success-color: #3DA55A;
+    --danger-color: #E83F3F;
+
     --purple-100: #7D00E4;
     --purple-200: #B060F2;
     --purple-300: #E2BFFF;
@@ -71,6 +74,20 @@ body {
 .fw-semibold {
     font-family: 'AvertaStd-Semibold';
     font-weight: 600;
+}
+
+.dot {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+}
+
+.dot-success {
+    background-color: var(--success-color);
+}
+
+.dot-danger {
+    background-color: var(--danger-color);
 }
 
 .bar {

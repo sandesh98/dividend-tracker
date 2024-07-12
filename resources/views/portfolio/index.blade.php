@@ -4,30 +4,10 @@
     @include('partials.header', ['header' => '€ 13045,10', 'subheader' => 'Portfolio'])
 
     <div class="row gy-3">
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-light border-0 p-4">
-                <div class="mb-0">Redement</div>
-                <div class="fw-bold fs-2 mb-0">€ 2024,39</div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-light border-0 p-4">
-                <div class="mb-0">Ontvangen dividend</div>
-                <div class="fw-bold fs-2 mb-0">€ 249,04</div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-light border-0 p-4">
-                <div class="mb-0">Besteedbare ruimte</div>
-                <div class="fw-bold fs-2 mb-0">€ 1643,41</div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-light border-0 p-4">
-                <div class="mb-0">Transactiekosten</div>
-                <div class="fw-bold fs-2 mb-0">€ 153,50</div>
-            </div>
-        </div>
+        @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
+        @include('portfolio.components.header-card', ['title' => 'Ontvangen dividend', 'value' => '249,04'])
+        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => '1643,41'])
+        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => '153,50'])
     </div>
 
     <div class="card p-4 my-5">
