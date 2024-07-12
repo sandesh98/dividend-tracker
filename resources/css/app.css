@@ -4,6 +4,10 @@
 :root {
     --main-color: #282828;
     --main-color-rgb: 40, 40, 40;
+
+    --purple-100: #7D00E4;
+    --purple-200: #B060F2;
+    --purple-300: #E2BFFF;
 }
 
 @font-face {
@@ -87,27 +91,30 @@ body {
     padding: .5rem 1.6rem;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: var(--purple-100);
+}
 
 .bar:nth-child(1) {
-    background-color: #7D00E4;
+    background-color: var(--purple-100);
 }
 
 .bar:nth-child(2) {
-    background-color: #B060F2;
+    background-color: var(--purple-200);
 }
 
 .bar:nth-child(3) {
-    background-color: #E2BFFF;
+    background-color: var(--purple-300);
 }
 
 .list-inline-item:nth-child(1) .bar-legend {
-    background-color: #7D00E4;
+    background-color: var(--purple-100);
 }
 
 .list-inline-item:nth-child(2) .bar-legend {
-    background-color: #B060F2;
+    background-color: var(--purple-200);
 }
 
 .list-inline-item:nth-child(3) .bar-legend {
-    background-color: #E2BFFF;
+    background-color: var(--purple-300);
 }
