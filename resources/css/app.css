@@ -2,8 +2,12 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 
 :root {
-    --main-color: #282828;
-    --main-color-rgb: 40, 40, 40;
+    --primary-text-color: #282828;
+    --primary-text-color-rgb: 40, 40, 40;
+
+    --gray-100: #F2F2F2;
+
+    --back-100: #282828;
 
     --success-color: #3DA55A;
     --danger-color: #E83F3F;
@@ -39,13 +43,13 @@
 
 body {
     font-family: 'AvertaStd';
-    color: var(--main-color);
+    color: var(--primary-text-color);
     font-size: 16px;
     font-weight: 400;
 }
 
 .nav-link {
-    color: rgba(var(--main-color-rgb), 0.5);
+    color: rgba(var(--primary-text-color-rgb), 0.5);
 }
 
 .title {
@@ -54,7 +58,11 @@ body {
 
 .subtitle {
     font-size: 24px;
-    color: #7D00E4;
+    color: var(--purple-100);
+}
+
+.text-purple {
+    color: var(--purple-100);
 }
 
 .card {
@@ -133,4 +141,12 @@ body {
 
 .list-inline-item:nth-child(3) .bar-legend {
     background-color: var(--purple-300);
+}
+
+.bg-dark {
+    background-color: var(--back-100);
+}
+
+.date-badge {
+    font-size: 12px;
 }
