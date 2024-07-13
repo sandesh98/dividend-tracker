@@ -56,7 +56,7 @@
             <tbody>
                 <tr>
                     <td class="text-nowrap">
-                        APPLE INC. - COMMON ST
+                        <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">APPLE INC. - COMMON ST</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
@@ -101,7 +101,7 @@
 
                 <tr>
                     <td class="text-nowrap">
-                        COCA COLA COMPANY
+                        <a href="#" class="link-dark link-underline-opacity-0">COCA COLA COMPANY</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">

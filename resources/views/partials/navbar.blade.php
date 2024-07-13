@@ -11,8 +11,8 @@
                         href="{{ route('portfolio.index') }}">Portfolio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('portfolio.show') ? 'active' : '' }}"
-                        href="{{ route('portfolio.show') }}">Dividend</a>
+                    <a class="nav-link {{ request()->routeIs('dividend.index') ? 'active' : '' }}"
+                        href="{{ route('dividend.index') }}">Dividend</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Transacties</a>
