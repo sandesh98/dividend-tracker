@@ -3,4 +3,6 @@
 @section('main')
 
     @include('partials.header', ['header' => 'Dividend'])
+
+    
 @endsection
