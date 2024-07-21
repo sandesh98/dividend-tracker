@@ -8,6 +8,8 @@ class DividendController extends Controller
 {
     public function index()
     {
-        return view('dividend.index');
+        $years = [2020, 2021, 2022, 2023, 2024];
+
+        return view('dividend.index', compact('years'));
     }
 }

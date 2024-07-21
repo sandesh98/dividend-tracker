@@ -19,7 +19,6 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="transactions"
                     tabindex="0">
-                    
                     <div class="d-grid gap-3">
                         <div class="col-auto">
                             <span class="bg-dark text-white px-2 py-2 rounded date-badge">Januari 2024</span>
@@ -28,8 +27,8 @@
                             @include('portfolio.components.transaction-card-eur')   
                         @endfor
                     </div>
-
                 </div>
+                
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
                     tabindex="0">
                     <div class="d-grid gap-3">
