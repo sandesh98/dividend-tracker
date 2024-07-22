@@ -15,7 +15,8 @@
                         href="{{ route('dividend.index') }}">Dividend</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Transacties</a>
+                    <a class="nav-link {{ request()->routeIs('transaction.index') ? 'active' : '' }}"
+                        href="{{ route('transaction.index') }}">Transacties</a>
                 </li>
             </ul>
             <div class="border px-2 py-1 rounded">
