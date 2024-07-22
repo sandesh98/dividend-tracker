@@ -42,7 +42,7 @@
     <div class="table-responsive">
         <table class="table">
             <thead>
-                <tr class="text-nowrap">
+                <tr class="text-nowrap fw-bold">
                     <th scope="col">Aandeel</th>
                     <th scope="col">Totale waarde</th>
                     <th scope="col">Tot geïnvesteerd</th>
