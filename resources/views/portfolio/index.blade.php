@@ -7,7 +7,7 @@
         @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
         @include('portfolio.components.header-card', ['title' => 'Ontvangen dividend', 'value' => '249,04'])
         @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => $available_balance])
-        @include('portfolio.components.header-card', ['title' => 'Transactiekosten', 'value' => '153,50'])
+        @include('portfolio.components.header-card', ['title' => 'Transactiekosten', 'value' => $transactionCosts])
     </div>
 
     <div class="card p-4 my-5">
