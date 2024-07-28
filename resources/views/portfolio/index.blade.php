@@ -54,10 +54,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($stocksarray as $stock => $d)
+                @foreach ($stocksarray as $stock)
                 <tr>
                     <td class="text-nowrap">
-                        <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">{{ $d['product'] }}</a>
+                        <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
@@ -72,7 +72,7 @@
                         </div>
                     </td>
                     <td class="text-nowrap text-end">
-                        {{ $d['stock_amount']}}
+                        {{ $stock['stock_amount']}}
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
