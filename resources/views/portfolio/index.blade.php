@@ -54,9 +54,10 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($stocksarray as $stock => $d)
                 <tr>
                     <td class="text-nowrap">
-                        <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">APPLE INC. - COMMON ST</a>
+                        <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">{{ $d['product'] }}</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
@@ -71,7 +72,7 @@
                         </div>
                     </td>
                     <td class="text-nowrap text-end">
-                        10
+                        {{ $d['stock_amount']}}
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
@@ -98,51 +99,7 @@
                         </div>
                     </td>
                 </tr>
-
-                <tr>
-                    <td class="text-nowrap">
-                        <a href="#" class="link-dark link-underline-opacity-0">COCA COLA COMPANY</a>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">1950,90</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">1790,98</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap text-end">
-                        34
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">56,22</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">80,47</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 160,12</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 235,53</div>
-                        </div>
-                    </td>
-                </tr>
+                @endforeach
 
             </tbody>
 
