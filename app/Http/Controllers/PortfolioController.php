@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stock;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,15 +12,16 @@ class PortfolioController extends Controller
     public function index()
     {
         $transactionCosts = Transaction::getTransactionCosts();
-        $stocks = Transaction::getUniqueStocksByName();
+        $availableCash = Transaction::getAvailableCash();
+        $stocksData = Stock::getAllStockData();
 
-        $stocksarray = Transaction::calculateStockAmounts($stocks);
+        // $stocksByName = Stock::getNames();
 
-        dd($stocksarray);
+        // $stocks = Transaction::getUniqueStocksByName();
 
-        $available_balance = Transaction::getAvailableBalance();
+        // $stocksarray = Transaction::calculateStockAmounts($stocksByName);
 
-        return view('portfolio.index', compact('available_balance', 'stocksarray', 'transactionCosts'));
+        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
     }
 
     public function show()

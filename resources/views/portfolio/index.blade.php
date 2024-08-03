@@ -6,7 +6,7 @@
     <div class="row gy-3">
         @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
         @include('portfolio.components.header-card', ['title' => 'Ontvangen dividend', 'value' => '249,04'])
-        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => $available_balance])
+        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => $availableCash])
         @include('portfolio.components.header-card', ['title' => 'Transactiekosten', 'value' => $transactionCosts])
     </div>
 
@@ -54,7 +54,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($stocksarray as $stock)
+                @foreach ($stocksData as $stock)
                 <tr>
                     <td class="text-nowrap">
                         <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
@@ -72,7 +72,7 @@
                         </div>
                     </td>
                     <td class="text-nowrap text-end">
-                        {{ $stock['stock_amount']}}
+                        {{ $stock['quantity'] }}
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
