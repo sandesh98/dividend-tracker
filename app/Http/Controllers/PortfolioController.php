@@ -15,6 +15,8 @@ class PortfolioController extends Controller
 
         $stocksarray = Transaction::calculateStockAmounts($stocks);
 
+        dd($stocksarray);
+
         $available_balance = Transaction::getAvailableBalance();
 
         return view('portfolio.index', compact('available_balance', 'stocksarray', 'transactionCosts'));
