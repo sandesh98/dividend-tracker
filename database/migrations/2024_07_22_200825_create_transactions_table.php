@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('fx')->nullable();
             $table->string('mutation')->nullable();
-            $table->decimal('mutation_value', 15, 2)->nullable();
+            $table->integer('mutation_value')->nullable();
             $table->string('balance')->nullable();
             $table->decimal('balance_value', 15, 2)->nullable();
             $table->string('order_id')->nullable();

@@ -10,6 +10,11 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    public function setMutationValueAttribute($value)
+    {
+        $this->attributes['mutation_value'] = (int) round(floatval($value) * 100);
+    }
+
     public static function getAvailableCash()
     {
         $transaction = self::where('description', 'LIKE', 'Valuta Creditering')->first();

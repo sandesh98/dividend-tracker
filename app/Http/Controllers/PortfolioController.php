@@ -15,11 +15,23 @@ class PortfolioController extends Controller
         $availableCash = Transaction::getAvailableCash();
         $stocksData = Stock::getAllStockData();
 
-        // $stocksByName = Stock::getNames();
+        $cocas = Stock::where('product', 'LIKE', '%ing groep%')
+                    ->where(function($query) {
+                        $query->where('description', 'LIKE', '%koop%')
+                              ->orWhere('description', 'LIKE', '%verkoop%');
+                    })->get();
 
-        // $stocks = Transaction::getUniqueStocksByName();
-
-        // $stocksarray = Transaction::calculateStockAmounts($stocksByName);
+        if ($cocas->first()->mutation === "EUR") {
+            return (int) $cocas->sum('mutation_value') / 100;
+        } else {
+            return 'USD';
+        }
+        
+        dd((int) $cocas /100);
+        
+        foreach ($cocas as $coca) {
+            echo $coca['mutation_value'] . PHP_EOL;
+        }
 
         return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
     }
