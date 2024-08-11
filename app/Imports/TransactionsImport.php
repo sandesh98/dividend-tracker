@@ -31,6 +31,7 @@ class TransactionsImport implements ToModel, WithStartRow
             'mutation_value' => $row[8],
             'balance' => $row[9],
             'balance_value' => $row[10],
+            'order_id' => $row[11],
         ]);
     }
 }

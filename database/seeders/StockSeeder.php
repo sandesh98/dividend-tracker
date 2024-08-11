@@ -31,6 +31,7 @@ class StockSeeder extends Seeder
                 'mutation_value' => $stock->mutation_value,
                 'balance' => $stock->balance,
                 'balance_value' => $stock->balance_value,
+                'order_id' => $stock->order_id
             ]);
         }
     }
