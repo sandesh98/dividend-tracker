@@ -15,7 +15,7 @@ class PortfolioController extends Controller
         $availableCash = Transaction::getAvailableCash();
         $stocksData = Stock::getAllStockData();
 
-        $cocas = Stock::where('product', 'LIKE', '%ing groep%')
+        $cocas = Stock::where('product', 'LIKE', '%coca%')
                     ->where(function($query) {
                         $query->where('description', 'LIKE', '%koop%')
                               ->orWhere('description', 'LIKE', '%verkoop%');
@@ -24,20 +24,21 @@ class PortfolioController extends Controller
         if ($cocas->first()->mutation === "EUR") {
             return (int) $cocas->sum('mutation_value') / 100;
         } else {
-            return 'USD';
+            $stockByOrderId = Stock::where('product', 'LIKE', '%cocas%')->get();
+            // return $stockByOrderId;
         }
-        
-        dd((int) $cocas /100);
-        
-        foreach ($cocas as $coca) {
-            echo $coca['mutation_value'] . PHP_EOL;
-        }
+    
 
         return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
     }
 
-    public function show()
+    public function show($stock)
     {
-        return view('portfolio.show');
+        $stockName = $stock;
+        $stock = Stock::where('product', 'LIKE', $stock)->get();
+
+        // dd($stock);
+
+        return view('portfolio.show', compact('stockName'));
     }
 }
