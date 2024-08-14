@@ -37,6 +37,31 @@ class Stock extends Model
             ->total_stocks ?? 0;
     }
 
+    public static function getTotalAmoundInvested($product)
+    {
+        // $product = Stock::where('product', 'LIKE', $product)->get();
+        $product = Stock::where('product', 'LIKE', '%COCA%')->get();
+
+        if ($product->first()->mutation === "EUR") {
+            $total = Stock::getStockQuantity($product->first()->product);
+            if ($total == 0) {
+                return 0;
+            }
+
+            return number_format(abs((int) $product->sum('mutation_value')) / 100, 2);
+        } else {
+            
+            $stockByOrderId = Stock::where('product', 'LIKE', '%coca%')
+                       ->whereNotNull('order_id')
+                       ->get();
+
+            $groupedStocks = $stockByOrderId->groupBy('order_id');
+                                
+            
+            dd($groupedStocks);
+        }
+    }
+
     public static function getAllStockData()
     {
         $stockData = [];
@@ -44,10 +69,12 @@ class Stock extends Model
 
         foreach($uniqueStocks as $stock) {
             $quantity = self::getStockQuantity($stock);
+            $totalAmountInvested = self::getTotalAmoundInvested($stock);
 
             $stockData[] = [
                 'product' => $stock,
-                'quantity' => $quantity
+                'quantity' => $quantity,
+                'totalAmountInvested' => $totalAmountInvested
             ];
         }
 

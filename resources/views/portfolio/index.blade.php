@@ -68,7 +68,7 @@
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="mr-auto">€</span>
-                            <div class="ml-auto">1645,20</div>
+                            <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
                         </div>
                     </td>
                     <td class="text-nowrap text-end">
