@@ -56,9 +56,19 @@ class Stock extends Model
                        ->get();
 
             $groupedStocks = $stockByOrderId->groupBy('order_id');
-                                
-            
-            dd($groupedStocks);
+                   
+            foreach ($groupedStocks as $stock) {
+                $fx = $stock->firstWhere('fx', '!=', null)->fx;
+                $transactionCosts = abs($stock->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')->mutation_value / 100);
+                $getAmount = $stock->first(function ($item) {
+                    return stripos($item->description, 'koop') !== false;
+                });
+
+                $getAmount = preg_match('/\bKoop (\d+)\b/', $getAmount->description, $amount);
+                $amount = $amount[1];
+            }
+
+            // dd($groupedStocks);
         }
     }
 
