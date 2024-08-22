@@ -78,7 +78,6 @@ class Stock extends Model
                 $buyPrice = (float) str_replace(',', '.', $buyPrice[1] ?? null);
 
                 return (($buyPrice * $amount) * (1 / $fx) + $transactionCosts);
-                // return 'bubba';
             }
         }
     }
