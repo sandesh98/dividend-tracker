@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('date');
-            $table->time('time');
-            $table->string('value_date');
+            $table->string('date')->nullable();
+            $table->time('time')->nullable();
+            $table->string('value_date')->nullable();
             $table->string('product')->nullable();
             $table->string('isin')->nullable();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('fx')->nullable();
             $table->string('mutation')->nullable();
             $table->integer('mutation_value')->nullable();

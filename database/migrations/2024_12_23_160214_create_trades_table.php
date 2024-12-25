@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('trades', function (Blueprint $table) {
             $table->id();
-            $table->string('date')->nullable();
-            $table->time('time')->nullable();
-            $table->string('value_date');
+            $table->string('date');
+            $table->time('time');
             $table->string('product');
             $table->string('isin');
             $table->string('description');
+            $table->integer('quantity');
+            $table->enum('currency', ['EUR', 'USD']);
+            $table->string('action')->nullable();
+            $table->integer('price_per_unit');
+            $table->integer('total_transaction_value');
             $table->string('fx')->nullable();
-            $table->string('mutation')->nullable();
-            $table->integer('mutation_value')->nullable();
-            $table->string('balance');
-            $table->decimal('balance_value', 15, 2);
-            $table->string('order_id')->nullable();
+            $table->string('order_id');
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('trades');
     }
 };
