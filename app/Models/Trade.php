@@ -31,7 +31,22 @@ class Trade extends Model
 
     public static function getTotalAmoundInvested($stock)
     {
-        return 10;
+        $trades = self::where('product', 'LIKE', $stock)->get();
+
+        // dd($trades);
+
+        $buy = $trades->filter(function ($item) {
+            return $item->action === 'buy';
+        })->sum('total_transaction_value');
+
+
+        $sell = $trades->filter(function ($item) {
+            return $item->action === 'sell';
+        })->sum('total_transaction_value');
+
+        return ($buy - $sell) / 100;
+
+
     }
 
     public static function loadTable()

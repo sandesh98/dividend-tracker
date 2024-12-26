@@ -57,7 +57,7 @@
                 @foreach ($stocksData as $stock)
                 <tr>
                     <td class="text-nowrap">
-                        <a href="{{ route('portfolio.show', $stock['product']) }}" class="link-dark link-underline-opacity-0">{{ Str::apa($stock['product']) }}</a>
+                        <a href="{{ route('portfolio.show', $stock['product']) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
