@@ -6,8 +6,8 @@
     <div class="row gy-3">
         @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
         @include('portfolio.components.header-card', ['title' => 'Ontvangen dividend', 'value' => '249,04'])
-        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => '1643,41'])
-        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => '153,50'])
+        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => $availableCash])
+        @include('portfolio.components.header-card', ['title' => 'Transactiekosten', 'value' => $transactionCosts])
     </div>
 
     <div class="card p-4 my-5">
@@ -42,7 +42,7 @@
     <div class="table-responsive">
         <table class="table">
             <thead>
-                <tr class="text-nowrap fw-bold">
+                <tr class="text-nowrap">
                     <th scope="col">Aandeel</th>
                     <th scope="col">Totale waarde</th>
                     <th scope="col">Tot geïnvesteerd</th>
@@ -54,9 +54,10 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($stocksData as $stock)
                 <tr>
                     <td class="text-nowrap">
-                        <a href="{{ route('portfolio.show') }}" class="link-dark link-underline-opacity-0">APPLE INC. - COMMON ST</a>
+                        <a href="{{ route('portfolio.show', $stock['product']) }}" class="link-dark link-underline-opacity-0">{{ Str::apa($stock['product']) }}</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
@@ -67,11 +68,11 @@
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="mr-auto">€</span>
-                            <div class="ml-auto">1645,20</div>
+                            <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
                         </div>
                     </td>
                     <td class="text-nowrap text-end">
-                        10
+                        {{ $stock['quantity'] }}
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
@@ -98,51 +99,7 @@
                         </div>
                     </td>
                 </tr>
-
-                <tr>
-                    <td class="text-nowrap">
-                        <a href="#" class="link-dark link-underline-opacity-0">COCA COLA COMPANY</a>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">1950,90</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">1790,98</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap text-end">
-                        34
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">56,22</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">80,47</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 160,12</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 235,53</div>
-                        </div>
-                    </td>
-                </tr>
+                @endforeach
 
             </tbody>
 

@@ -2,17 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Stock;
+use App\Models\Trade;
+use App\Models\Transaction;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
-        return view('portfolio.index');
+
+        $transactionCosts = Trade::where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
+                                ->pluck('total_transaction_value')
+                                ->sum();
+
+        // dd($transactionCosts);
+        // $transactionCosts = Transaction::getTransactionCosts();
+        $availableCash = Transaction::getAvailableCash();
+        $stocksData = Stock::getAllStockData();
+
+        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
     }
 
-    public function show()
+    public function show($stock)
     {
-        return view('portfolio.show');
+        $stockName = $stock;
+        $stock = Trade::where('product', 'LIKE', $stock)->get();
+
+        return view('portfolio.show', compact('stockName'));
     }
 }
