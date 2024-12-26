@@ -15,10 +15,8 @@ class PortfolioController extends Controller
                                 ->pluck('total_transaction_value')
                                 ->sum();
 
-        // dd($transactionCosts);
-        // $transactionCosts = Transaction::getTransactionCosts();
         $availableCash = Transaction::getAvailableCash();
-        $stocksData = Stock::getAllStockData();
+        $stocksData = Trade::loadTable();
 
         return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
     }
