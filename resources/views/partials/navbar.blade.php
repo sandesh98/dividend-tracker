@@ -18,6 +18,11 @@
                     <a class="nav-link {{ request()->routeIs('transaction.index') ? 'active' : '' }}"
                         href="{{ route('transaction.index') }}">Transacties</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('transaction.index') ? 'active' : '' }}"
+                        href="{{ route('transaction.index') }}">Kosten</a>
+                </li>
             </ul>
             <div class="border px-2 py-1 rounded">
                 € 13240,10
