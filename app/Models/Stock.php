@@ -17,24 +17,7 @@ class Stock extends Model
 
     public static function getStockQuantity($product)
     {
-        return DB::table('transactions')
-            ->select(DB::raw("
-                SUM(
-                    CASE 
-                        WHEN description LIKE '%verkoop%' THEN -CAST(REGEXP_SUBSTR(description, '[0-9]+') AS SIGNED)
-                        WHEN description LIKE '%koop%' THEN CAST(REGEXP_SUBSTR(description, '[0-9]+') AS SIGNED)
-                        ELSE 0
-                    END
-                ) as total_stocks
-            "))
-            ->where('product', 'LIKE', $product)
-            ->where(function ($query) {
-                $query->where('description', 'LIKE', '%koop%')
-                      ->orWhere('description', 'LIKE', '%verkoop%');
-            })
-            ->groupBy('product')
-            ->first()
-            ->total_stocks ?? 0;
+        return 1;
     }
 
     public static function getTotalAmoundInvested($product)
