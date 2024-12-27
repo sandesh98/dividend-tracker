@@ -13,18 +13,9 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('date')->nullable();
-            $table->time('time')->nullable();
-            $table->string('value_date');
             $table->string('product');
             $table->string('isin');
-            $table->string('description');
-            $table->string('fx')->nullable();
-            $table->string('mutation')->nullable();
-            $table->integer('mutation_value')->nullable();
-            $table->string('balance');
-            $table->decimal('balance_value', 15, 2);
-            $table->string('order_id')->nullable();
+            $table->string('ticker');
             $table->timestamps();
         });
     }
