@@ -36,7 +36,7 @@ class UpdateStockPrice extends Command
             $response = Http::post('https://api.openfigi.com/v1/mapping', [
                 [
                     'idType' => 'ID_ISIN',
-                    'idValue' => $isin, // Voorbeeld ISIN
+                    'idValue' => $isin,
                 ]
             ]);
 
@@ -45,8 +45,12 @@ class UpdateStockPrice extends Command
                     'product' => $product,
                     'isin' => $isin,
                     'ticker' => $response->json()[0]['data'][0]['ticker']
-                ]);    
+                ]);
+
+                return;    
             }
+            
+            $this->info('No information found about isin:' . $isin);
         }
 
         $this->info('Done retreiving stock information');

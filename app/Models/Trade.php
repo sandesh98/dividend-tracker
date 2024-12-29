@@ -11,7 +11,18 @@ class Trade extends Model
 
     public static function getNames()
     {
-        return self::distinct()->pluck('product');
+        return Stock::groupBy('product')->pluck('product');
+    }
+
+    public static function getAverageStockPrice($stock)
+    {
+        $averageStockPrice = self::getTotalAmoundInvested($stock) / self::getStockQuantity($stock);
+
+        if ($averageStockPrice < 0) {
+            return 0;
+        }
+
+        return round($averageStockPrice, 2);
     }
 
     public static function getStockQuantity($stock)
@@ -33,8 +44,6 @@ class Trade extends Model
     {
         $trades = self::where('product', 'LIKE', $stock)->get();
 
-        // dd($trades);
-
         $buy = $trades->filter(function ($item) {
             return $item->action === 'buy';
         })->sum('total_transaction_value');
@@ -45,8 +54,6 @@ class Trade extends Model
         })->sum('total_transaction_value');
 
         return ($buy - $sell) / 100;
-
-
     }
 
     public static function loadTable()
@@ -57,10 +64,12 @@ class Trade extends Model
         foreach($uniqueStocks as $stock) {
             $quantity = self::getStockQuantity($stock);
             $totalAmountInvested = self::getTotalAmoundInvested($stock);
+            $averageStockPrice = self::getAverageStockPrice($stock);
 
             $stockData[] = [
                 'product' => $stock,
                 'quantity' => $quantity,
+                'averageStockPrice' => $averageStockPrice,
                 'totalAmountInvested' => $totalAmountInvested
             ];
         }
