@@ -14,45 +14,20 @@ class UpdateStockPrice extends Command
      *
      * @var string
      */
-    protected $signature = 'stock:update';
+    protected $signature = 'stock:price';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Retreive and update stock data';
+    protected $description = 'Retreive and update stock price';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-
-        $isins = Trade::distinct()->limit(3)->pluck('isin', 'product');
-
-
-        foreach ($isins as $product => $isin) {
-            $response = Http::post('https://api.openfigi.com/v1/mapping', [
-                [
-                    'idType' => 'ID_ISIN',
-                    'idValue' => $isin,
-                ]
-            ]);
-
-            if ($response->ok()) {
-                Stock::create([
-                    'product' => $product,
-                    'isin' => $isin,
-                    'ticker' => $response->json()[0]['data'][0]['ticker']
-                ]);
-
-                return;    
-            }
-            
-            $this->info('No information found about isin:' . $isin);
-        }
-
-        $this->info('Done retreiving stock information');
+        $this->info('updating the price');
     }
 }
