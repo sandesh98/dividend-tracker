@@ -6,6 +6,7 @@ use App\Models\Stock;
 use App\Models\Trade;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Scheb\YahooFinanceApi\ApiClientFactory;
 
 class UpdateStockInformation extends Command
 {
@@ -28,26 +29,18 @@ class UpdateStockInformation extends Command
      */
     public function handle()
     {
+        $client = ApiClientFactory::createApiClient();
         $isins = Trade::distinct()->pluck('isin', 'product');
 
-
         foreach ($isins as $product => $isin) {
-            $response = Http::post('https://api.openfigi.com/v1/mapping', [
-                [
-                    'idType' => 'ID_ISIN',
-                    'idValue' => $isin,
-                ]
-            ]);
+            $stock = $client->search($isin);
 
-            if ($response->ok()) {
-                Stock::create([
-                    'product' => $product,
-                    'isin' => $isin,
-                    'ticker' => $response->json()[0]['data'][0]['ticker']
-                ]);
-            } else {
-                $this->warn('No information found about isin:' . $isin);
-            }
+            Stock::create([
+                'product' => $product,
+                'display_name' => $stock[0]->getName(),
+                'isin' => $isin,
+                'ticker' => $stock[0]->getSymbol()
+            ]);
         }
 
         $this->info('Done retrieving stock information');

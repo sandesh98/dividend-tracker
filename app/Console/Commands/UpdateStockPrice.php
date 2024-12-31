@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Stock;
-use App\Models\Trade;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
+use Scheb\YahooFinanceApi\ApiClientFactory;
 
 class UpdateStockPrice extends Command
 {
@@ -28,6 +27,18 @@ class UpdateStockPrice extends Command
      */
     public function handle()
     {
+        $client = ApiClientFactory::createApiClient();
+
+        $tickers = Stock::distinct()->pluck('ticker');
+
+        foreach ($tickers as $ticker) {
+            $quote = $client->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
+
+            Stock::where('ticker', 'LIKE', $ticker)->update([
+                'price' => $quote[0]->getOpen(),
+            ]); 
+        }
+
         $this->info('updating the price');
     }
 }

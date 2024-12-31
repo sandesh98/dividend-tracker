@@ -10,6 +10,6 @@ class Stock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product', 'isin', 'ticker'];
+    protected $fillable = ['product', 'isin', 'ticker', 'price', 'display_name'];
 
 }

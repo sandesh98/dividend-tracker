@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->string('product');
+            $table->string('display_name')->nullable();
             $table->string('isin');
             $table->string('ticker');
+            $table->string('price')->nullable();
             $table->timestamps();
         });
     }
