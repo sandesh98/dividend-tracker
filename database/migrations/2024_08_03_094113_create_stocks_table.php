@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('display_name')->nullable();
             $table->string('isin');
             $table->string('ticker');
-            $table->string('price')->nullable();
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }

@@ -35,10 +35,15 @@ class UpdateStockPrice extends Command
             $quote = $client->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
 
             Stock::where('ticker', 'LIKE', $ticker)->update([
-                'price' => $quote[0]->getOpen(),
+                'price' => $this->setPriceToCents($quote[0]->getOpen()),
             ]); 
         }
 
         $this->info('updating the price');
+    }
+
+    public function setPriceToCents($initialPrice)
+    {
+        return (int) round($initialPrice * 100);
     }
 }

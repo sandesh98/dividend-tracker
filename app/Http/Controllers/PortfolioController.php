@@ -21,11 +21,11 @@ class PortfolioController extends Controller
         return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
     }
 
-    public function show($stock)
+    public function show($isin)
     {
-        $stockName = $stock;
-        $stock = Trade::where('product', 'LIKE', $stock)->get();
+        // $stockName = $stock;
+        $stock = Stock::where('isin', 'LIKE', $isin)->get();
 
-        return view('portfolio.show', compact('stockName'));
+        return view('portfolio.show');
     }
 }

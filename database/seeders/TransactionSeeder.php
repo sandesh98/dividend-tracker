@@ -16,6 +16,11 @@ class TransactionSeeder extends Seeder
     {
         $filePath = storage_path('app/public/Account.csv');
 
+        if (! file_exists($filePath)) {
+            echo "Account.csv file not found inside app/public folder.";
+            return;
+        }
+
         Excel::import(new TransactionsImport(), $filePath);
     }
 }

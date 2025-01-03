@@ -11,8 +11,15 @@ class Trade extends Model
 
     public static function getNames()
     {
-        return Stock::groupBy('product')->pluck('product');
+        return Stock::distinct()->pluck('product', 'display_name');
     }
+
+    public static function getIsin($stock)
+    {
+        return Stock::where('product', 'LIKE', $stock)->pluck('isin');
+    }
+
+
 
     public static function getAverageStockPrice($stock)
     {
@@ -61,13 +68,15 @@ class Trade extends Model
         $stockData = [];
         $uniqueStocks = self::getNames();
 
-        foreach($uniqueStocks as $stock) {
-            $quantity = self::getStockQuantity($stock);
-            $totalAmountInvested = self::getTotalAmoundInvested($stock);
-            $averageStockPrice = self::getAverageStockPrice($stock);
+        foreach($uniqueStocks as $display_name => $product) {
+            $quantity = self::getStockQuantity($product);
+            $totalAmountInvested = self::getTotalAmoundInvested($product);
+            $averageStockPrice = self::getAverageStockPrice($product);
+            $isin = self::getIsin($product);
 
             $stockData[] = [
-                'product' => $stock,
+                'product' => $display_name,
+                'isin' => $isin,
                 'quantity' => $quantity,
                 'averageStockPrice' => $averageStockPrice,
                 'totalAmountInvested' => $totalAmountInvested
