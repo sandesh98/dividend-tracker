@@ -35,6 +35,12 @@ class UpdateStockInformation extends Command
         foreach ($isins as $product => $isin) {
             $stock = $client->search($isin);
 
+            if (empty($stock)) {
+                $this->error('No information found for ' . $isin);
+
+                continue;
+            }
+
             Stock::create([
                 'product' => $product,
                 'display_name' => $stock[0]->getName(),

@@ -33,7 +33,7 @@ class Trade extends Model
 
     public static function getStockQuantity($stock)
     {
-        $trades = self::where('product', 'LIKE', 'MASTERCARD INC-CL.A')->whereNotNull('action')->get();
+        $trades = self::where('product', 'LIKE', $stock)->whereNotNull('action')->get();
 
         $buy = $trades->filter(function ($item) {
             return $item->action === 'buy';
@@ -70,11 +70,14 @@ class Trade extends Model
 
             if ($trade->first()->currency === 'USD') {
 
-                $fx = (int) ($trade->pluck('fx')->filter()[0] * 10000) / 10000;
-                $transactioncost = $trade->firstWhere('description', 'LIKE' , 'DEGIRO Transactiekosten en/of kosten van derden')->total_transaction_value / 100;
-                $transaction = $trade->firstWhere('action', 'LIKE', 'buy')->total_transaction_value / 100;
+                // $fx = (int) ($trade->pluck('fx')->filter()[0] * 10000) / 10000;
+                // $transactioncost = $trade->firstWhere('description', 'LIKE' , 'DEGIRO Transactiekosten en/of kosten van derden')->total_transaction_value / 100;
+                // $transaction = $trade->firstWhere('action', 'LIKE', 'buy')->total_transaction_value / 100;
+            
 
-                return $transaction * (1 / $fx) + $transactioncost;                  
+                // return $transaction * (1 / $fx) + $transactioncost;                  
+
+                return 0;
             }
         }
 
