@@ -23,9 +23,11 @@ class PortfolioController extends Controller
 
     public function show($isin)
     {
-        // $stockName = $stock;
-        $stock = Stock::where('isin', 'LIKE', $isin)->get();
 
-        return view('portfolio.show');
+        $stock = trim($isin, "[]\"");
+        // $stockName = $stock;
+        $stock = Stock::where('isin', 'LIKE', $stock)->first();
+
+        return view('portfolio.show', compact('stock'));
     }
 }

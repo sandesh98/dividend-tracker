@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('main')
-    @include('partials.header', ['header' => 'hello', 'subheader' => 'US0378331005'])
+    @include('partials.header', ['header' => $stock->display_name, 'subheader' => $stock->isin])
 
     <div class="row">
         <div class="col-lg-8">
