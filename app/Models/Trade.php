@@ -52,47 +52,36 @@ class Trade extends Model
 
         $groupedTrades = $trades->groupBy('order_id');
 
-        foreach ($groupedTrades as $trade) {
-            // Dit kan ook uit de loop gehaald worden volgens mij.
-            if ($trade->first()->currency === 'EUR') {
-                // ATM doet dit nog niks
-                $buy = $trades->filter(function ($item) {
-                    return $item->action === 'buy';
-                })->sum('total_transaction_value');
-        
-        
-                $sell = $trades->filter(function ($item) {
-                    return $item->action === 'sell';
-                })->sum('total_transaction_value');    
-                
-                return ($buy - $sell) / 100;
-            }
+        $totalInvestment = 0;
 
-            if ($trade->first()->currency === 'USD') {
+        foreach ($groupedTrades as $tradeGroup) {
 
-                // $fx = (int) ($trade->pluck('fx')->filter()[0] * 10000) / 10000;
-                // $transactioncost = $trade->firstWhere('description', 'LIKE' , 'DEGIRO Transactiekosten en/of kosten van derden')->total_transaction_value / 100;
-                // $transaction = $trade->firstWhere('action', 'LIKE', 'buy')->total_transaction_value / 100;
-            
+            $currency = $tradeGroup->first()->currency;
 
-                // return $transaction * (1 / $fx) + $transactioncost;                  
+            if ($currency === 'EUR') {
 
-                return 0;
+                $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value / 100;
+
+                $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
+                $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100;
+
+                $totalInvestment += (($buy - $sell) + $transactionCost);
+
+            } elseif ($currency === 'USD') {
+                $fx = (float) $tradeGroup->pluck('fx')->filter()->first();
+
+                $transactionCost = $tradeGroup
+                    ->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
+                    ->total_transaction_value / 100;
+
+                $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
+                $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100 ?? 0;
+
+                $totalInvestment += round(($buy - $sell) * (1 / $fx) + $transactionCost, 2);
             }
         }
 
-
-
-        $buy = $trades->filter(function ($item) {
-            return $item->action === 'buy';
-        })->sum('total_transaction_value');
-
-
-        $sell = $trades->filter(function ($item) {
-            return $item->action === 'sell';
-        })->sum('total_transaction_value');
-
-        return ($buy - $sell) / 100;
+        return $totalInvestment;
     }
 
     public static function loadTable()
