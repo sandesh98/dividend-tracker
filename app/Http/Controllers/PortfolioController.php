@@ -23,10 +23,7 @@ class PortfolioController extends Controller
 
     public function show($isin)
     {
-        // Je moet de URL eerst fixen zodat je gebruik kan maken van Laravel route modal binding
-        $stock = trim($isin, "[]\"");
-        // $stockName = $stock;
-        $stock = Stock::where('isin', 'LIKE', $stock)->first();
+        $stock = Stock::where('isin', 'LIKE', $isin)->first();
 
         return view('portfolio.show', compact('stock'));
     }

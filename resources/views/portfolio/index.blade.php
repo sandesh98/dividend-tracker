@@ -55,9 +55,10 @@
             </thead>
             <tbody>
                 @foreach ($stocksData as $stock)
+
                 <tr>
                     <td class="text-nowrap">
-                        <a href="{{ route('portfolio.show', $stock['isin']) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
+                        <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
