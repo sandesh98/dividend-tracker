@@ -23,6 +23,10 @@ class StockService
         foreach ($isins as $product => $isin) {
             $stockInfo = $this->yahooClient->search($isin);
 
+            if (empty($stockInfo)) {
+                continue;
+            }
+
             $this->stockRepository->updateOrCreate(
                 [
                     'isin' => $isin,
