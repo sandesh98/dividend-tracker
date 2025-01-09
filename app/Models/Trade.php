@@ -83,7 +83,7 @@ class Trade extends Model
 
         return $totalInvestment;
     }
-
+    
     public static function loadTable()
     {
         $stockData = [];

@@ -29,6 +29,8 @@ class UpdateStockPrice extends Command
     {
         $client = ApiClientFactory::createApiClient();
 
+        // $bubba = $client->getHistoricalDividendData('AAPL', now()->subYears(5), now());
+        // dd($bubba);
         $tickers = Stock::distinct()->pluck('ticker');
 
         foreach ($tickers as $ticker) {
@@ -36,14 +38,20 @@ class UpdateStockPrice extends Command
 
             Stock::where('ticker', 'LIKE', $ticker)->update([
                 'price' => $this->setPriceToCents($quote[0]->getOpen()),
+                'currency' => $this->setCurrency($client->getQuote($ticker)->getCurrency())
             ]); 
         }
 
-        $this->info('updating the price');
+        $this->info('Done updating the price');
     }
 
     public function setPriceToCents($initialPrice)
     {
         return (int) round($initialPrice * 100);
+    }
+
+    private function setCurrency($currency)
+    {
+        return $currency === 'EUR' ? 'EUR' : 'USD';
     }
 }
