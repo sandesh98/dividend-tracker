@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Stock;
 use Illuminate\Console\Command;
+use App\Services\StockPriceService;
 use Scheb\YahooFinanceApi\ApiClientFactory;
+
 
 class UpdateStockPrice extends Command
 {
@@ -25,33 +26,11 @@ class UpdateStockPrice extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(StockPriceService $stockPriceService)
     {
-        $client = ApiClientFactory::createApiClient();
 
-        // $bubba = $client->getHistoricalDividendData('AAPL', now()->subYears(5), now());
-        // dd($bubba);
-        $tickers = Stock::distinct()->pluck('ticker');
-
-        foreach ($tickers as $ticker) {
-            $quote = $client->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
-
-            Stock::where('ticker', 'LIKE', $ticker)->update([
-                'price' => $this->setPriceToCents($quote[0]->getOpen()),
-                'currency' => $this->setCurrency($client->getQuote($ticker)->getCurrency())
-            ]); 
-        }
+        $stockPriceService->updatePrice();
 
         $this->info('Done updating the price');
-    }
-
-    public function setPriceToCents($initialPrice)
-    {
-        return (int) round($initialPrice * 100);
-    }
-
-    private function setCurrency($currency)
-    {
-        return $currency === 'EUR' ? 'EUR' : 'USD';
     }
 }
