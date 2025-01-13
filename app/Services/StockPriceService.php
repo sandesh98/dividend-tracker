@@ -3,45 +3,66 @@
 namespace App\Services;
 
 use App\Models\Stock;
-use Scheb\YahooFinanceApi\ApiClient;
-use Scheb\YahooFinanceApi\ApiClientFactory;
+use App\Repositories\StockRepository;
+use App\Repositories\TradeRepository;
+use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 
 class StockPriceService {
 
-    private ApiClient $client;
-
-    public function __construct()
+    public function __construct(
+        readonly private YahooClient     $yahooClient,
+        readonly private StockRepository $stockRepository,
+        readonly private TradeRepository $tradeRepository
+    )
     {
-        $this->client = ApiClientFactory::createApiClient();
     }
 
-    public function updatePrice()
+    public function updatePrice(): void
     {
-        $tickers = Stock::distinct()->pluck('ticker');
+        $tickers = $this->stockRepository->getTickers();
 
-        $tickers->each(function ($ticker) {
+        foreach ($tickers as $ticker) {
             $this->updateStockPrice($ticker);
-        });
+        }
     }
 
-    public function updateStockPrice($ticker)
+    public function updateStockPrice(string $ticker): void
     {
-        $historicalPrice = $this->client->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
-        $currency = $this->client->getQuote($ticker)->getCurrency();
+        $historicalPrice = $this->yahooClient->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
+        $currency = $this->yahooClient->getQuote($ticker)->getCurrency();
+
+        $conversion = $this->convertExchangeRate($historicalPrice[0]->getOpen(), $currency);
 
         Stock::where('ticker', 'LIKE', $ticker)->update([
-            'price' => $this->setPriceToCents($historicalPrice[0]->getOpen()),
-            'currency' => $this->setCurrency($currency)
+            'price' => $conversion['price'],
+            'currency' => $conversion['currency']
         ]);
 
     }
 
-    private function setPriceToCents($initialPrice): int
+    private function convertExchangeRate(float $initialPrice, string $currency)
     {
-        return (int) round($initialPrice * 100);
+        $exchangeRate = $this->yahooClient->getQuote('EURUSD=X')->getRegularMarketPrice();
+
+        if ($currency === 'EUR') {
+            return [
+                'price' => $this->setPriceToCents($initialPrice),
+                'currency' => 'EUR'
+            ];
+        }
+
+        return [
+            'price' => $this->setPriceToCents(($initialPrice / $exchangeRate)),
+            'currency' => 'EUR'
+        ];
     }
 
-    private function setCurrency($currency): string
+    private function setPriceToCents(float $initialPrice): int
+    {
+        return round($initialPrice, 2) * 100;
+    }
+
+    private function setCurrency(string $currency): string
     {
         return $currency === 'EUR' ? 'EUR' : 'USD';
     }
