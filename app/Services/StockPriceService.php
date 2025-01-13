@@ -61,9 +61,4 @@ class StockPriceService {
     {
         return round($initialPrice, 2) * 100;
     }
-
-    private function setCurrency(string $currency): string
-    {
-        return $currency === 'EUR' ? 'EUR' : 'USD';
-    }
 }
