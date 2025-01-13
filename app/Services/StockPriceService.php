@@ -40,25 +40,20 @@ class StockPriceService {
 
     }
 
-    private function convertExchangeRate(float $initialPrice, string $currency)
+    private function convertExchangeRate(float $initialPrice, string $currency): array
     {
         $exchangeRate = $this->yahooClient->getQuote('EURUSD=X')->getRegularMarketPrice();
 
         if ($currency === 'EUR') {
             return [
-                'price' => $this->setPriceToCents($initialPrice),
+                'price' => $this->tradeRepository->convertPriceToCents($initialPrice),
                 'currency' => 'EUR'
             ];
         }
 
         return [
-            'price' => $this->setPriceToCents(($initialPrice / $exchangeRate)),
+            'price' => $this->tradeRepository->convertPriceToCents(($initialPrice / $exchangeRate)),
             'currency' => 'EUR'
         ];
-    }
-
-    private function setPriceToCents(float $initialPrice): int
-    {
-        return round($initialPrice, 2) * 100;
     }
 }
