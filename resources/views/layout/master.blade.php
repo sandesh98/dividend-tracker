@@ -7,6 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dividend Tracker</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        #myCard {
+            position: absolute;
+            z-index: 10;
+        }
+    </style>
 </head>
 
 <body>
