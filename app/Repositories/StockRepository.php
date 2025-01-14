@@ -15,4 +15,9 @@ class StockRepository extends AbstractRepository
     {
         return $this->stock->newQuery()->where('isin', $isin)->first();
     }
+
+    public function getTickers()
+    {
+        return $this->stock->distinct()->pluck('ticker');
+    }
 }
