@@ -26,7 +26,7 @@ class StockPriceService {
         }
     }
 
-    public function updateStockPrice(string $ticker): void
+    private function updateStockPrice(string $ticker): void
     {
         $historicalPrice = $this->yahooClient->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
         $currency = $this->yahooClient->getQuote($ticker)->getCurrency();
@@ -46,14 +46,19 @@ class StockPriceService {
 
         if ($currency === 'EUR') {
             return [
-                'price' => $this->tradeRepository->convertPriceToCents($initialPrice),
+                'price' => $this->convertPriceToCents($initialPrice),
                 'currency' => 'EUR'
             ];
         }
 
         return [
-            'price' => $this->tradeRepository->convertPriceToCents(($initialPrice / $exchangeRate)),
+            'price' => $this->convertPriceToCents(($initialPrice / $exchangeRate)),
             'currency' => 'EUR'
         ];
+    }
+
+    public function convertPriceToCents(float $initialPrice): int
+    {
+        return round($initialPrice, 2) * 100;
     }
 }

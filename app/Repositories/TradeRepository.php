@@ -16,9 +16,4 @@ class TradeRepository extends AbstractRepository
     {
         return $this->trade->distinct()->pluck('isin', 'product');
     }
-
-    public function convertPriceToCents(float $initialPrice): int
-    {
-        return round($initialPrice, 2) * 100;
-    }
 }
