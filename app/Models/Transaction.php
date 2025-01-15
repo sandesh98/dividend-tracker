@@ -20,12 +20,14 @@ class Transaction extends Model
     {
         $cash = DB::table('manual_transactions')->pluck('total_transaction_value')->sum() / 100;
 
-        $investedCash = 0;
+        // $investedCash = 0;
         
-        foreach (Trade::getNames() as $name) {
-            $investedCash += Trade::getTotalAmoundInvested($name);
-        }
+        // foreach (Trade::getNames() as $name) {
+        //     $investedCash += Trade::getTotalAmoundInvested($name);
+        // }
 
-        return $cash - $investedCash;
+        // return $cash - $investedCash;
+
+        return 100;
     }
 }

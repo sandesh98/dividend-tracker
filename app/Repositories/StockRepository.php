@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Stock;
+use Illuminate\Support\Collection;
 
 class StockRepository extends AbstractRepository
 {
@@ -16,8 +17,18 @@ class StockRepository extends AbstractRepository
         return $this->stock->newQuery()->where('isin', $isin)->first();
     }
 
-    public function getTickers()
+    public function findByTicker(string $ticker): Stock
+    {
+        return $this->stock->newQuery()->where('ticker', $ticker)->first();
+    }
+
+    public function getTickers(): Collection
     {
         return $this->stock->distinct()->pluck('ticker');
+    }
+
+    public function getAllStockNames(): Collection
+    {
+        return $this->stock->distinct()->pluck('product', 'display_name');
     }
 }
