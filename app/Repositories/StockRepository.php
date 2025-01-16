@@ -17,6 +17,11 @@ class StockRepository extends AbstractRepository
         return $this->stock->newQuery()->where('isin', $isin)->first();
     }
 
+    public function findIsinByStock($stock): Collection
+    {
+        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->pluck('isin');
+    }
+
     public function findByTicker(string $ticker): Stock
     {
         return $this->stock->newQuery()->where('ticker', $ticker)->first();

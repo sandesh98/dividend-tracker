@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Stock;
 use App\Models\Trade;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
@@ -103,5 +104,17 @@ class StockService
         }
 
         return round($averageStockPrice, 2);
+    }
+
+    public function getTotalValue($stock)
+    {
+        $quantity = $this->getStockQuantity($stock);
+        $price = Stock::where('product', 'LIKE', $stock)->first()->centsToEuros();
+
+        if ($quantity < 0 && $price < 0) {
+            return 0;
+        }
+
+        return $price * $quantity;
     }
 }

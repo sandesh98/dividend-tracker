@@ -11,11 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 class Trade extends Model
 {
     use HasFactory;
-
-    public static function getIsin($stock)
-    {
-        return Stock::where('product', 'LIKE', $stock)->pluck('isin');
-    }
     
     public static function loadTable()
     {
@@ -26,14 +21,16 @@ class Trade extends Model
             $quantity = app(StockService::class)->getStockQuantity($product);
             $totalAmountInvested = app(StockService::class)->getTotalAmoundInvested($product);
             $averageStockPrice = app(StockService::class)->getAverageStockPrice($product);
-            $isin = self::getIsin($product);
+            $isin = app(StockRepository::class)->findIsinByStock($product);
+            $totalValue = app(StockService::class)->getTotalValue($product);
 
             $stockData[] = [
                 'product' => $display_name,
                 'isin' => $isin,
                 'quantity' => $quantity,
                 'averageStockPrice' => $averageStockPrice,
-                'totalAmountInvested' => $totalAmountInvested
+                'totalAmountInvested' => $totalAmountInvested,
+                'totalValue' => $totalValue
             ];
         }
 
