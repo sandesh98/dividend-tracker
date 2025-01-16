@@ -117,4 +117,12 @@ class StockService
 
         return $price * $quantity;
     }
+
+    public function getProfitOrLoss($stock)
+    {
+        $totalValue = $this->getTotalValue($stock);
+        $totalAmountInvested = $this->getTotalAmoundInvested($stock);
+
+        return $totalValue - $totalAmountInvested;
+    }
 }

@@ -89,8 +89,8 @@
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 838,34</div>
+                            <span class="mr-auto"><i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i></span>
+                            <div class="ml-auto">€ {{ $stock['profitLoss'] }}</div>
                         </div>
                     </td>
                     <td class="text-nowrap">
