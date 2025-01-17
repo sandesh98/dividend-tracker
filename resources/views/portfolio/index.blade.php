@@ -55,7 +55,6 @@
             </thead>
             <tbody>
                 @foreach ($active as $stock)
-
                 <tr>
                     <td class="text-nowrap">
                         <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
@@ -125,71 +124,89 @@
         </table>
     </div>
 
+    <div x-data="{ open: true }">
+        <div :class="open ? 'card border-0 bg-active mb-3 custom-pointer' : 'card border-0 bg-light mb-3 custom-pointer'" x-on:click="open = !open; $nextTick(() => document.getElementById('myTable').scrollIntoView({ behavior: 'smooth' }))">
+            <div class="card-body py-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i :class="open ? 'bi bi-plus fs-4' : 'bi bi-dash fs-4'"></i>
+                    <span>Alle gesloten aandelen</span>
+                </div>
+            </div>
+        </div>
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr class="text-nowrap">
-                    <th scope="col">Gesloten aandelen</th>
-                    <th scope="col">Laatste prijs</th>
-                    <th scope="col">GVP</th>
-                    <th scope="col">Dividenden</th>
-                    <th scope="col">Winst / Verlies</th>
-                    <th scope="col">Prestatie na gesloten</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($closed as $stock)
-
-                <tr>
-                    <td class="text-nowrap">
-                        <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">{{ $stock['totalValue'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">12,56</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i></span>
-                            <div class="ml-auto">€ {{ $stock['profitLoss'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 838,34</div>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-
-            </tbody>
-
-            <tfoot>
-                <tr>
-                    <td class="text-muted fs-6">Aantal (2)</td>
-                    <td class="text-muted text-end">4483,90</td>
-                    <td class="text-muted text-end">3435,98</td>
-                    <td class="text-muted text-end">170,65</td>
-                    <td class="text-muted text-end">994,46</td>
-                    <td class="text-muted text-end">1069,87</td>
-                </tr>
-            </tfoot>
-        </table>
+        <div id="myTable">
+            <div x-show="open" class="table-responsive" x-transition.delay.50ms>
+                <table class="table">
+                    <thead>
+                        <tr class="text-nowrap">
+                            <th scope="col">Gesloten aandelen</th>
+                            <th scope="col">Laatste prijs</th>
+                            <th scope="col">GVP</th>
+                            <th scope="col">Dividenden</th>
+                            <th scope="col">Winst / Verlies</th>
+                            <th scope="col">Prestatie na gesloten</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($closed as $stock)
+        
+                        <tr>
+                            <td class="text-nowrap">
+                                <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
+                            </td>
+                            <td class="text-nowrap">
+                                <div class="d-flex justify-content-between w-100 text-nowrap">
+                                    <span class="mr-auto">€</span>
+                                    <div class="ml-auto">{{ $stock['totalValue'] }}</div>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">
+                                <div class="d-flex justify-content-between w-100 text-nowrap">
+                                    <span class="mr-auto">€</span>
+                                    <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">
+                                <div class="d-flex justify-content-between w-100 text-nowrap">
+                                    <span class="mr-auto">€</span>
+                                    <div class="ml-auto">12,56</div>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">
+                                <div class="d-flex justify-content-between w-100 text-nowrap">
+                                    <span class="d-flex gap-2">
+                                        <i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i>
+                                        <span class="ml-2">€</span>
+                                    </span>
+                                    <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">
+                                <div class="d-flex justify-content-between w-100 text-nowrap">
+                                    <span class="d-flex gap-2">
+                                        <i class="bi bi-arrow-up-right-circle-fill text-success"></i>
+                                        <span class="ml-2">€</span>
+                                    </span>
+                                    <div class="ml-auto">838,34</div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+        
+                    </tbody>
+        
+                    <tfoot>
+                        <tr>
+                            <td class="text-muted fs-6">Aantal (2)</td>
+                            <td class="text-muted text-end">4483,90</td>
+                            <td class="text-muted text-end">3435,98</td>
+                            <td class="text-muted text-end">170,65</td>
+                            <td class="text-muted text-end">994,46</td>
+                            <td class="text-muted text-end">1069,87</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection

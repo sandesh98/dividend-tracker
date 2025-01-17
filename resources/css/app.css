@@ -82,6 +82,14 @@ body {
     background-color: #f2f2f2;
 }
 
+.bg-dark {
+    background-color: var(--back-100);
+}
+
+.bg-active {
+    background-color: #d8d8d8;
+}
+
 .fw-bold {
     font-family: 'AvertaStd-Bold';
     font-weight: 700;
@@ -151,10 +159,10 @@ body {
     background-color: var(--purple-300);
 }
 
-.bg-dark {
-    background-color: var(--back-100);
-}
-
 .date-badge {
     font-size: 12px;
+}
+
+.custom-pointer {
+    cursor: pointer !important;
 }
