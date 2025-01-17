@@ -75,7 +75,7 @@
                     <td class="text-nowrap text-end">
                         {{ $stock['quantity'] }}
                     </td>
-                    <td class="text-nowrap">
+                    <td class="text-nowrap" style="width: 150px;">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="mr-auto">€</span>
                             <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
@@ -125,13 +125,11 @@
             <thead>
                 <tr class="text-nowrap">
                     <th scope="col">Gesloten aandelen</th>
-                    <th scope="col">Totale waarde</th>
-                    <th scope="col">Tot geïnvesteerd</th>
-                    <th scope="col">Aantal</th>
-                    <th scope="col">GAK</th>
+                    <th scope="col">Laatste prijs</th>
+                    <th scope="col">GVP</th>
                     <th scope="col">Dividenden</th>
                     <th scope="col">Winst / Verlies</th>
-                    <th scope="col">Winst / Verlies (ong.)</th>
+                    <th scope="col">Prestatie na gesloten</th>
                 </tr>
             </thead>
             <tbody>
@@ -151,15 +149,6 @@
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="mr-auto">€</span>
                             <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap text-end">
-                        {{ $stock['quantity'] }}
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
                         </div>
                     </td>
                     <td class="text-nowrap">
@@ -190,9 +179,7 @@
                     <td class="text-muted fs-6">Aantal (2)</td>
                     <td class="text-muted text-end">4483,90</td>
                     <td class="text-muted text-end">3435,98</td>
-                    <td class="text-muted text-end">45</td>
                     <td class="text-muted text-end">170,65</td>
-                    <td class="text-muted text-end">93,03</td>
                     <td class="text-muted text-end">994,46</td>
                     <td class="text-muted text-end">1069,87</td>
                 </tr>

@@ -97,7 +97,14 @@ class StockService
 
     public function getAverageStockPrice($stock)
     {
-        $averageStockPrice = $this->getTotalAmoundInvested($stock) / $this->getStockQuantity($stock);
+        $amountInvested = $this->getTotalAmoundInvested($stock) ?? 0;
+        $stockQuantity = $this->getStockQuantity($stock) ?? 0;
+
+        if ($stockQuantity <= 0) {
+            return 0;
+        }
+
+        $averageStockPrice = $amountInvested / $stockQuantity;
 
         if ($averageStockPrice < 0) {
             return 0;
