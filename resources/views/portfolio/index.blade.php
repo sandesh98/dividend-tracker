@@ -39,7 +39,7 @@
         </ul>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive mb-4">
         <table class="table">
             <thead>
                 <tr class="text-nowrap">
@@ -54,7 +54,88 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($stocksData as $stock)
+                @foreach ($active as $stock)
+
+                <tr>
+                    <td class="text-nowrap">
+                        <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
+                    </td>
+                    <td class="text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                            <span class="mr-auto">€</span>
+                            <div class="ml-auto">{{ $stock['totalValue'] }}</div>
+                        </div>
+                    </td>
+                    <td class="text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                            <span class="mr-auto">€</span>
+                            <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
+                        </div>
+                    </td>
+                    <td class="text-nowrap text-end">
+                        {{ $stock['quantity'] }}
+                    </td>
+                    <td class="text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                            <span class="mr-auto">€</span>
+                            <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
+                        </div>
+                    </td>
+                    <td class="text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                            <span class="mr-auto">€</span>
+                            <div class="ml-auto">12,56</div>
+                        </div>
+                    </td>
+                    <td class="text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                            <span class="mr-auto"><i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i></span>
+                            <div class="ml-auto">€ {{ $stock['profitLoss'] }}</div>
+                        </div>
+                    </td>
+                    <td class="text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
+                            <div class="ml-auto">€ 838,34</div>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td class="text-muted fs-6">Aantal (2)</td>
+                    <td class="text-muted text-end">4483,90</td>
+                    <td class="text-muted text-end">3435,98</td>
+                    <td class="text-muted text-end">45</td>
+                    <td class="text-muted text-end">170,65</td>
+                    <td class="text-muted text-end">93,03</td>
+                    <td class="text-muted text-end">994,46</td>
+                    <td class="text-muted text-end">1069,87</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr class="text-nowrap">
+                    <th scope="col">Gesloten aandelen</th>
+                    <th scope="col">Totale waarde</th>
+                    <th scope="col">Tot geïnvesteerd</th>
+                    <th scope="col">Aantal</th>
+                    <th scope="col">GAK</th>
+                    <th scope="col">Dividenden</th>
+                    <th scope="col">Winst / Verlies</th>
+                    <th scope="col">Winst / Verlies (ong.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($closed as $stock)
 
                 <tr>
                     <td class="text-nowrap">

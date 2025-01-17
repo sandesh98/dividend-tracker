@@ -16,9 +16,16 @@ class PortfolioController extends Controller
                                 ->sum();
 
         $availableCash = Transaction::getAvailableCash();
-        $stocksData = Trade::loadTable();
+        $stockData = Trade::loadTable();
 
-        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'stocksData'));
+        $data = collect($stockData);
+
+        [$active, $closed] = $data->partition(function ($stock) {
+            return $stock['quantity'] > 0;
+        });
+
+
+        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'active', 'closed'));
     }
 
     public function show($isin)
