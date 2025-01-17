@@ -76,27 +76,33 @@
                         {{ $stock['quantity'] }}
                     </td>
                     <td class="text-nowrap" style="width: 150px;">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap gap-4">
                             <span class="mr-auto">€</span>
                             <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
                         </div>
                     </td>
                     <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
+                        <div class="d-flex justify-content-between w-100 text-nowrap gap-3">
                             <span class="mr-auto">€</span>
                             <div class="ml-auto">12,56</div>
                         </div>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i></span>
-                            <div class="ml-auto">€ {{ $stock['profitLoss'] }}</div>
+                            <span class="d-flex gap-3">
+                                <i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i>
+                                <span class="ml-2">€</span>
+                            </span>
+                            <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
                         </div>
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
-                            <div class="ml-auto">€ 838,34</div>
+                            <span class="d-flex gap-3">
+                                <i class="bi bi-arrow-up-right-circle-fill text-success"></i>
+                                <span class="ml-2">€</span>
+                            </span>
+                            <div class="ml-auto">838,34</div>
                         </div>
                     </td>
                 </tr>
