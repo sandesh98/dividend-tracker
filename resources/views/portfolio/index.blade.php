@@ -90,7 +90,7 @@
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="d-flex gap-3">
-                                <img src="{{ $stock['profitLoss'] < 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
+                                <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
                                 <span class="ml-2">€</span>
                             </span>
                             <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
@@ -177,7 +177,7 @@
                             <td class="text-nowrap">
                                 <div class="d-flex justify-content-between w-100 text-nowrap">
                                     <span class="d-flex gap-2">
-                                        <img src="{{ $stock['profitLoss'] < 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
+                                        <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
                                         <span class="ml-2">€</span>
                                     </span>
                                     <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
