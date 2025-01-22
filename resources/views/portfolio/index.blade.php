@@ -43,8 +43,8 @@
         <table class="table">
             <thead>
                 <tr class="text-nowrap">
-                    <th scope="col">Aandeel</th>
-                    <th scope="col">Totale waarde</th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Naam van het aandeel">Aandeel</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Huidige prijs * koers">Totale waarde</span></th>
                     <th scope="col">Tot geïnvesteerd</th>
                     <th scope="col">Aantal</th>
                     <th scope="col">GAK</th>
@@ -157,7 +157,7 @@
                             <td class="text-nowrap">
                                 <div class="d-flex justify-content-between w-100 text-nowrap">
                                     <span class="mr-auto">€</span>
-                                    <div class="ml-auto">{{ $stock['totalValue'] }}</div>
+                                    <div class="ml-auto">{{ $stock['lastPrice'] }}</div>
                                 </div>
                             </td>
                             <td class="text-nowrap">

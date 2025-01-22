@@ -19,7 +19,7 @@ class StockPriceService {
 
     public function updatePrice(): void
     {
-        $tickers = $this->stockRepository->getTickers();
+        $tickers = $this->stockRepository->getAllTickers();
 
         foreach ($tickers as $ticker) {
             $this->updateStockPrice($ticker);
@@ -28,12 +28,14 @@ class StockPriceService {
 
     private function updateStockPrice(string $ticker): void
     {
+        $stock = $this->stockRepository->findByTicker($ticker);
+
         $historicalPrice = $this->yahooClient->getHistoricalQuoteData($ticker, '1wk', now()->previousWeekday(), now());
         $currency = $this->yahooClient->getQuote($ticker)->getCurrency();
 
         $conversion = $this->convertExchangeRate($historicalPrice[0]->getOpen(), $currency);
 
-        Stock::where('ticker', 'LIKE', $ticker)->update([
+        $stock->update([
             'price' => $conversion['price'],
             'currency' => $conversion['currency']
         ]);

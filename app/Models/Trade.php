@@ -21,9 +21,10 @@ class Trade extends Model
             $quantity = app(StockService::class)->getStockQuantity($product);
             $totalAmountInvested = app(StockService::class)->getTotalAmoundInvested($product);
             $averageStockPrice = app(StockService::class)->getAverageStockPrice($product);
-            $isin = app(StockRepository::class)->findIsinByStock($product);
+            $isin = app(StockRepository::class)->getIsinsByName($product);
             $totalValue = app(StockService::class)->getTotalValue($product);
             $profitLoss = app(StockService::class)->getProfitOrLoss($product);
+            $lastPrice = app(StockService::class)->getLastPrice($product);
 
             $stockData[] = [
                 'product' => $display_name,
@@ -32,7 +33,8 @@ class Trade extends Model
                 'averageStockPrice' => $averageStockPrice,
                 'totalAmountInvested' => $totalAmountInvested,
                 'totalValue' => $totalValue,
-                'profitLoss' => $profitLoss
+                'profitLoss' => $profitLoss,
+                'lastPrice' => $lastPrice
             ];
         }
 

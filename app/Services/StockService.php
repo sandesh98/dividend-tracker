@@ -44,7 +44,7 @@ class StockService
 
     public function getStockQuantity($stock)
     {
-        $trades = Trade::where('product', 'LIKE', $stock)->whereNotNull('action')->get();
+        $trades = $this->tradeRepository->getAllTradesFor($stock)->whereNotNull('action');
 
         $buy = $trades->filter(function ($item) {
             return $item->action === 'buy';
@@ -59,7 +59,7 @@ class StockService
 
     public function getTotalAmoundInvested($stock)
     {
-        $trades = Trade::where('product', 'LIKE', $stock)->get();
+        $trades = $this->tradeRepository->getAllTradesFor($stock);
 
         $groupedTrades = $trades->groupBy('order_id');
 
@@ -116,7 +116,8 @@ class StockService
     public function getTotalValue($stock)
     {
         $quantity = $this->getStockQuantity($stock);
-        $price = Stock::where('product', 'LIKE', $stock)->first()->centsToEuros();
+
+        $price = $this->stockRepository->findByName($stock)->centsToEuros();
 
         if ($quantity < 0 && $price < 0) {
             return 0;
@@ -125,11 +126,18 @@ class StockService
         return $price * $quantity;
     }
 
-    public function getProfitOrLoss($stock)
+    public function getProfitOrLoss(string $stock)
     {
         $totalValue = $this->getTotalValue($stock);
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
         return $totalValue - $totalAmountInvested;
+    }
+
+    public function getLastPrice(string $stock)
+    {
+        $product = $this->stockRepository->findByName($stock);
+
+        return $product->centsToEuros();
     }
 }

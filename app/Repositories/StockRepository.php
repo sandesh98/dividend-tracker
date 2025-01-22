@@ -12,26 +12,65 @@ class StockRepository extends AbstractRepository
         parent::__construct($stock);
     }
 
+    /**
+     * Find a stock by ISIN
+     *
+     * @param string $isin
+     * @return Stock
+     */
     public function findByIsin(string $isin): Stock
     {
         return $this->stock->newQuery()->where('isin', $isin)->first();
     }
 
-    public function findIsinByStock($stock): Collection
+    /**
+     * Get a Collection of ISINS by stock name
+     *
+     * @param string $stock
+     * @return Collection
+     */
+    public function getIsinsByName(string $stock): Collection
     {
         return $this->stock->newQuery()->where('product', 'LIKE', $stock)->pluck('isin');
     }
 
+    /**
+     * Get a Stock by name
+     *
+     * @param string $stock
+     * @return Stock
+     */
+    public function findByName(string $stock): Stock
+    {
+        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first();
+    }
+
+    /**
+     * Get a Stock by ticker
+     *
+     * @param string $ticker
+     * @return Stock
+     */
     public function findByTicker(string $ticker): Stock
     {
         return $this->stock->newQuery()->where('ticker', $ticker)->first();
     }
 
-    public function getTickers(): Collection
+    /**
+     * Get a Collection of all tickers
+     *
+     * @return Collection
+     */
+    public function getAllTickers(): Collection
     {
         return $this->stock->distinct()->pluck('ticker');
     }
 
+    /**
+     * Get a collection of all stocks by name
+     *
+     * @return Collection
+     */
     public function getAllStockNames(): Collection
     {
         return $this->stock->distinct()->pluck('product', 'display_name');
