@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('product');
             $table->string('display_name')->nullable();
+            $table->string('type')->nullable();
             $table->string('isin');
             $table->string('ticker');
             $table->string('currency')->nullable();

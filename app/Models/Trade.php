@@ -25,6 +25,7 @@ class Trade extends Model
             $totalValue = app(StockService::class)->getTotalValue($product);
             $profitLoss = app(StockService::class)->getProfitOrLoss($product);
             $lastPrice = app(StockService::class)->getLastPrice($product);
+            $type = app(StockService::class)->getType($product);
 
             $stockData[] = [
                 'product' => $display_name,
@@ -34,7 +35,8 @@ class Trade extends Model
                 'totalAmountInvested' => $totalAmountInvested,
                 'totalValue' => $totalValue,
                 'profitLoss' => $profitLoss,
-                'lastPrice' => $lastPrice
+                'lastPrice' => $lastPrice,
+                'type' => $type
             ];
         }
 

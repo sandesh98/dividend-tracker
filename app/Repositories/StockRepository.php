@@ -75,4 +75,15 @@ class StockRepository extends AbstractRepository
     {
         return $this->stock->distinct()->pluck('product', 'display_name');
     }
+
+    /**
+     * Get the type for a given stock
+     *
+     * @param string $stock
+     * @return string
+     */
+    public function getType(string $stock): string
+    {
+        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first()->getType();
+    }
 }

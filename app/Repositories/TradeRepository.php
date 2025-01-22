@@ -28,7 +28,7 @@ class TradeRepository extends AbstractRepository
      * @param string $stock
      * @return void
      */
-    public function getAllTradesFor(string $stock)
+    public function getAllTradesFor(string $stock): Collection
     {
         return $this->trade->newQuery()->where('product', 'like', $stock)->get();
     }

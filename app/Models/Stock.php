@@ -10,7 +10,7 @@ class Stock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product', 'isin', 'ticker', 'price', 'display_name'];
+    protected $fillable = ['product', 'isin', 'type', 'ticker', 'currency', 'price', 'display_name'];
 
     public function centsToEuros()
     {
@@ -20,5 +20,10 @@ class Stock extends Model
     public function getPrice()
     {
         return $this->price;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

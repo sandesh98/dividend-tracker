@@ -57,6 +57,7 @@
                 @foreach ($active as $stock)
                 <tr>
                     <td class="text-nowrap">
+                        <img src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
                         <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                     </td>
                     <td class="text-nowrap">
@@ -89,7 +90,7 @@
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="d-flex gap-3">
-                                <i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i>
+                                <img src="{{ $stock['profitLoss'] < 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
                                 <span class="ml-2">€</span>
                             </span>
                             <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
@@ -98,7 +99,7 @@
                     <td class="text-nowrap">
                         <div class="d-flex justify-content-between w-100 text-nowrap">
                             <span class="d-flex gap-3">
-                                <i class="bi bi-arrow-up-right-circle-fill text-success"></i>
+                                <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
                                 <span class="ml-2">€</span>
                             </span>
                             <div class="ml-auto">838,34</div>
@@ -124,7 +125,7 @@
         </table>
     </div>
 
-    <div x-data="{ open: true }">
+    <div x-data="{ open: false }">
         <div :class="open ? 'card border-0 bg-active mb-3 custom-pointer' : 'card border-0 bg-light mb-3 custom-pointer'" x-on:click="open = !open; $nextTick(() => document.getElementById('myTable').scrollIntoView({ behavior: 'smooth' }))">
             <div class="card-body py-2">
                 <div class="d-flex align-items-center gap-2">
@@ -152,6 +153,7 @@
         
                         <tr>
                             <td class="text-nowrap">
+                                <img src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
                                 <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                             </td>
                             <td class="text-nowrap">
@@ -175,7 +177,7 @@
                             <td class="text-nowrap">
                                 <div class="d-flex justify-content-between w-100 text-nowrap">
                                     <span class="d-flex gap-2">
-                                        <i class="bi {{ $stock['profitLoss'] < 0 ? 'bi-arrow-down-right-circle-fill text-danger' : 'bi-arrow-up-right-circle-fill text-success' }}"></i>
+                                        <img src="{{ $stock['profitLoss'] < 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
                                         <span class="ml-2">€</span>
                                     </span>
                                     <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
@@ -184,7 +186,7 @@
                             <td class="text-nowrap">
                                 <div class="d-flex justify-content-between w-100 text-nowrap">
                                     <span class="d-flex gap-2">
-                                        <i class="bi bi-arrow-up-right-circle-fill text-success"></i>
+                                        <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
                                         <span class="ml-2">€</span>
                                     </span>
                                     <div class="ml-auto">838,34</div>

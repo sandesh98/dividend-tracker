@@ -36,7 +36,8 @@ class StockService
                 [
                     'product' => $product,
                     'display_name' => $stockInfo[0]->getName(),
-                    'ticker' => $stockInfo[0]->getSymbol()
+                    'ticker' => $stockInfo[0]->getSymbol(),
+                    'type' => $stockInfo[0]->getType()
                 ]
             );
         }
@@ -139,5 +140,10 @@ class StockService
         $product = $this->stockRepository->findByName($stock);
 
         return $product->centsToEuros();
+    }
+
+    public function getType(string $stock)
+    {
+        return $this->stockRepository->getType($stock);
     }
 }
