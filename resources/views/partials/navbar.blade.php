@@ -25,12 +25,12 @@
                 </li>
             </ul>
 
-            <div class="dropdown">
-                <button class="btn border px-2 py-1 rounded" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <div x-data="{ open: false }">
+                <button class="btn border px-2 py-1 rounded" type="button" x-on:click="open = !open" data-bs-toggle="dropdown">
                     € 13240,10
                 </button>
 
-                <div class="dropdown-menu  dropdown-menu-end p-0 m-0 mt-1 rounded-4 shadow border-0" aria-labelledby="dropdownMenuButton1">
+                <div :class="open ? 'dropdown-menu p-0 m-0 mt-1 rounded-4 shadow border-0 show' : 'dropdown-menu p-0 m-0 mt-1 rounded-4 shadow border-0'">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body d-flex flex-column gap-2">
                             <div class="d-flex justify-content-between">

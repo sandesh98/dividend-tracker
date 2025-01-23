@@ -26,7 +26,7 @@ class TradeRepository extends AbstractRepository
      * Get all trades from a given stock
      *
      * @param string $stock
-     * @return void
+     * @return Collection
      */
     public function getAllTradesFor(string $stock): Collection
     {
