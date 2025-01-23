@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\Trade;
 use App\Models\Transaction;
+use App\Repositories\TransactionRepository;
+use App\Services\TransactionService;
 
 class PortfolioController extends Controller
 {
+    public function __construct(private readonly TransactionService $transactionService)
+    {
+    }
+
     public function index()
     {
 
@@ -15,7 +21,8 @@ class PortfolioController extends Controller
                                 ->pluck('total_transaction_value')
                                 ->sum();
 
-        $availableCash = Transaction::getAvailableCash();
+        $availableCash = $this->transactionService->getAvailableCash();
+
         $stockData = Trade::loadTable();
 
         $data = collect($stockData);

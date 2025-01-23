@@ -15,19 +15,4 @@ class Transaction extends Model
     {
         $this->attributes['mutation_value'] = (int) round(floatval($value) * 100);
     }
-
-    public static function getAvailableCash()
-    {
-        $cash = DB::table('manual_transactions')->pluck('total_transaction_value')->sum() / 100;
-
-        // $investedCash = 0;
-        
-        // foreach (Trade::getNames() as $name) {
-        //     $investedCash += Trade::getTotalAmoundInvested($name);
-        // }
-
-        // return $cash - $investedCash;
-
-        return 100;
-    }
 }

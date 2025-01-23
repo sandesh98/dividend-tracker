@@ -6,7 +6,7 @@
     <div class="row gy-3">
         @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
         @include('portfolio.components.header-card', ['title' => 'Ontvangen dividend', 'value' => '249,04'])
-        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte', 'value' => $availableCash])
+        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte (onjuist)', 'value' => $availableCash])
         @include('portfolio.components.header-card', ['title' => 'Transactiekosten', 'value' => number_format(($transactionCosts / 100), 2, ',')])
     </div>
 
