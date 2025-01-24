@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,5 +17,8 @@ class DatabaseSeeder extends Seeder
             ManualTransactionsSeeder::class,
             TradesSeeder::class,
         ]);
+
+        Artisan::call('stock:update');
+        Artisan::call('stock:price');
     }
 }
