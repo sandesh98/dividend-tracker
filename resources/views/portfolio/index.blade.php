@@ -45,12 +45,12 @@
                 <tr class="text-nowrap">
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Naam van het aandeel">Aandeel</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Huidige prijs * koers">Totale waarde</span></th>
-                    <th scope="col">Tot geïnvesteerd</th>
-                    <th scope="col">Aantal</th>
-                    <th scope="col">GAK</th>
-                    <th scope="col">Dividenden</th>
-                    <th scope="col">Winst / Verlies</th>
-                    <th scope="col">Winst / Verlies (ong.)</th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Aankoopprijs * aantal">Tot geïnvesteerd</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Het aantal aandelingen in bezetting">Aantal</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Gemiddelde aankoopkoers">GAK</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale winst / verlies</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Ongerealiseerde waarde zonder transactiekosten en dividenden">Winst / verlies (ong.)</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -140,12 +140,12 @@
                 <table class="table">
                     <thead>
                         <tr class="text-nowrap">
-                            <th scope="col">Gesloten aandelen</th>
-                            <th scope="col">Laatste prijs</th>
-                            <th scope="col">GVP</th>
-                            <th scope="col">Dividenden</th>
-                            <th scope="col">Winst / Verlies</th>
-                            <th scope="col">Prestatie na gesloten</th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Naam van het aandeel">Gesloten aandeel</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Laatste koersprijs">Laatste prijs</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Gemiddelde verkoopprijs">GVP</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale winst / verlies</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Prestatie van een aandeel na de laatste verkoop transactie">Prestatie na gesloten</span></th>
                         </tr>
                     </thead>
                     <tbody>
