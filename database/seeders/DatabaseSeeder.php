@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
             ManualTransactionsSeeder::class,
             TradesSeeder::class,
+            DividendSeeder::class
         ]);
 
-        Artisan::call('stock:update');
-        Artisan::call('stock:price');
+        // Artisan::call('stock:update');
+        // Artisan::call('stock:price');
     }
 }

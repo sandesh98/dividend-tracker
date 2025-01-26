@@ -14,7 +14,7 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        $filePath = storage_path('app/public/Account-full.csv');
+        $filePath = storage_path('app/public/Account.csv');
 
         if (! file_exists($filePath)) {
             echo "Account.csv file not found inside app/public folder.";

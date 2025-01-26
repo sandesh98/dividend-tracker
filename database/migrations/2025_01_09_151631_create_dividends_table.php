@@ -13,18 +13,14 @@ return new class extends Migration
     {
         Schema::create('dividends', function (Blueprint $table) {
             $table->id();
-            $table->string('date')->nullable();
-            $table->time('time')->nullable();
-            $table->string('value_date')->nullable();
-            $table->string('product')->nullable();
-            $table->string('isin')->nullable();
-            $table->string('description')->nullable();
+            $table->string('date');
+            $table->time('time');
+            $table->string('product');
+            $table->string('isin');
+            $table->string('description');
             $table->string('fx')->nullable();
             $table->string('mutation')->nullable();
-            $table->integer('mutation_value')->nullable();
-            $table->string('balance')->nullable();
-            $table->decimal('balance_value', 15, 2)->nullable();
-            $table->string('order_id')->nullable();
+            $table->integer('amount')->nullable();
             $table->timestamps();
         });
     }
