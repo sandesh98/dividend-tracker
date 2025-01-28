@@ -5,9 +5,18 @@
 
     <div class="row gy-3">
         @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
-        @include('portfolio.components.header-card', ['title' => 'Ontvangen dividend', 'value' => '249,04'])
-        @include('portfolio.components.header-card', ['title' => 'Besteedbare ruimte (onjuist)', 'value' => $availableCash])
-        @include('portfolio.components.header-card', ['title' => 'Transactiekosten', 'value' => number_format(($transactionCosts / 100), 2, ',')])
+        @include('portfolio.components.header-card', [
+            'title' => 'Ontvangen dividend',
+            'value' => $dividend,
+        ])
+        @include('portfolio.components.header-card', [
+            'title' => 'Besteedbare ruimte (onjuist)',
+            'value' => $availableCash,
+        ])
+        @include('portfolio.components.header-card', [
+            'title' => 'Transactiekosten',
+            'value' => number_format($transactionCosts / 100, 2, ','),
+        ])
     </div>
 
     <div class="card p-4 my-5">
@@ -43,69 +52,82 @@
         <table class="table">
             <thead>
                 <tr class="text-nowrap">
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Naam van het aandeel">Aandeel</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Huidige prijs * koers">Totale waarde</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Aankoopprijs * aantal">Tot geïnvesteerd</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Het aantal aandelingen in bezetting">Aantal</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Gemiddelde aankoopkoers">GAK</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale winst / verlies</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Ongerealiseerde waarde zonder transactiekosten en dividenden">Winst / verlies (ong.)</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Naam van het aandeel">Aandeel</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Huidige prijs * koers">Totale waarde</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Aankoopprijs * aantal">Tot geïnvesteerd</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Het aantal aandelingen in bezetting">Aantal</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Gemiddelde aankoopkoers">GAK</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
+                            winst / verlies</span></th>
+                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Ongerealiseerde waarde zonder transactiekosten en dividenden">Winst / verlies
+                            (ong.)</span></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($active as $stock)
-                <tr>
-                    <td class="text-nowrap">
-                        <img src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
-                        <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">{{ $stock['totalValue'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap text-end">
-                        {{ $stock['quantity'] }}
-                    </td>
-                    <td class="text-nowrap" style="width: 150px;">
-                        <div class="d-flex justify-content-between w-100 text-nowrap gap-4">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap gap-3">
-                            <span class="mr-auto">€</span>
-                            <div class="ml-auto">12,56</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="d-flex gap-3">
-                                <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
-                                <span class="ml-2">€</span>
-                            </span>
-                            <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
-                        </div>
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex justify-content-between w-100 text-nowrap">
-                            <span class="d-flex gap-3">
-                                <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
-                                <span class="ml-2">€</span>
-                            </span>
-                            <div class="ml-auto">838,34</div>
-                        </div>
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="text-nowrap">
+                            <img
+                                src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
+                            <a href="{{ route('portfolio.show', current($stock['isin'])) }}"
+                                class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
+                        </td>
+                        <td class="text-nowrap">
+                            <div class="d-flex justify-content-between w-100 text-nowrap">
+                                <span class="mr-auto">€</span>
+                                <div class="ml-auto">{{ $stock['totalValue'] }}</div>
+                            </div>
+                        </td>
+                        <td class="text-nowrap">
+                            <div class="d-flex justify-content-between w-100 text-nowrap">
+                                <span class="mr-auto">€</span>
+                                <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
+                            </div>
+                        </td>
+                        <td class="text-nowrap text-end">
+                            {{ $stock['quantity'] }}
+                        </td>
+                        <td class="text-nowrap" style="width: 150px;">
+                            <div class="d-flex justify-content-between w-100 text-nowrap gap-4">
+                                <span class="mr-auto">€</span>
+                                <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
+                            </div>
+                        </td>
+                        <td class="text-nowrap">
+                            <div class="d-flex justify-content-between w-100 text-nowrap gap-3">
+                                <span class="mr-auto">€</span>
+                                <div class="ml-auto">{{ $stock['dividend'] }}</div>
+                            </div>
+                        </td>
+                        <td class="text-nowrap">
+                            <div class="d-flex justify-content-between w-100 text-nowrap">
+                                <span class="d-flex gap-3">
+                                    <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                        alt="graph down icon">
+                                    <span class="ml-2">€</span>
+                                </span>
+                                <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
+                            </div>
+                        </td>
+                        <td class="text-nowrap">
+                            <div class="d-flex justify-content-between w-100 text-nowrap">
+                                <span class="d-flex gap-3">
+                                    <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
+                                    <span class="ml-2">€</span>
+                                </span>
+                                <div class="ml-auto">838,34</div>
+                            </div>
+                        </td>
+                    </tr>
                 @endforeach
 
             </tbody>
@@ -126,7 +148,8 @@
     </div>
 
     <div x-data="{ open: false }">
-        <div :class="open ? 'card border-0 bg-active mb-3 custom-pointer' : 'card border-0 bg-light mb-3 custom-pointer'" x-on:click="open = !open; $nextTick(() => document.getElementById('myTable').scrollIntoView({ behavior: 'smooth' }))">
+        <div :class="open ? 'card border-0 bg-active mb-3 custom-pointer' : 'card border-0 bg-light mb-3 custom-pointer'"
+            x-on:click="open = !open; $nextTick(() => document.getElementById('myTable').scrollIntoView({ behavior: 'smooth' }))">
             <div class="card-body py-2">
                 <div class="d-flex align-items-center gap-2">
                     <i :class="open ? 'bi bi-plus fs-4' : 'bi bi-dash fs-4'"></i>
@@ -140,63 +163,73 @@
                 <table class="table">
                     <thead>
                         <tr class="text-nowrap">
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Naam van het aandeel">Gesloten aandeel</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Laatste koersprijs">Laatste prijs</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Gemiddelde verkoopprijs">GVP</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale winst / verlies</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Prestatie van een aandeel na de laatste verkoop transactie">Prestatie na gesloten</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Naam van het aandeel">Gesloten aandeel</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Laatste koersprijs">Laatste prijs</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Gemiddelde verkoopprijs">GVP</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
+                                    winst / verlies</span></th>
+                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
+                                    data-bs-title="Prestatie van een aandeel na de laatste verkoop transactie">Prestatie na
+                                    gesloten</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($closed as $stock)
-        
-                        <tr>
-                            <td class="text-nowrap">
-                                <img src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
-                                <a href="{{ route('portfolio.show', current($stock['isin'])) }}" class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
-                            </td>
-                            <td class="text-nowrap">
-                                <div class="d-flex justify-content-between w-100 text-nowrap">
-                                    <span class="mr-auto">€</span>
-                                    <div class="ml-auto">{{ $stock['lastPrice'] }}</div>
-                                </div>
-                            </td>
-                            <td class="text-nowrap">
-                                <div class="d-flex justify-content-between w-100 text-nowrap">
-                                    <span class="mr-auto">€</span>
-                                    <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
-                                </div>
-                            </td>
-                            <td class="text-nowrap">
-                                <div class="d-flex justify-content-between w-100 text-nowrap">
-                                    <span class="mr-auto">€</span>
-                                    <div class="ml-auto">12,56</div>
-                                </div>
-                            </td>
-                            <td class="text-nowrap">
-                                <div class="d-flex justify-content-between w-100 text-nowrap">
-                                    <span class="d-flex gap-2">
-                                        <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}" alt="graph down icon">
-                                        <span class="ml-2">€</span>
-                                    </span>
-                                    <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
-                                </div>
-                            </td>
-                            <td class="text-nowrap">
-                                <div class="d-flex justify-content-between w-100 text-nowrap">
-                                    <span class="d-flex gap-2">
-                                        <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
-                                        <span class="ml-2">€</span>
-                                    </span>
-                                    <div class="ml-auto">838,34</div>
-                                </div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <img
+                                        src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
+                                    <a href="{{ route('portfolio.show', current($stock['isin'])) }}"
+                                        class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex justify-content-between w-100 text-nowrap">
+                                        <span class="mr-auto">€</span>
+                                        <div class="ml-auto">{{ $stock['lastPrice'] }}</div>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex justify-content-between w-100 text-nowrap">
+                                        <span class="mr-auto">€</span>
+                                        <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex justify-content-between w-100 text-nowrap">
+                                        <span class="mr-auto">€</span>
+                                        <div class="ml-auto">{{ $stock['dividend'] }}</div>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex justify-content-between w-100 text-nowrap">
+                                        <span class="d-flex gap-2">
+                                            <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                                alt="graph down icon">
+                                            <span class="ml-2">€</span>
+                                        </span>
+                                        <div class="ml-auto">{{ $stock['profitLoss'] }}</div>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    <div class="d-flex justify-content-between w-100 text-nowrap">
+                                        <span class="d-flex gap-2">
+                                            <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
+                                            <span class="ml-2">€</span>
+                                        </span>
+                                        <div class="ml-auto">838,34</div>
+                                    </div>
+                                </td>
+                            </tr>
                         @endforeach
-        
+
                     </tbody>
-        
+
                     <tfoot>
                         <tr>
                             <td class="text-muted fs-6">Aantal (2)</td>

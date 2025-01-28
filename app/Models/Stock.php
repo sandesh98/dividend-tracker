@@ -26,4 +26,9 @@ class Stock extends Model
     {
         return $this->type;
     }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
 }

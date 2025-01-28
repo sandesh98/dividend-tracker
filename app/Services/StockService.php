@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\Dividend;
 use App\Models\Stock;
 use App\Models\Trade;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
+use App\Services\Dividends\DividendCalculatorFactory;
 use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 
 class StockService
@@ -14,9 +16,7 @@ class StockService
         readonly private YahooClient     $yahooClient,
         readonly private StockRepository $stockRepository,
         readonly private TradeRepository $tradeRepository
-    )
-    {
-    }
+    ) {}
 
     public function updateInformation(): void
     {
@@ -78,7 +78,6 @@ class StockService
                 $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100;
 
                 $totalInvestment += (($buy - $sell) + $transactionCost);
-
             } elseif ($currency === 'USD') {
                 $fx = (float) $tradeGroup->pluck('fx')->filter()->first();
 

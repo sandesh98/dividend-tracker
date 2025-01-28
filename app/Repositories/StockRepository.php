@@ -86,4 +86,15 @@ class StockRepository extends AbstractRepository
     {
         return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first()->getType();
     }
+
+    /**
+     * Get the currency type for a given stock
+     *
+     * @param string $stock
+     * @return string
+     */
+    public function getCurrency(string $stock): string
+    {
+        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first()->getCurrency();
+    }
 }
