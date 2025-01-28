@@ -4,12 +4,11 @@ namespace App\Services;
 
 use App\Repositories\TransactionRepository;
 
-class TransactionService {
+class TransactionService
+{
     public function __construct(
         private readonly TransactionRepository $transactionRepository
-    )
-    {   
-    }
+    ) {}
 
     /**
      * Get available cash
