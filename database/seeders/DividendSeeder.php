@@ -63,7 +63,7 @@ class DividendSeeder extends Seeder
                 'isin' => $transaction->isin,
                 'fx' => $this->setFX($transaction->fx),
                 'mutation' => 'EUR',
-                'amount' => $transaction->mutation_value,
+                'amount' => $this->setAmount($transaction->mutation_value),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -87,10 +87,19 @@ class DividendSeeder extends Seeder
                     'product' => $transaction['product'],
                     'isin' => $transaction['isin'],
                     'mutation' => 'USD',
-                    'amount' => $transaction['mutation_value'],
+                    'amount' => $this->setAmount($transaction['mutation_value']),
                     'fx' => $currentFx,
                 ]);
             }
         }
+    }
+
+    private function setAmount($amount)
+    {
+        if ($amount < 0) {
+            return abs($amount);
+        }
+
+        return $amount;
     }
 }
