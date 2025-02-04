@@ -8,7 +8,6 @@ use App\Repositories\StockRepository;
 
 class DividendService
 {
-
     public function __construct(
         readonly private StockRepository    $stockRepository,
         readonly private DividendRepository $dividendRepository

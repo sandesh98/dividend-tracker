@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\Repositories\TradeRepository;
 use App\Repositories\TransactionRepository;
 
 class TransactionService
 {
     public function __construct(
-        private readonly TransactionRepository $transactionRepository
+        readonly private TransactionRepository $transactionRepository,
+        readonly private TradeRepository $tradeRepository
     ) {}
 
     /**
@@ -22,5 +24,15 @@ class TransactionService
         $withdrawals = $this->transactionRepository->getWithdrawals() / 100;
 
         return $deposits - $withdrawals;
+    }
+
+    /**
+     * Get the sum of transactionscosts
+     *
+     * @return integer
+     */
+    public function getTransactionscostsSum(): int
+    {
+        return $this->tradeRepository->getTransactionscosts()->sum();
     }
 }

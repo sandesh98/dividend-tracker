@@ -7,15 +7,13 @@ use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
 use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 
-class StockPriceService {
-
+class StockPriceService
+{
     public function __construct(
         readonly private YahooClient     $yahooClient,
         readonly private StockRepository $stockRepository,
         readonly private TradeRepository $tradeRepository
-    )
-    {
-    }
+    ) {}
 
     public function updatePrice(): void
     {
@@ -39,7 +37,6 @@ class StockPriceService {
             'price' => $conversion['price'],
             'currency' => $conversion['currency']
         ]);
-
     }
 
     private function convertExchangeRate(float $initialPrice, string $currency): array

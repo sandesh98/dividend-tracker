@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dividend;
 use App\Models\Stock;
 use App\Models\Trade;
-use App\Models\Transaction;
-use App\Repositories\TransactionRepository;
+use App\Services\Table\TableService;
 use App\Services\Dividends\DividendService;
 use App\Services\TransactionService;
 
@@ -14,27 +12,16 @@ class PortfolioController extends Controller
 {
     public function __construct(
         readonly private TransactionService $transactionService,
-        readonly private DividendService $dividendService
+        readonly private DividendService $dividendService,
+        readonly private TableService $tableService
     ) {}
 
     public function index()
     {
-        $transactionCosts = Trade::where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
-            ->pluck('total_transaction_value')
-            ->sum();
-
+        $transactionCosts = $this->transactionService->getTransactionscostsSum();
         $availableCash = $this->transactionService->getAvailableCash();
         $dividend = $this->dividendService->getDividendSum();
-
-
-        $stockData = Trade::loadTable();
-
-        $data = collect($stockData);
-
-        [$active, $closed] = $data->partition(function ($stock) {
-            return $stock['quantity'] > 0;
-        });
-
+        [$active, $closed] = $this->tableService->loadTable();
 
         return view('portfolio.index', compact('availableCash', 'transactionCosts', 'dividend', 'active', 'closed'));
     }

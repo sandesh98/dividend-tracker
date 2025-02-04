@@ -27,5 +27,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ApiClient::class, function (Application $app) {
             return new ApiClient(new Client(),  new ResultDecoder(new ValueMapper()));
         });
+
+        \Illuminate\Support\Str::macro('centsToEuro', function ($value) {
+            return number_format($value / 100, 2, '.', '');
+        });
     }
 }

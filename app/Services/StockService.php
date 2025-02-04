@@ -2,12 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Dividend;
-use App\Models\Stock;
-use App\Models\Trade;
+use Illuminate\Support\Str;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
-use App\Services\Dividends\DividendCalculatorFactory;
 use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 
 class StockService
@@ -97,8 +94,8 @@ class StockService
 
     public function getAverageStockPrice($stock)
     {
-        $amountInvested = $this->getTotalAmoundInvested($stock) ?? 0;
-        $stockQuantity = $this->getStockQuantity($stock) ?? 0;
+        $amountInvested = $this->getTotalAmoundInvested($stock);
+        $stockQuantity = $this->getStockQuantity($stock);
 
         if ($stockQuantity <= 0) {
             return 0;
@@ -110,6 +107,7 @@ class StockService
             return 0;
         }
 
+        // return Str::centsToEuro($averageStockPrice);
         return round($averageStockPrice, 2);
     }
 
@@ -117,13 +115,13 @@ class StockService
     {
         $quantity = $this->getStockQuantity($stock);
 
-        $price = $this->stockRepository->findByName($stock)->centsToEuros();
+        $price = $this->stockRepository->findByName($stock)->getPrice();
 
         if ($quantity < 0 && $price < 0) {
             return 0;
         }
 
-        return $price * $quantity;
+        return Str::centsToEuro($price * $quantity);
     }
 
     public function getProfitOrLoss(string $stock)
@@ -131,18 +129,13 @@ class StockService
         $totalValue = $this->getTotalValue($stock);
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
-        return $totalValue - $totalAmountInvested;
+        return Str::centsToEuro($totalValue - $totalAmountInvested);
     }
 
     public function getLastPrice(string $stock)
     {
-        $product = $this->stockRepository->findByName($stock);
+        $product = $this->stockRepository->findByName($stock)->price;
 
-        return $product->centsToEuros();
-    }
-
-    public function getType(string $stock)
-    {
-        return $this->stockRepository->getType($stock);
+        return Str::centsToEuro($product);
     }
 }
