@@ -6,17 +6,18 @@ use App\Services\StockService;
 use App\Repositories\StockRepository;
 use App\Repositories\DividendRepository;
 use App\Services\Dividends\DividendService;
+use Illuminate\Support\Collection;
 
 class TableService
 {
     public function __construct(
-        readonly private DividendRepository     $dividendRepository,
-        readonly private DividendService        $dividendService,
-        readonly private StockRepository        $stockRepository,
-        readonly private StockService           $stockService
+        readonly private DividendRepository $dividendRepository,
+        readonly private DividendService    $dividendService,
+        readonly private StockRepository    $stockRepository,
+        readonly private StockService       $stockService
     ) {}
 
-    public function loadTable()
+    public function loadTable(): Collection
     {
         $data = collect($this->getPartitionedTable());
 
@@ -25,7 +26,7 @@ class TableService
         });
     }
 
-    public function getPartitionedTable()
+    public function getPartitionedTable(): array
     {
         $stockData = [];
         $uniqueStocks = $this->stockRepository->getAllStockNames();
@@ -37,7 +38,7 @@ class TableService
         return $stockData;
     }
 
-    public function getStockDetails($displayName, $product)
+    public function getStockDetails($displayName, $product): array
     {
         $quantity = $this->stockService->getStockQuantity($product);
         $totalAmountInvested = $this->stockService->getTotalAmoundInvested($product);

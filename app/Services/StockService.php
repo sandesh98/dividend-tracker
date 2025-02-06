@@ -69,12 +69,12 @@ class StockService
 
             if ($currency === 'EUR') {
 
-                $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value / 100;
+                $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value;
 
-                $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
-                $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100;
+                $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value');
+                $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value');
 
-                $totalInvestment += (($buy - $sell) + $transactionCost);
+                $totalInvestment += (($buy - $sell) + $transactionCost) / 100;
             } elseif ($currency === 'USD') {
                 $fx = (float) $tradeGroup->pluck('fx')->filter()->first();
 
@@ -101,14 +101,7 @@ class StockService
             return 0;
         }
 
-        $averageStockPrice = $amountInvested / $stockQuantity;
-
-        if ($averageStockPrice < 0) {
-            return 0;
-        }
-
-        // return Str::centsToEuro($averageStockPrice);
-        return round($averageStockPrice, 2);
+        return round($amountInvested / $stockQuantity, 2);
     }
 
     public function getTotalValue($stock)
@@ -121,7 +114,9 @@ class StockService
             return 0;
         }
 
-        return Str::centsToEuro($price * $quantity);
+        $value = $price * $quantity;
+
+        return Str::centsToEuro($value);
     }
 
     public function getProfitOrLoss(string $stock)
@@ -129,10 +124,12 @@ class StockService
         $totalValue = $this->getTotalValue($stock);
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
-        return Str::centsToEuro($totalValue - $totalAmountInvested);
+        // dd($totalValue, $totalAmountInvested);
+
+        return $totalValue - $totalAmountInvested;
     }
 
-    public function getLastPrice(string $stock)
+    public function getLastPrice(string $stock): string
     {
         $product = $this->stockRepository->findByName($stock)->price;
 
