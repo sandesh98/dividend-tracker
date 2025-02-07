@@ -55,38 +55,15 @@ class StockService
         return ($buy - $sell);
     }
 
-    public function getTotalAmoundInvested($stock)
+    public function getTotalAmoundInvested($stock): float
     {
         $trades = $this->tradeRepository->getAllTradesFor($stock);
-
         $groupedTrades = $trades->groupBy('order_id');
 
         $totalInvestment = 0;
 
         foreach ($groupedTrades as $tradeGroup) {
-
-            $currency = $tradeGroup->first()->currency;
-
-            if ($currency === 'EUR') {
-
-                $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value;
-
-                $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value');
-                $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value');
-
-                $totalInvestment += (($buy - $sell) + $transactionCost) / 100;
-            } elseif ($currency === 'USD') {
-                $fx = (float) $tradeGroup->pluck('fx')->filter()->first();
-
-                $transactionCost = $tradeGroup
-                    ->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
-                    ->total_transaction_value / 100;
-
-                $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
-                $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100 ?? 0;
-
-                $totalInvestment += round(($buy - $sell) * (1 / $fx) + $transactionCost, 2);
-            }
+            $totalInvestment += $this->calculateInvestment($tradeGroup);
         }
 
         return $totalInvestment;
@@ -107,7 +84,6 @@ class StockService
     public function getTotalValue($stock)
     {
         $quantity = $this->getStockQuantity($stock);
-
         $price = $this->stockRepository->findByName($stock)->getPrice();
 
         if ($quantity < 0 && $price < 0) {
@@ -124,8 +100,6 @@ class StockService
         $totalValue = $this->getTotalValue($stock);
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
-        // dd($totalValue, $totalAmountInvested);
-
         return $totalValue - $totalAmountInvested;
     }
 
@@ -134,5 +108,38 @@ class StockService
         $product = $this->stockRepository->findByName($stock)->price;
 
         return Str::centsToEuro($product);
+    }
+
+    private function calculateInvestment($tradeGroup): float
+    {
+        $currency = $tradeGroup->first()->currency;
+
+        return match ($currency) {
+            'EUR' => $this->calculateInvestmentEUR($tradeGroup),
+            'USD' => $this->calculateInvestmentUSD($tradeGroup),
+            default => 0,
+        };
+    }
+
+    private function calculateInvestmentEUR($tradeGroup): float
+    {
+        $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value / 100 ?? 0;
+
+        $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
+        $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100;
+
+        return ($buy - $sell) + $transactionCost;
+    }
+
+    private function calculateInvestmentUSD($tradeGroup): float
+    {
+        $fx = (float) $tradeGroup->pluck('fx')->filter()->first() ?: 1;
+
+        $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value / 100 ?? 0;
+
+        $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
+        $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100 ?? 0;
+
+        return round(($buy - $sell) * (1 / $fx) + $transactionCost, 2);
     }
 }
