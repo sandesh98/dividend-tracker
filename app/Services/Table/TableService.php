@@ -2,11 +2,11 @@
 
 namespace App\Services\Table;
 
-use App\Services\StockService;
+use Illuminate\Support\Collection;
 use App\Repositories\StockRepository;
+use App\Services\Stocks\StockService;
 use App\Repositories\DividendRepository;
 use App\Services\Dividends\DividendService;
-use Illuminate\Support\Collection;
 
 class TableService
 {

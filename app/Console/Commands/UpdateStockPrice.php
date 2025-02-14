@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\StockPriceService;
+use App\Services\Stocks\StockPriceService;
 use Scheb\YahooFinanceApi\ApiClientFactory;
 
 

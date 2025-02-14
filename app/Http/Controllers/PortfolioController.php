@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
-use App\Models\Trade;
 use App\Services\Table\TableService;
 use App\Services\Dividends\DividendService;
-use App\Services\TransactionService;
+use App\Services\Transactions\TransactionService;
 
 class PortfolioController extends Controller
 {
     public function __construct(
         readonly private TransactionService $transactionService,
-        readonly private DividendService $dividendService,
-        readonly private TableService $tableService
+        readonly private DividendService    $dividendService,
+        readonly private TableService       $tableService
     ) {}
 
     public function index()

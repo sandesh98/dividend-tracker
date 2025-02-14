@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Transactions;
 
 use App\Repositories\TradeRepository;
 use App\Repositories\TransactionRepository;

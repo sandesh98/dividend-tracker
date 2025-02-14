@@ -2,7 +2,6 @@
 
 namespace App\Services\Dividends;
 
-use App\Models\Dividend;
 use App\Repositories\DividendRepository;
 use App\Repositories\StockRepository;
 

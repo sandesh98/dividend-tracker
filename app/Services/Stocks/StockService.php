@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Stocks;
 
 use Illuminate\Support\Str;
 use App\Repositories\StockRepository;
