@@ -5,15 +5,17 @@ namespace App\Services\Stocks;
 use Illuminate\Support\Str;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
+use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
 use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 
 class StockService
 {
     public function __construct(
-        readonly private YahooClient     $yahooClient,
-        readonly private StockRepository $stockRepository,
-        readonly private TradeRepository $tradeRepository
+        readonly private YahooClient        $yahooClient,
+        readonly private StockRepository    $stockRepository,
+        readonly private TradeRepository    $tradeRepository,
+        readonly private DividendService    $dividendService,
     ) {}
 
     public function getStockQuantity(string $stock): float
@@ -77,6 +79,15 @@ class StockService
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
         return $totalValue - $totalAmountInvested;
+    }
+
+    public function getUnrealizedProfitLoss(string $stock): float
+    {
+        $profitOrLoss = $this->getProfitOrLoss($stock);
+        $dividends = $this->dividendService->getDividends($stock);
+        $transactionCost = $this->tradeRepository->getTransactioncostsFor($stock);
+
+        return ($profitOrLoss - ($transactionCost + $dividends));
     }
 
     public function getLastPrice(string $stock): string

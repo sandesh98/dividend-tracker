@@ -46,6 +46,7 @@ class TableService
         $isin = $this->stockRepository->getIsinsByName($product);
         $totalValue = $this->stockService->getTotalValue($product);
         $profitLoss = $this->stockService->getProfitOrLoss($product);
+        $unserializedProfitLoss = $this->stockService->getUnrealizedProfitLoss($product);
         $lastPrice = $this->stockService->getLastPrice($product);
         $type = $this->stockRepository->getType($product);
         $dividend = $this->dividendService->getDividends($product);
@@ -58,6 +59,7 @@ class TableService
             'totalAmountInvested' => $totalAmountInvested,
             'totalValue' => $totalValue,
             'profitLoss' => $profitLoss,
+            'unserializedProfitLoss' => $unserializedProfitLoss,
             'lastPrice' => $lastPrice,
             'type' => $type,
             'dividend' => $dividend

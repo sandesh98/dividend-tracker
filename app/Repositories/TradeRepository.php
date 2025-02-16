@@ -38,9 +38,23 @@ class TradeRepository extends AbstractRepository
      *
      * @return Collection
      */
-    public function getTransactionscosts(): Collection
+    public function getAllTransactionscosts(): Collection
     {
         return $this->trade->where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
             ->pluck('total_transaction_value');
+    }
+
+    /**
+     * Get the sum of the transactioncosts for a given stock
+     *
+     * @param string $stock
+     * @return float
+     */
+    public function getTransactioncostsFor(string $stock): float
+    {
+        return $this->trade->where('product', 'LIKE', $stock)
+            ->where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
+            ->pluck('total_transaction_value')
+            ->sum() / 100;
     }
 }

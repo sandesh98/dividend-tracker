@@ -33,6 +33,6 @@ class TransactionService
      */
     public function getTransactionscostsSum(): int
     {
-        return $this->tradeRepository->getTransactionscosts()->sum();
+        return $this->tradeRepository->getAllTransactionscosts()->sum();
     }
 }

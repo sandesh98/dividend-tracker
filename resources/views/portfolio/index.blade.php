@@ -124,7 +124,7 @@
                                     <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
                                     <span class="ml-2">€</span>
                                 </span>
-                                <div class="ml-auto">838,34</div>
+                                <div class="ml-auto">{{ $stock['unserializedProfitLoss'] }}</div>
                             </div>
                         </td>
                     </tr>
