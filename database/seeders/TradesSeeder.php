@@ -17,13 +17,14 @@ class TradesSeeder extends Seeder
     {
         $transactions = Transaction::whereNotNull('order_id')->get();
 
-        foreach($transactions as $transaction) {
+        foreach ($transactions as $transaction) {
             Trade::create([
                 'date' => $transaction->date,
                 'time' => $transaction->time,
                 'description' => $transaction->description,
                 'currency' => $transaction->mutation,
                 'total_transaction_value' => abs($transaction->mutation_value),
+                // 'stock_id' => 1,
                 'product' => $transaction->product,
                 'isin' => $transaction->isin,
                 'action' => $this->determineAction($transaction->description),
@@ -41,14 +42,14 @@ class TradesSeeder extends Seeder
     {
         // Input: Koop 13 @ 36,234 USD
         // Output: "Koop"
-        if(Str::startsWith($description, 'Koop')) {
+        if (Str::startsWith($description, 'Koop')) {
             return 'buy';
         }
-        
+
         if (Str::startsWith($description, 'Verkoop')) {
             return 'sell';
-        } 
-           
+        }
+
         return null;
     }
 
@@ -61,7 +62,7 @@ class TradesSeeder extends Seeder
         if (empty($value)) {
             return 1;
         }
-        
+
         return $value;
     }
 

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Number;
 
 class Stock extends Model
 {
@@ -30,5 +29,10 @@ class Stock extends Model
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    public function trades()
+    {
+        return $this->hasMany(Trade::class);
     }
 }

@@ -55,7 +55,7 @@ class StockPriceService
         ];
     }
 
-    public function convertPriceToCents(float $initialPrice): int
+    public function convertPriceToCents(float $initialPrice): float
     {
         return round($initialPrice, 2) * 100;
     }

@@ -38,7 +38,7 @@ class TableService
         return $stockData;
     }
 
-    public function getStockDetails($displayName, $product): array
+    public function getStockDetails(string $displayName, string $product): array
     {
         $quantity = $this->stockService->getStockQuantity($product);
         $totalAmountInvested = $this->stockService->getTotalAmoundInvested($product);
