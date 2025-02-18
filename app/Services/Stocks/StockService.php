@@ -81,13 +81,12 @@ class StockService
         return $totalValue - $totalAmountInvested;
     }
 
-    public function getUnrealizedProfitLoss(string $stock): float
+    public function getRealizedProfitLoss(string $stock): float
     {
-        $profitOrLoss = $this->getProfitOrLoss($stock);
         $dividends = $this->dividendService->getDividends($stock);
         $transactionCost = $this->tradeRepository->getTransactioncostsFor($stock);
 
-        return ($profitOrLoss - ($transactionCost + $dividends));
+        return $dividends - $transactionCost;
     }
 
     public function getLastPrice(string $stock): string

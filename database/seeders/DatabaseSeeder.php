@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             DividendSeeder::class
         ]);
 
-
         Artisan::call('stock:update');
         $this->command->info('Done updating stock information');
         Artisan::call('stock:price');

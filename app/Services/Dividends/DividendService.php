@@ -34,8 +34,6 @@ class DividendService
         }
 
         return round(array_sum($results), 2);
-
-        return 100;
     }
 
     public function getDividendSum()

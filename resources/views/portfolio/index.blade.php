@@ -1,17 +1,20 @@
 @extends('layout.master')
 
 @section('main')
-    @include('partials.header', ['header' => '€ 13045,10', 'subheader' => 'Portfolio'])
+    @include('partials.header', ['header' => '€ 3045,10', 'subheader' => 'Portfolio'])
 
     <div class="row gy-3">
-        @include('portfolio.components.header-card', ['title' => 'Rendement', 'value' => '2025,39'])
+        @include('portfolio.components.header-card', [
+            'title' => 'Rendement (fictief)',
+            'value' => '244,39',
+        ])
         @include('portfolio.components.header-card', [
             'title' => 'Ontvangen dividend',
             'value' => $dividend,
         ])
         @include('portfolio.components.header-card', [
             'title' => 'Besteedbare ruimte (onjuist)',
-            'value' => $availableCash,
+            'value' => number_format($availableCash / 100, 2, ','),
         ])
         @include('portfolio.components.header-card', [
             'title' => 'Transactiekosten',
@@ -68,8 +71,8 @@
                             data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
                             winst / verlies</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Ongerealiseerde waarde zonder transactiekosten en dividenden">Winst / verlies
-                            (ong.)</span></th>
+                            data-bs-title="Gerealiseerde waarde zonder transactiekosten en dividenden">Winst /
+                            verlies</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -121,10 +124,11 @@
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="d-flex gap-3">
-                                    <img src="{{ asset('build/icons/graph-up.svg') }}" alt="graph up icon">
+                                    <img src="{{ $stock['rializedProfitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                        alt="graph up icon">
                                     <span class="ml-2">€</span>
                                 </span>
-                                <div class="ml-auto">{{ $stock['unserializedProfitLoss'] }}</div>
+                                <div class="ml-auto">{{ $stock['rializedProfitLoss'] }}</div>
                             </div>
                         </td>
                     </tr>
