@@ -8,6 +8,7 @@ use App\Repositories\TradeRepository;
 use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
 use Scheb\YahooFinanceApi\ApiClient as YahooClient;
+use stdClass;
 
 class StockService
 {
@@ -94,6 +95,18 @@ class StockService
         $product = $this->stockRepository->findByName($stock)->price;
 
         return Str::centsToEuro($product);
+    }
+
+    public function getFirstTransactionDatetime($stock)
+    {
+        $date = $this->tradeRepository->getFirstTransactionDate($stock);
+        $time = $this->tradeRepository->getFirstTransactionTime($stock);
+
+        $result = new stdClass();
+        $result->date = $date;
+        $result->time = $time;
+
+        return $result;
     }
 
     private function calculateInvestment(Collection $tradeGroup): float

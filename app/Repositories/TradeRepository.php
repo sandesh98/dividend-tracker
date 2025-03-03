@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Trade;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class TradeRepository extends AbstractRepository
@@ -56,5 +57,19 @@ class TradeRepository extends AbstractRepository
             ->where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
             ->pluck('total_transaction_value')
             ->sum() / 100;
+    }
+
+    public function getFirstTransactionDate(string $stock)
+    {
+        return $this->trade->newQuery()->where('product', 'LIKE', $stock)->where(function ($query) {
+            $query->where('description', 'LIKE', '%koop%');
+        })->first()->date;
+    }
+
+    public function getFirstTransactionTime(string $stock)
+    {
+        return $this->trade->newQuery()->where('product', 'LIKE', $stock)->where(function ($query) {
+            $query->where('description', 'LIKE', '%koop%');
+        })->first()->time;
     }
 }
