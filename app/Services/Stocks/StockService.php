@@ -97,6 +97,38 @@ class StockService
         return Str::centsToEuro($product);
     }
 
+    public function getAverageStockSellPrice(string $stock)
+    {
+        $trades = $this->tradeRepository->getAllTradesFor($stock);
+
+        $sellTrades = $trades->groupBy('order_id')->filter(function ($group) {
+            return $group->contains(fn($trade) => $trade->action === 'sell');
+        });
+
+        $trades = $sellTrades->mapWithKeys(function ($trade, $orderId) {
+            $transactionCost = $trade->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden');
+            $transactionValue = $trade->firstWhere('action', 'LIKE', 'sell');
+
+            return [
+                $orderId => [
+                    'transactionCost' => $transactionCost->total_transaction_value ?? 0,
+                    'value' => $transactionValue->total_transaction_value ?? 0,
+                    'quantity' => $transactionValue->quantity ?? 0,
+                ],
+            ];
+        });
+
+        $totalValue = $trades->sum(function ($item) {
+            return ($item['transactionCost'] + $item['value'] * $item['quantity']);
+        });
+
+        $totalQuantity = $trades->sum('quantity');
+
+        $averageSellPrice = $totalQuantity > 0 ? $totalValue / $totalQuantity : 0;
+
+        return Str::centsToEuro($averageSellPrice);
+    }
+
     public function getFirstTransactionDatetime($stock)
     {
         $date = $this->tradeRepository->getFirstTransactionDate($stock);

@@ -151,7 +151,7 @@
         </table>
     </div>
 
-    <div x-data="{ open: false }">
+    <div x-data="{ open: true }">
         <div :class="open ? 'card border-0 bg-active mb-3 custom-pointer' : 'card border-0 bg-light mb-3 custom-pointer'"
             x-on:click="open = !open; $nextTick(() => document.getElementById('myTable').scrollIntoView({ behavior: 'smooth' }))">
             <div class="card-body py-2">
@@ -201,7 +201,7 @@
                                 <td class="text-nowrap">
                                     <div class="d-flex justify-content-between w-100 text-nowrap">
                                         <span class="mr-auto">€</span>
-                                        <div class="ml-auto">{{ $stock['totalAmountInvested'] }}</div>
+                                        <div class="ml-auto">{{ $stock['averageStockSellPrice'] }}</div>
                                     </div>
                                 </td>
                                 <td class="text-nowrap">

@@ -50,6 +50,7 @@ class TableService
         $lastPrice = $this->stockService->getLastPrice($product);
         $type = $this->stockRepository->getType($product);
         $dividend = $this->dividendService->getDividends($product);
+        $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($product);
 
         return [
             'product' => $displayName,
@@ -62,7 +63,8 @@ class TableService
             'rializedProfitLoss' => $rializedProfitLoss,
             'lastPrice' => $lastPrice,
             'type' => $type,
-            'dividend' => $dividend
+            'dividend' => $dividend,
+            'averageStockSellPrice' => $averageStockSellPrice
         ];
     }
 }
