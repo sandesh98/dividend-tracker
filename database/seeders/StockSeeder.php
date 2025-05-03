@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Stock;
 use App\Models\Transaction;
+use App\Value\CurrencyType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,24 +15,20 @@ class StockSeeder extends Seeder
      */
     public function run(): void
     {
-        $stocks = Transaction::whereNotNull('product')
-                    ->where('product', 'NOT LIKE', 'FLATEX EURO BANKACCOUNT')
-                    ->get();
+        $stocks = Transaction::query()
+            ->whereNotNull(['product', 'isin'])
+            ->select('product', 'isin')
+            ->distinct()
+            ->get();
 
         foreach ($stocks as $stock) {
-            Stock::create([
-                'date' => $stock->date,
-                'time' => $stock->time,
-                'value_date' => $stock->value_date,
-                'product' => $stock->product,
+            Stock::firstOrCreate([
+                'name' => $stock->product,
                 'isin' => $stock->isin,
-                'description' => $stock->description,
-                'fx' => $stock->fx,
-                'mutation' => $stock->mutation,
-                'mutation_value' => $stock->mutation_value,
-                'balance' => $stock->balance,
-                'balance_value' => $stock->balance_value,
-                'order_id' => $stock->order_id
+                'type' => 'S', // replace with real data
+                'ticker' => 'KO', // replace with real data
+                'currency' => CurrencyType::EUR, // replace with real data
+                'price' => 1000
             ]);
         }
     }

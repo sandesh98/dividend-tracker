@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('product');
+            $table->string('name');
+            $table->string('isin');
             $table->string('display_name')->nullable();
             $table->string('type')->nullable();
-            $table->string('isin');
-            $table->string('ticker');
+            $table->string('ticker')->nullable();
             $table->string('currency')->nullable();
             $table->integer('price')->nullable();
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Services\Stocks;
 
+use App\Value\TransactionType;
 use Illuminate\Support\Str;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
@@ -24,11 +25,11 @@ class StockService
         $trades = $this->tradeRepository->getAllTradesFor($stock)->whereNotNull('action');
 
         $buy = $trades->filter(function ($item) {
-            return $item->action === 'buy';
+            return $item->action === TransactionType::Buy;
         })->sum('quantity');
 
         $sell = $trades->filter(function ($item) {
-            return $item->action === 'sell';
+            return $item->action === TransactionType::Sell;
         })->sum('quantity');
 
         return ($buy - $sell);

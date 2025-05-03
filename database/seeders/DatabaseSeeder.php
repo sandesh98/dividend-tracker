@@ -14,14 +14,15 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             TransactionSeeder::class,
-            ManualTransactionsSeeder::class,
-            TradesSeeder::class,
-            DividendSeeder::class
+            StockSeeder::class,
+//            ManualTransactionsSeeder::class,
+//            TradesSeeder::class,
+//            DividendSeeder::class
         ]);
 
-        Artisan::call('stock:update');
-        $this->command->info('Done updating stock information');
-        Artisan::call('stock:price');
-        $this->command->info('Done updating stocks price');
+//        Artisan::call('stock:update');
+//        $this->command->info('Done updating stock information');
+//        Artisan::call('stock:price');
+//        $this->command->info('Done updating stocks price');
     }
 }
