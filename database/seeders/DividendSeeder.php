@@ -69,6 +69,7 @@ class DividendSeeder extends Seeder
             ]);
         }
     }
+
     private function processUSDTransaction(Collection $transactions)
     {
         $currentFx = null;

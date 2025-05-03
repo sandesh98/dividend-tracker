@@ -24,11 +24,11 @@
                             <span class="bg-dark text-white px-2 py-2 rounded date-badge">Januari 2024</span>
                         </div>
                         @for ($i = 0; $i < 10; $i++)
-                            @include('portfolio.components.transaction-card-eur')   
+                            @include('portfolio.components.transaction-card-eur')
                         @endfor
                     </div>
                 </div>
-                
+
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
                     tabindex="0">
                     <div class="d-grid gap-3">
@@ -36,7 +36,7 @@
                             <span class="bg-dark text-white px-2 py-2 rounded date-badge">Januari 2024</span>
                         </div>
                         @for ($i = 0; $i < 10; $i++)
-                            @include('portfolio.components.dividend-card-eur')   
+                            @include('portfolio.components.dividend-card-eur')
                         @endfor
                     </div>
                 </div>
@@ -52,12 +52,12 @@
                 <hr class="border opacity-80 my-2">
                 <div class="d-flex justify-content-between">
                     <span>Aantal aandelen</span>
-                    <span class="fw-semibold">10</span>
+                    <span class="fw-semibold">{{ $quantity }}</span>
                 </div>
                 <hr class="border opacity-80 my-2">
                 <div class="d-flex justify-content-between">
                     <span>GAK</span>
-                    <span class="fw-semibold">€ 104,54</span>
+                    <span class="fw-semibold">€ {{ $averageStockPrice }}</span>
                 </div>
                 <hr class="border opacity-80 my-2">
                 <div class="d-flex justify-content-between">
@@ -67,7 +67,7 @@
                 <hr class="border opacity-80 my-2">
                 <div class="d-flex justify-content-between">
                     <span>Eerste transactie</span>
-                    <span class="fw-semibold">10-03-2021</span>
+                    <span class="fw-semibold">{{ $date->date }}</span>
                 </div>
 
                 <span class="fw-bold pb-3 pt-4">Dividenden</span>

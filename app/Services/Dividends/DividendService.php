@@ -2,7 +2,6 @@
 
 namespace App\Services\Dividends;
 
-use App\Models\Dividend;
 use App\Repositories\DividendRepository;
 use App\Repositories\StockRepository;
 
@@ -35,8 +34,6 @@ class DividendService
         }
 
         return round(array_sum($results), 2);
-
-        return 100;
     }
 
     public function getDividendSum()

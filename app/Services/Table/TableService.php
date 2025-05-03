@@ -2,11 +2,11 @@
 
 namespace App\Services\Table;
 
-use App\Services\StockService;
+use Illuminate\Support\Collection;
 use App\Repositories\StockRepository;
+use App\Services\Stocks\StockService;
 use App\Repositories\DividendRepository;
 use App\Services\Dividends\DividendService;
-use Illuminate\Support\Collection;
 
 class TableService
 {
@@ -38,7 +38,7 @@ class TableService
         return $stockData;
     }
 
-    public function getStockDetails($displayName, $product): array
+    public function getStockDetails(string $displayName, string $product): array
     {
         $quantity = $this->stockService->getStockQuantity($product);
         $totalAmountInvested = $this->stockService->getTotalAmoundInvested($product);
@@ -46,9 +46,11 @@ class TableService
         $isin = $this->stockRepository->getIsinsByName($product);
         $totalValue = $this->stockService->getTotalValue($product);
         $profitLoss = $this->stockService->getProfitOrLoss($product);
+        $rializedProfitLoss = $this->stockService->getrealizedProfitLoss($product);
         $lastPrice = $this->stockService->getLastPrice($product);
         $type = $this->stockRepository->getType($product);
         $dividend = $this->dividendService->getDividends($product);
+        $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($product);
 
         return [
             'product' => $displayName,
@@ -58,9 +60,11 @@ class TableService
             'totalAmountInvested' => $totalAmountInvested,
             'totalValue' => $totalValue,
             'profitLoss' => $profitLoss,
+            'rializedProfitLoss' => $rializedProfitLoss,
             'lastPrice' => $lastPrice,
             'type' => $type,
-            'dividend' => $dividend
+            'dividend' => $dividend,
+            'averageStockSellPrice' => $averageStockSellPrice
         ];
     }
 }

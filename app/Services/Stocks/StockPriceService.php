@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Stocks;
 
-use App\Models\Stock;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
 use Scheb\YahooFinanceApi\ApiClient as YahooClient;
@@ -56,7 +55,7 @@ class StockPriceService
         ];
     }
 
-    public function convertPriceToCents(float $initialPrice): int
+    public function convertPriceToCents(float $initialPrice): float
     {
         return round($initialPrice, 2) * 100;
     }

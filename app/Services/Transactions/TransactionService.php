@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Transactions;
 
 use App\Repositories\TradeRepository;
 use App\Repositories\TransactionRepository;
@@ -33,6 +33,6 @@ class TransactionService
      */
     public function getTransactionscostsSum(): int
     {
-        return $this->tradeRepository->getTransactionscosts()->sum();
+        return $this->tradeRepository->getAllTransactionscosts()->sum();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\StockService;
 use Illuminate\Console\Command;
+use App\Services\Stocks\StockUpdateService;
 
 class UpdateStockInformation extends Command
 {
@@ -24,9 +24,9 @@ class UpdateStockInformation extends Command
     /**
      * Execute the console command.
      */
-    public function handle(StockService $stockService)
+    public function handle(StockUpdateService $stockUpdateService)
     {
-        $stockService->updateInformation();
+        $stockUpdateService->updateInformation();
 
         $this->info('Done retrieving stock information');
     }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Stock;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class StockRepository extends AbstractRepository
