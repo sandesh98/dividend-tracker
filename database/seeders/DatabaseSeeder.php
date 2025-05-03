@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TransactionSeeder::class,
             StockSeeder::class,
+            CashMovementSeeder::class,
 //            ManualTransactionsSeeder::class,
 //            TradesSeeder::class,
 //            DividendSeeder::class
