@@ -4,9 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Trade;
 use App\Models\Transaction;
+use App\Value\TransactionType;
+use Brick\Math\RoundingMode;
+use Brick\Money\Context;
+use Brick\Money\Money;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TradesSeeder extends Seeder
 {
@@ -28,7 +31,7 @@ class TradesSeeder extends Seeder
                 'product' => $transaction->product,
                 'isin' => $transaction->isin,
                 'action' => $this->determineAction($transaction->description),
-                'price_per_unit' => $this->determinePricePerUnit($transaction->description),
+                'price_per_unit' => $this->determinePricePerUnit($transaction->description, $transaction->mutation),
                 'quantity' => $this->determineQuantity($transaction->description),
                 'order_id' => $transaction->order_id,
                 'fx' => $transaction->fx,
@@ -43,11 +46,11 @@ class TradesSeeder extends Seeder
         // Input: Koop 13 @ 36,234 USD
         // Output: "Koop"
         if (Str::startsWith($description, 'Koop')) {
-            return 'buy';
+            return TransactionType::Buy;
         }
 
         if (Str::startsWith($description, 'Verkoop')) {
-            return 'sell';
+            return TransactionType::Sell;
         }
 
         return null;
@@ -66,9 +69,9 @@ class TradesSeeder extends Seeder
         return $value;
     }
 
-    private function determinePricePerUnit($description)
+    private function determinePricePerUnit($description, $currency)
     {
-        // Input: Koop 13 @ 36,234 USD 
+        // Input: Koop 13 @ 36,234 USD
         // Output: "36,234"
         $value = Str::match('/@ ([\d,]+)/', $description);
 
@@ -76,6 +79,10 @@ class TradesSeeder extends Seeder
             return 0;
         }
 
-        return (float) str_replace(',', '.', $value) * 100;
+        $normalizedValue = str_replace(',', '.', $value);
+
+        $money = Money::of($normalizedValue, $currency, roundingMode: RoundingMode::HALF_UP);
+
+        return $money->getMinorAmount()->toInt();
     }
 }

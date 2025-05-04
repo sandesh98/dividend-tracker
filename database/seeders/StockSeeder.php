@@ -25,6 +25,7 @@ class StockSeeder extends Seeder
             Stock::firstOrCreate([
                 'name' => $stock->product,
                 'isin' => $stock->isin,
+                'display_name' => $stock->product,
                 'type' => 'S', // replace with real data
                 'ticker' => 'KO', // replace with real data
                 'currency' => CurrencyType::EUR, // replace with real data

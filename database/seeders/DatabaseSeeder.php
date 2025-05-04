@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             StockSeeder::class,
             CashMovementSeeder::class,
 
-//            TradesSeeder::class,
+            TradesSeeder::class,
 //            DividendSeeder::class
         ]);
 
