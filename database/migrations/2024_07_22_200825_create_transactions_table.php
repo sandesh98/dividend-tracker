@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('mutation')->nullable();
             $table->integer('mutation_value')->nullable();
             $table->string('balance')->nullable();
-            $table->decimal('balance_value', 15, 2)->nullable();
+            $table->integer('balance_value')->nullable();
             $table->string('order_id')->nullable();
             $table->timestamps();
         });

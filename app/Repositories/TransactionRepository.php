@@ -6,7 +6,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class TransactionRepository {
-    
+
     /**
      * Get all transactions from the manual_transactions table
      *
@@ -14,7 +14,7 @@ class TransactionRepository {
      */
     public function manualTransactions(): Builder
     {
-        return DB::table('manual_transactions');
+        return DB::table('cash_movements');
     }
 
     /**

@@ -32,7 +32,7 @@ class StockRepository extends AbstractRepository
      */
     public function getIsinsByName(string $stock): Collection
     {
-        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->pluck('isin');
+        return $this->stock->newQuery()->where('name', 'LIKE', $stock)->pluck('isin');
     }
 
     /**
@@ -43,7 +43,7 @@ class StockRepository extends AbstractRepository
      */
     public function findByName(string $stock): Stock
     {
-        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first();
+        return $this->stock->newQuery()->where('name', 'LIKE', $stock)->first();
     }
 
     /**
@@ -74,7 +74,7 @@ class StockRepository extends AbstractRepository
      */
     public function getAllStockNames(): Collection
     {
-        return $this->stock->distinct()->pluck('product', 'display_name');
+        return $this->stock->distinct()->pluck('name', 'display_name');
     }
 
     /**
@@ -85,7 +85,7 @@ class StockRepository extends AbstractRepository
      */
     public function getType(string $stock): string
     {
-        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first()->getType();
+        return $this->stock->newQuery()->where('name', 'LIKE', $stock)->first()->getType();
     }
 
     /**
@@ -96,6 +96,6 @@ class StockRepository extends AbstractRepository
      */
     public function getCurrency(string $stock): string
     {
-        return $this->stock->newQuery()->where('product', 'LIKE', $stock)->first()->getCurrency();
+        return $this->stock->newQuery()->where('name', 'LIKE', $stock)->first()->getCurrency();
     }
 }
