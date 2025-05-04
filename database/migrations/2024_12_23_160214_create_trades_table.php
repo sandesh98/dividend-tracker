@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('date');
             $table->time('time');
-            // $table->foreignId('stock_id')->constrained();
-            $table->string('product');
-            $table->string('isin');
+            $table->foreignId('stock_id')->constrained();
             $table->string('description');
             $table->integer('quantity');
             $table->enum('currency', ['EUR', 'USD']);

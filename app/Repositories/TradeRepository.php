@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Stock;
 use App\Models\Trade;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -31,7 +32,14 @@ class TradeRepository extends AbstractRepository
      */
     public function getAllTradesFor(string $stock): Collection
     {
-        return $this->trade->newQuery()->where('product', 'like', $stock)->get();
+        // TODO: get object instead of string
+        $getStock = Stock::query()
+            ->where('name', $stock)
+            ->first();
+
+        return $getStock->trades()->get();
+
+//        return $this->trade->newQuery()->where('product', 'like', $stock)->get();
     }
 
     /**
@@ -53,7 +61,12 @@ class TradeRepository extends AbstractRepository
      */
     public function getTransactioncostsFor(string $stock): float
     {
-        return $this->trade->where('product', 'LIKE', $stock)
+        // TODO: get object instead of string
+        $getStock = Stock::query()
+            ->where('name', $stock)
+            ->first();
+
+        return $getStock->trades()
             ->where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
             ->pluck('total_transaction_value')
             ->sum() / 100;

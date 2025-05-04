@@ -2,7 +2,11 @@
 
 namespace App\Services\Stocks;
 
+use App\Models\Stock;
+use App\Models\Trade;
+use App\Value\CurrencyType;
 use App\Value\TransactionType;
+use Brick\Money\Money;
 use Illuminate\Support\Str;
 use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
@@ -22,14 +26,23 @@ class StockService
 
     public function getStockQuantity(string $stock): float
     {
-        $trades = $this->tradeRepository->getAllTradesFor($stock)->whereNotNull('action');
+        $stock = Stock::query()
+            ->where('name', $stock)
+            ->first();
+
+        $trades = $stock->trades()->whereNotNull('quantity')->get();
+
+//        $trades = Trade::query()
+//            ->whereNotNull('action')
+//            ->where('product', $stock)
+//            ->get();
 
         $buy = $trades->filter(function ($item) {
-            return $item->action === TransactionType::Buy;
+            return $item->action === TransactionType::Buy->value;
         })->sum('quantity');
 
         $sell = $trades->filter(function ($item) {
-            return $item->action === TransactionType::Sell;
+            return $item->action === TransactionType::Sell->value;
         })->sum('quantity');
 
         return ($buy - $sell);
@@ -64,7 +77,11 @@ class StockService
     public function getTotalValue(string $stock)
     {
         $quantity = $this->getStockQuantity($stock);
-        $price = $this->stockRepository->findByName($stock)->getPrice();
+
+        $price = Stock::query()
+            ->where('name', $stock)
+            ->first()
+            ->price;
 
         if ($quantity < 0 && $price < 0) {
             return 0;
@@ -72,12 +89,14 @@ class StockService
 
         $value = $price * $quantity;
 
-        return Str::centsToEuro($value);
+        return Money::ofMinor($value, CurrencyType::EUR->value)->getAmount();
     }
 
     public function getProfitOrLoss(string $stock)
     {
-        $totalValue = $this->getTotalValue($stock);
+//        $totalValue = $this->getTotalValue($stock);
+
+        $totalValue = 100;
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
         return $totalValue - $totalAmountInvested;
@@ -93,9 +112,12 @@ class StockService
 
     public function getLastPrice(string $stock): string
     {
-        $product = $this->stockRepository->findByName($stock)->price;
+        $price = Stock::query()
+            ->where('name', $stock)
+            ->pluck('price', 'currency')
+            ->first();
 
-        return Str::centsToEuro($product);
+        return Money::of($price, CurrencyType::EUR->value)->getAmount();
     }
 
     public function getAverageStockSellPrice(string $stock)

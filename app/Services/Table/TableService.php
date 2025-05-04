@@ -2,6 +2,7 @@
 
 namespace App\Services\Table;
 
+use App\Models\Stock;
 use Illuminate\Support\Collection;
 use App\Repositories\StockRepository;
 use App\Services\Stocks\StockService;
@@ -29,32 +30,52 @@ class TableService
     public function getPartitionedTable(): array
     {
         $stockData = [];
-        $uniqueStocks = $this->stockRepository->getAllStockNames();
+        $uniqueStocks = Stock::query()
+            ->pluck('name', 'display_name')
+            ->all();
 
-        foreach ($uniqueStocks as $displayName => $product) {
-            $stockData[] = $this->getStockDetails($displayName, $product);
+        foreach ($uniqueStocks as $stock) {
+            $stockData[] = $this->getStockDetails($stock);
         }
 
         return $stockData;
     }
 
-    public function getStockDetails(string $displayName, string $product): array
+    public function getStockDetails(string $stock): array
     {
-        $quantity = $this->stockService->getStockQuantity($product);
-        $totalAmountInvested = $this->stockService->getTotalAmoundInvested($product);
-        $averageStockPrice = $this->stockService->getAverageStockPrice($product);
-        $isin = $this->stockRepository->getIsinsByName($product);
-        $totalValue = $this->stockService->getTotalValue($product);
-        $profitLoss = $this->stockService->getProfitOrLoss($product);
-        $rializedProfitLoss = $this->stockService->getrealizedProfitLoss($product);
-        $lastPrice = $this->stockService->getLastPrice($product);
-        $type = $this->stockRepository->getType($product);
-        $dividend = $this->dividendService->getDividends($product);
-        $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($product);
+        $quantity = $this->stockService->getStockQuantity($stock);
+        $totalAmountInvested = $this->stockService->getTotalAmoundInvested($stock);
+        $averageStockPrice = $this->stockService->getAverageStockPrice($stock);
+        $isin = $this->stockRepository->getIsinsByName($stock);
+        $totalValue = $this->stockService->getTotalValue($stock);
+        $profitLoss = $this->stockService->getProfitOrLoss($stock);
+        $rializedProfitLoss = $this->stockService->getrealizedProfitLoss($stock);
+        $lastPrice = $this->stockService->getLastPrice($stock);
+        $type = $this->stockRepository->getType($stock);
+        $dividend = $this->dividendService->getDividends($stock);
+        $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($stock);
 
+//        return [
+//            'product' => 'name',
+//            'isin' => $isin,
+//            'quantity' => $quantity,
+//            'averageStockPrice' => $averageStockPrice,
+//            'totalAmountInvested' => $totalAmountInvested,
+//            'totalValue' => $totalValue,
+//            'profitLoss' => $profitLoss,
+//            'rializedProfitLoss' => $rializedProfitLoss,
+//            'lastPrice' => $lastPrice,
+//            'type' => $type,
+//            'dividend' => $dividend,
+//            'averageStockSellPrice' => $averageStockSellPrice
+//        ];
+
+//        dd($isin);
         return [
-            'product' => $displayName,
-            'isin' => $isin,
+            'product' => $stock,
+            'isin' => [
+                0 => ['isin']
+            ],
             'quantity' => $quantity,
             'averageStockPrice' => $averageStockPrice,
             'totalAmountInvested' => $totalAmountInvested,
@@ -66,5 +87,6 @@ class TableService
             'dividend' => $dividend,
             'averageStockSellPrice' => $averageStockSellPrice
         ];
+
     }
 }

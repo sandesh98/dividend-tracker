@@ -9,8 +9,8 @@ class Trade extends Model
 {
     use HasFactory;
 
-    // public function stocks()
-    // {
-    //     return $this->hasMany(Stock::class);
-    // }
+    public function stock(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Stock::class);
+    }
 }

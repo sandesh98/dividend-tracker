@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Stock;
 use App\Models\Trade;
 use App\Models\Transaction;
 use App\Value\TransactionType;
@@ -18,18 +19,18 @@ class TradesSeeder extends Seeder
      */
     public function run(): void
     {
+        $stocks = Stock::all()->keyBy('isin');
         $transactions = Transaction::whereNotNull('order_id')->get();
 
         foreach ($transactions as $transaction) {
-            Trade::create([
+            $stock = $stocks->get($transaction->isin);
+
+            $trade = new Trade([
                 'date' => $transaction->date,
                 'time' => $transaction->time,
                 'description' => $transaction->description,
                 'currency' => $transaction->mutation,
                 'total_transaction_value' => abs($transaction->mutation_value),
-                // 'stock_id' => 1,
-                'product' => $transaction->product,
-                'isin' => $transaction->isin,
                 'action' => $this->determineAction($transaction->description),
                 'price_per_unit' => $this->determinePricePerUnit($transaction->description, $transaction->mutation),
                 'quantity' => $this->determineQuantity($transaction->description),
@@ -38,6 +39,10 @@ class TradesSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            $trade->stock()->associate($stock);
+
+            $trade->save();
         }
     }
 
