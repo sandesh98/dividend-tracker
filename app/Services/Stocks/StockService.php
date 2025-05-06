@@ -32,11 +32,6 @@ class StockService
 
         $trades = $stock->trades()->whereNotNull('quantity')->get();
 
-//        $trades = Trade::query()
-//            ->whereNotNull('action')
-//            ->where('product', $stock)
-//            ->get();
-
         $buy = $trades->filter(function ($item) {
             return $item->action === TransactionType::Buy->value;
         })->sum('quantity');
@@ -94,12 +89,17 @@ class StockService
 
     public function getProfitOrLoss(string $stock)
     {
-//        $totalValue = $this->getTotalValue($stock);
+        $totalValue = $this->getTotalValue($stock);
 
-        $totalValue = 100;
+        $value = Money::ofMinor($totalValue, CurrencyType::EUR->value)->getAmount();
+
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
-        return $totalValue - $totalAmountInvested;
+        return 10000;
+
+        dd($value, $totalAmountInvested);
+
+        return $value->minus($totalAmountInvested);
     }
 
     public function getRealizedProfitLoss(string $stock): float
