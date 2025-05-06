@@ -52,9 +52,9 @@ class StockRepository extends AbstractRepository
      * @param string $ticker
      * @return Stock
      */
-    public function findByTicker(string $ticker): Stock
+    public function findByTicker(Stock $stock): Stock
     {
-        return $this->stock->newQuery()->where('ticker', $ticker)->first();
+        return $stock->ticker;
     }
 
     /**
@@ -83,9 +83,9 @@ class StockRepository extends AbstractRepository
      * @param string $stock
      * @return string
      */
-    public function getType(string $stock): string
+    public function getType(Stock $stock)
     {
-        return $this->stock->newQuery()->where('name', 'LIKE', $stock)->first()->getType();
+        return $stock->type;
     }
 
     /**

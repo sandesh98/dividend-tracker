@@ -46,7 +46,7 @@ class StockServiceTest extends TestCase
 
         $service = app(StockService::class);
 
-        $quantity = $service->getStockQuantity($stock->name);
+        $quantity = $service->getStockQuantity($stock);
 
         $this->assertEquals(4, $quantity);
     }

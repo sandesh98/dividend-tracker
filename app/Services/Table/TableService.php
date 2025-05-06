@@ -30,18 +30,19 @@ class TableService
     public function getPartitionedTable(): array
     {
         $stockData = [];
-        $uniqueStocks = Stock::query()
-            ->pluck('name', 'display_name')
-            ->all();
+        $stocks = Stock::all();
+//        $uniqueStocks = Stock::query()
+//            ->pluck('name', 'display_name')
+//            ->all();
 
-        foreach ($uniqueStocks as $stock) {
+        foreach ($stocks as $stock) {
             $stockData[] = $this->getStockDetails($stock);
         }
 
         return $stockData;
     }
 
-    public function getStockDetails(string $stock): array
+    public function getStockDetails(Stock $stock): array
     {
         $quantity = $this->stockService->getStockQuantity($stock);
         $totalAmountInvested = $this->stockService->getTotalAmoundInvested($stock);
@@ -72,7 +73,7 @@ class TableService
 
 //        dd($isin);
         return [
-            'product' => $stock,
+            'product' => $stock->display_name,
             'isin' => [
                 0 => ['isin']
             ],

@@ -29,12 +29,13 @@ class PortfolioController extends Controller
 
     public function show($isin)
     {
-        $stock = Stock::where('isin', 'LIKE', $isin)->first();
+        dd($show);
+//        $stock = Stock::where('isin', 'LIKE', $isin)->first();
 
-        $quantity = $this->stockService->getStockQuantity($stock->product);
-        $averageStockPrice = $this->stockService->getAverageStockPrice($stock->product);
-        $date = $this->stockService->getFirstTransactionDatetime($stock->product);
+//        $quantity = $this->stockService->getStockQuantity($stock->product);
+//        $averageStockPrice = $this->stockService->getAverageStockPrice($stock->product);
+//        $date = $this->stockService->getFirstTransactionDatetime($stock->product);
 
-        return view('portfolio.show', compact('stock', 'quantity', 'averageStockPrice', 'date'));
+//        return view('portfolio.show', compact('stock', 'quantity', 'averageStockPrice', 'date'));
     }
 }

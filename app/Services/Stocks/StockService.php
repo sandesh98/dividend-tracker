@@ -6,6 +6,7 @@ use App\Models\Stock;
 use App\Models\Trade;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
+use Brick\Math\RoundingMode;
 use Brick\Money\Money;
 use Illuminate\Support\Str;
 use App\Repositories\StockRepository;
@@ -24,12 +25,8 @@ class StockService
         readonly private DividendService    $dividendService,
     ) {}
 
-    public function getStockQuantity(string $stock): float
+    public function getStockQuantity(Stock $stock)
     {
-        $stock = Stock::query()
-            ->where('name', $stock)
-            ->first();
-
         $trades = $stock->trades()->whereNotNull('quantity')->get();
 
         $buy = $trades->filter(function ($item) {
@@ -43,21 +40,21 @@ class StockService
         return ($buy - $sell);
     }
 
-    public function getTotalAmoundInvested(string $stock): float
+    public function getTotalAmoundInvested(Stock $stock)
     {
-        $trades = $this->tradeRepository->getAllTradesFor($stock);
-        $groupedTrades = $trades->groupBy('order_id');
+        $groupedTrades = $stock->trades()->get()->groupBy('order_id');
 
-        $totalInvestment = 0;
+        $totalInvestment = Money::ofMinor(0, 'EUR');
 
         foreach ($groupedTrades as $tradeGroup) {
-            $totalInvestment += $this->calculateInvestment($tradeGroup);
+            $invested =  $this->calculateInvestment($tradeGroup);
+            $totalInvestment = $totalInvestment->plus($invested);
         }
 
-        return $totalInvestment;
+        return $totalInvestment->getAmount()->toFloat();
     }
 
-    public function getAverageStockPrice(string $stock)
+    public function getAverageStockPrice(Stock $stock)
     {
         $amountInvested = $this->getTotalAmoundInvested($stock);
         $stockQuantity = $this->getStockQuantity($stock);
@@ -66,17 +63,16 @@ class StockService
             return 0;
         }
 
+        return 100;
+
         return round($amountInvested / $stockQuantity, 2);
     }
 
-    public function getTotalValue(string $stock)
+    public function getTotalValue(Stock $stock)
     {
         $quantity = $this->getStockQuantity($stock);
 
-        $price = Stock::query()
-            ->where('name', $stock)
-            ->first()
-            ->price;
+        $price = $stock->price;
 
         if ($quantity < 0 && $price < 0) {
             return 0;
@@ -87,7 +83,7 @@ class StockService
         return Money::ofMinor($value, CurrencyType::EUR->value)->getAmount();
     }
 
-    public function getProfitOrLoss(string $stock)
+    public function getProfitOrLoss(Stock $stock)
     {
         $totalValue = $this->getTotalValue($stock);
 
@@ -102,7 +98,7 @@ class StockService
         return $value->minus($totalAmountInvested);
     }
 
-    public function getRealizedProfitLoss(string $stock): float
+    public function getRealizedProfitLoss(Stock $stock)
     {
         $dividends = $this->dividendService->getDividends($stock);
         $transactionCost = $this->tradeRepository->getTransactioncostsFor($stock);
@@ -110,17 +106,12 @@ class StockService
         return $dividends - $transactionCost;
     }
 
-    public function getLastPrice(string $stock): string
+    public function getLastPrice(Stock $stock)
     {
-        $price = Stock::query()
-            ->where('name', $stock)
-            ->pluck('price', 'currency')
-            ->first();
-
-        return Money::of($price, CurrencyType::EUR->value)->getAmount();
+        return Money::of($stock->price, CurrencyType::EUR->value)->getAmount();
     }
 
-    public function getAverageStockSellPrice(string $stock)
+    public function getAverageStockSellPrice(Stock $stock)
     {
         $trades = $this->tradeRepository->getAllTradesFor($stock);
 
@@ -164,36 +155,53 @@ class StockService
         return $result;
     }
 
-    private function calculateInvestment(Collection $tradeGroup): float
+    private function calculateInvestment(Collection $tradeGroup)
     {
         $currency = $tradeGroup->first()->currency;
 
         return match ($currency) {
             'EUR' => $this->calculateInvestmentEUR($tradeGroup),
             'USD' => $this->calculateInvestmentUSD($tradeGroup),
-            default => 0,
+            default => Money::of(0, CurrencyType::EUR->value),
         };
     }
 
-    private function calculateInvestmentEUR(Collection $tradeGroup): float
+    private function calculateInvestmentEUR(Collection $tradeGroup)
     {
-        $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value / 100 ?? 0;
+        $transactionCost = optional(
+            $tradeGroup->firstWhere('description', 'DEGIRO Transactiekosten en/of kosten van derden')
+        )->total_transaction_value ?? 0;
+        $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value');
+        $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value');
 
-        $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
-        $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100;
+        $transactionMoney = Money::ofMinor($transactionCost, CurrencyType::EUR->value);
+        $sellMoney = Money::ofMinor($sell, CurrencyType::EUR->value);
+        $buyMoney = Money::ofMinor($buy, CurrencyType::EUR->value);
 
-        return ($buy - $sell) + $transactionCost;
+        return $buyMoney
+            ->minus($sellMoney)
+            ->plus($transactionMoney);
     }
 
-    private function calculateInvestmentUSD(Collection $tradeGroup): float
+    private function calculateInvestmentUSD(Collection $tradeGroup)
     {
         $fx = (float) $tradeGroup->pluck('fx')->filter()->first() ?: 1;
 
-        $transactionCost = optional($tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden'))->total_transaction_value / 100 ?? 0;
+        $transactionCost = optional(
+            $tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
+        )->total_transaction_value ?? 0;
+        $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value');
+        $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') ?? 0;
 
-        $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value') / 100;
-        $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') / 100 ?? 0;
+        $transactionMoney = Money::ofMinor($transactionCost, CurrencyType::USD->value);
+        $sellMoney = Money::ofMinor($sell, CurrencyType::USD->value);
+        $buyMoney = Money::ofMinor($buy, CurrencyType::USD->value);
 
-        return round(($buy - $sell) * (1 / $fx) + $transactionCost, 2);
+        $investmentInUSD = $buyMoney
+            ->minus($sellMoney)
+            ->dividedBy($fx, roundingMode: RoundingMode::HALF_UP)
+            ->plus($transactionMoney);
+
+        return Money::of($investmentInUSD->getAmount(), CurrencyType::EUR->value);
     }
 }

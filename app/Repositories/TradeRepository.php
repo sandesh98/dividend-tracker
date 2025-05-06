@@ -27,17 +27,12 @@ class TradeRepository extends AbstractRepository
     /**
      * Get all trades from a given stock
      *
-     * @param string $stock
+     * @param Stock $stock
      * @return Collection
      */
-    public function getAllTradesFor(string $stock): Collection
+    public function getAllTradesFor(Stock $stock): Collection
     {
-        // TODO: get object instead of string
-        $getStock = Stock::query()
-            ->where('name', $stock)
-            ->first();
-
-        return $getStock->trades()->get();
+        return $stock->trades()->get();
 
 //        return $this->trade->newQuery()->where('product', 'like', $stock)->get();
     }
@@ -59,14 +54,9 @@ class TradeRepository extends AbstractRepository
      * @param string $stock
      * @return float
      */
-    public function getTransactioncostsFor(string $stock): float
+    public function getTransactioncostsFor(Stock $stock): float
     {
-        // TODO: get object instead of string
-        $getStock = Stock::query()
-            ->where('name', $stock)
-            ->first();
-
-        return $getStock->trades()
+        return $stock->trades()
             ->where('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
             ->pluck('total_transaction_value')
             ->sum() / 100;
