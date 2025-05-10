@@ -71,12 +71,10 @@ class TableService
 //            'averageStockSellPrice' => $averageStockSellPrice
 //        ];
 
-//        dd($isin);
         return [
+            'stock' => $stock,
             'product' => $stock->display_name,
-            'isin' => [
-                0 => ['isin']
-            ],
+            'isin' => $stock->isin,
             'quantity' => $quantity,
             'averageStockPrice' => $averageStockPrice,
             'totalAmountInvested' => $totalAmountInvested,

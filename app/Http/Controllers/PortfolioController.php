@@ -27,9 +27,8 @@ class PortfolioController extends Controller
         return view('portfolio.index', compact('availableCash', 'transactionCosts', 'dividend', 'active', 'closed'));
     }
 
-    public function show($isin)
+    public function show(Stock $stock)
     {
-        dd($show);
 //        $stock = Stock::where('isin', 'LIKE', $isin)->first();
 
 //        $quantity = $this->stockService->getStockQuantity($stock->product);

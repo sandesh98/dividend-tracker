@@ -18,10 +18,7 @@ class StockServiceTest extends TestCase
      */
     public function testItCalculatesStockQuantity(): void
     {
-        $stock = StockFactory::new()
-            ->createOne([
-            'name' => 'VANGUARD FTSE ALL-WORLD HIGH DIV',
-        ]);
+        $stock = StockFactory::new()->createOne();
 
         TradeFactory::new()
             ->for($stock)
@@ -46,13 +43,43 @@ class StockServiceTest extends TestCase
 
         $service = app(StockService::class);
 
-        $quantity = $service->getStockQuantity($stock);
+        $data = $service->getStockQuantity($stock);
 
-        $this->assertEquals(4, $quantity);
+        $this->assertEquals(4, $data);
     }
 
-    public function testItCalculatesTotalValue(): void
+    public function testItCalculatesAverageStockPrice(): void
     {
-        $stock = StockFactory::new();
+        $stock = StockFactory::new()->createOne();
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Buy->value,
+                'quantity' => 20,
+                'total_transaction_value' => 1000,
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Buy->value,
+                'quantity' => 10,
+                'total_transaction_value' => 5500,
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Sell->value,
+                'quantity' => 15,
+                'total_transaction_value' => 2000,
+            ]);
+
+        $service = app(StockService::class);
+
+        $data = $service->getAverageStockPrice($stock);
+
+        $this->assertEquals(300, $data->toInt());
     }
 }

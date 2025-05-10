@@ -3,29 +3,42 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
-use App\Models\Trade;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
+use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
+use Brick\Money\Exception\MoneyMismatchException;
+use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 use Illuminate\Support\Str;
-use App\Repositories\StockRepository;
 use App\Repositories\TradeRepository;
 use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
-use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 use stdClass;
 
 class StockService
 {
+    /**
+     * Create a new StockService instance
+     *
+     * @param TradeRepository $tradeRepository
+     * @param DividendService $dividendService
+     */
     public function __construct(
-        readonly private YahooClient        $yahooClient,
-        readonly private StockRepository    $stockRepository,
         readonly private TradeRepository    $tradeRepository,
         readonly private DividendService    $dividendService,
     ) {}
 
-    public function getStockQuantity(Stock $stock)
+    /**
+     * Get quantity for the given stock
+     *
+     * @param Stock $stock
+     * @return int
+     */
+    public function getStockQuantity(Stock $stock): int
     {
         $trades = $stock->trades()->whereNotNull('quantity')->get();
 
@@ -40,21 +53,45 @@ class StockService
         return ($buy - $sell);
     }
 
-    public function getTotalAmoundInvested(Stock $stock)
+    /**
+     * Get the total amount invested in cents for the given stock
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getTotalAmoundInvested(Stock $stock): BigDecimal
     {
-        $groupedTrades = $stock->trades()->get()->groupBy('order_id');
+        $groupedTrades = $stock->trades()
+            ->get()
+            ->groupBy('order_id');
 
-        $totalInvestment = Money::ofMinor(0, 'EUR');
+        $totalInvestment = Money::of(0, 'EUR');
 
         foreach ($groupedTrades as $tradeGroup) {
             $invested =  $this->calculateInvestment($tradeGroup);
             $totalInvestment = $totalInvestment->plus($invested);
         }
 
-        return $totalInvestment->getAmount()->toFloat();
+        return $totalInvestment->getMinorAmount();
     }
 
-    public function getAverageStockPrice(Stock $stock)
+    /**
+     * Get the average stock price in cents for the given stock
+     *
+     * @param Stock $stock
+     * @return BigDecimal|int
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getAverageStockPrice(Stock $stock): BigDecimal|int
     {
         $amountInvested = $this->getTotalAmoundInvested($stock);
         $stockQuantity = $this->getStockQuantity($stock);
@@ -63,12 +100,19 @@ class StockService
             return 0;
         }
 
-        return 100;
-
-        return round($amountInvested / $stockQuantity, 2);
+        return $amountInvested->dividedBy($stockQuantity, null, RoundingMode::UP);
     }
 
-    public function getTotalValue(Stock $stock)
+    /**
+     * Get the total value in cents for the given stock
+     *
+     * @param Stock $stock
+     * @return BigDecimal|int
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getTotalValue(Stock $stock): BigDecimal|int
     {
         $quantity = $this->getStockQuantity($stock);
 
@@ -80,22 +124,27 @@ class StockService
 
         $value = $price * $quantity;
 
-        return Money::ofMinor($value, CurrencyType::EUR->value)->getAmount();
+        return Money::ofMinor($value, CurrencyType::EUR->value)->getMinorAmount();
     }
 
-    public function getProfitOrLoss(Stock $stock)
+    /**
+     * Get the total profit of loss in cents for the given stock
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getProfitOrLoss(Stock $stock): BigDecimal
     {
-        $totalValue = $this->getTotalValue($stock);
-
-        $value = Money::ofMinor($totalValue, CurrencyType::EUR->value)->getAmount();
+        $totalValue = Money::ofMinor($this->getTotalValue($stock), CurrencyType::EUR->value)->getMinorAmount();
 
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
-        return 10000;
-
-        dd($value, $totalAmountInvested);
-
-        return $value->minus($totalAmountInvested);
+        return $totalValue->minus($totalAmountInvested);
     }
 
     public function getRealizedProfitLoss(Stock $stock)
@@ -113,7 +162,7 @@ class StockService
 
     public function getAverageStockSellPrice(Stock $stock)
     {
-        $trades = $this->tradeRepository->getAllTradesFor($stock);
+        $trades = $stock->trades()->get();
 
         $sellTrades = $trades->groupBy('order_id')->filter(function ($group) {
             return $group->contains(fn($trade) => $trade->action === 'sell');

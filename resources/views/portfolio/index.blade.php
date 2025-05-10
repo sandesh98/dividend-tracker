@@ -81,7 +81,7 @@
                         <td class="text-nowrap">
                             <img
                                 src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
-                            <a href="{{ route('portfolio.show', current($stock['isin'])) }}"
+                            <a href="{{ route('portfolio.show', $stock) }}"
                                 class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                         </td>
                         <td class="text-nowrap">
@@ -114,7 +114,8 @@
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="d-flex gap-3">
-                                    <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                    {{-- Make this conditional--}}
+                                    <img src="{{ asset('build/icons/graph-down.svg') }}"
                                         alt="graph down icon">
                                     <span class="ml-2">€</span>
                                 </span>
@@ -189,7 +190,7 @@
                                 <td class="text-nowrap">
                                     <img
                                         src="{{ $stock['type'] === 'S' ? asset('build/icons/stock.svg') : asset('build/icons/etf.svg') }}">
-                                    <a href="{{ route('portfolio.show', current($stock['isin'])) }}"
+                                    <a href="{{ route('portfolio.show', $stock) }}"
                                         class="link-dark link-underline-opacity-0">{{ $stock['product'] }}</a>
                                 </td>
                                 <td class="text-nowrap">
@@ -213,7 +214,7 @@
                                 <td class="text-nowrap">
                                     <div class="d-flex justify-content-between w-100 text-nowrap">
                                         <span class="d-flex gap-2">
-                                            <img src="{{ $stock['profitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                            <img src="{{ asset('build/icons/graph-down.svg') }}"
                                                 alt="graph down icon">
                                             <span class="ml-2">€</span>
                                         </span>
