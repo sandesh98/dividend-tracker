@@ -54,7 +54,7 @@ class StockService
     }
 
     /**
-     * Get the total amount invested in cents for the given stock
+     * Get the total amount invested including fee's in cents for the given stock
      *
      * @param Stock $stock
      * @return BigDecimal
@@ -66,14 +66,14 @@ class StockService
      */
     public function getTotalAmoundInvested(Stock $stock): BigDecimal
     {
-        $groupedTrades = $stock->trades()
+        $trades = $stock->trades()
             ->get()
             ->groupBy('order_id');
 
-        $totalInvestment = Money::of(0, 'EUR');
+        $totalInvestment = Money::of(0, CurrencyType::EUR->value);
 
-        foreach ($groupedTrades as $tradeGroup) {
-            $invested =  $this->calculateInvestment($tradeGroup);
+        foreach ($trades as $trade) {
+            $invested = $this->calculateInvestment($trade);
             $totalInvestment = $totalInvestment->plus($invested);
         }
 
@@ -140,7 +140,10 @@ class StockService
      */
     public function getProfitOrLoss(Stock $stock): BigDecimal
     {
-        $totalValue = Money::ofMinor($this->getTotalValue($stock), CurrencyType::EUR->value)->getMinorAmount();
+        $totalValue = Money::ofMinor(
+            $this->getTotalValue($stock),
+            CurrencyType::EUR->value
+        )->getMinorAmount();
 
         $totalAmountInvested = $this->getTotalAmoundInvested($stock);
 
