@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             CashMovementSeeder::class,
 
             TradesSeeder::class,
-//            DividendSeeder::class
+            DividendSeeder::class
         ]);
 
 //        Artisan::call('stock:update');

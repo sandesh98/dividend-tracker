@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Dividend;
 use App\Models\Transaction;
+use App\Value\CurrencyType;
+use App\Value\TransactionType;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Collection;
@@ -12,31 +14,45 @@ class DividendSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
     public function run(): void
     {
-        $EURtransactions = $this->getEURTransactions();
-        $USDtransactions = $this->getUSDTransactions();
+        $eurTransactions = $this->getEURTransactions();
+        $usdTransactions = $this->getUSDTransactions();
 
-        $this->processEURTransaction($EURtransactions);
-        $this->processUSDTransaction($USDtransactions);
+        $this->processEURTransaction($eurTransactions);
+        $this->processUSDTransaction($usdTransactions);
     }
 
+    /**
+     * Get all EUR dividend transactions
+     *
+     * @return Collection
+     */
     private function getEURTransactions(): Collection
     {
-        return Transaction::where('mutation', 'LIKE', 'EUR')
+        return Transaction::query()
+            ->where('mutation', CurrencyType::EUR->value)
             ->where(function ($query) {
-                $query->where('description', 'LIKE', 'Dividend')
-                    ->orWhere('description', 'LIKE', 'Dividendbelasting');
+                $query->where('description', TransactionType::Dividend->value)
+                    ->orWhere('description', TransactionType::DividendTax->value);
             })->get();
     }
 
+    /**
+     * Get all USD dividend transactions
+     *
+     * @return Collection
+     */
     private function getUSDTransactions(): Collection
     {
-        return Transaction::where('mutation', 'LIKE', 'USD')
+        return Transaction::query()
+            ->where('mutation', CurrencyType::USD->value)
             ->where(function ($query) {
-                $query->where('description', 'LIKE', 'dividend')
-                    ->orWhere('description', 'LIKE', 'dividendbelasting');
+                $query->where('description', TransactionType::Dividend->value)
+                    ->orWhere('description', TransactionType::DividendTax->value);
             })
             ->orWhere(function ($query) {
                 $query->whereNotNull('fx')
@@ -47,12 +63,24 @@ class DividendSeeder extends Seeder
             ->get();
     }
 
+    /**
+     * Determine the FX value for the transaction
+     *
+     * @param $fx
+     * @return int
+     */
     private function setFX($fx): int
     {
         return empty($fx) ? 1 : $fx;
     }
 
-    private function processEURTransaction(Collection $transactions)
+    /**
+     * Process the EUR dividend transactions
+     *
+     * @param Collection $transactions
+     * @return void
+     */
+    private function processEURTransaction(Collection $transactions): void
     {
         foreach ($transactions as $transaction) {
             Dividend::create([
@@ -62,7 +90,7 @@ class DividendSeeder extends Seeder
                 'product' => $transaction->product,
                 'isin' => $transaction->isin,
                 'fx' => $this->setFX($transaction->fx),
-                'mutation' => 'EUR',
+                'mutation' => CurrencyType::EUR->value,
                 'amount' => $this->setAmount($transaction->mutation_value),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -70,7 +98,13 @@ class DividendSeeder extends Seeder
         }
     }
 
-    private function processUSDTransaction(Collection $transactions)
+    /**
+     * Process the USD dividend transactions
+     *
+     * @param Collection $transactions
+     * @return void
+     */
+    private function processUSDTransaction(Collection $transactions): void
     {
         $currentFx = null;
 
@@ -87,7 +121,7 @@ class DividendSeeder extends Seeder
                     'description' => $transaction['description'],
                     'product' => $transaction['product'],
                     'isin' => $transaction['isin'],
-                    'mutation' => 'USD',
+                    'mutation' => CurrencyType::USD->value,
                     'amount' => $this->setAmount($transaction['mutation_value']),
                     'fx' => $currentFx,
                 ]);
@@ -95,8 +129,16 @@ class DividendSeeder extends Seeder
         }
     }
 
-    private function setAmount($amount)
+    /**
+     * Set the dividend amount to a positive value
+     *
+     * @param $amount
+     * @return float|int
+     */
+    private function setAmount($amount): float|int
     {
+        // In the case of dividend tax we want to set its value to a positive value/
+        // This makes working with the data easier.
         if ($amount < 0) {
             return abs($amount);
         }

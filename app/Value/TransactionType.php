@@ -5,6 +5,8 @@ namespace App\Value;
 enum TransactionType: string {
     case Buy = 'buy';
     case Sell = 'sell';
+    case Dividend = 'dividend';
+    case DividendTax = 'Dividendbelasting';
 
 
     /**
@@ -17,6 +19,8 @@ enum TransactionType: string {
         return match ($this) {
             self::Buy => 'Koop',
             self::Sell => 'Verkoop',
+            self::Dividend => 'Dividend',
+            self::DividendTax => 'Dividendbelasting',
         };
     }
 }

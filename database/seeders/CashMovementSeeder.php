@@ -18,9 +18,7 @@ class CashMovementSeeder extends Seeder
             ->where('description', 'iDEAL Deposit')
             ->orWhere('description', 'flatex terugstorting')
             ->get();
-
-
-
+        
         foreach($transactions as $transaction) {
             DB::insert('INSERT INTO cash_movements (date, time, description, currency, total_transaction_value, created_at, updated_at) VALUES (:date, :time, :description, :currency, :total_transaction_value, :created_at, :updated_at)', [
                 'date' => $transaction->date,
