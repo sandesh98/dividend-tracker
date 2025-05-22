@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Dividend;
+use App\Models\Stock;
 use App\Models\Transaction;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
@@ -82,19 +83,25 @@ class DividendSeeder extends Seeder
      */
     private function processEURTransaction(Collection $transactions): void
     {
+        $stocks = Stock::all()->keyBy('isin');
+
         foreach ($transactions as $transaction) {
-            Dividend::create([
+            $stock = $stocks->get($transaction->isin);
+
+            $dividend = new Dividend([
                 'date' => $transaction->date,
                 'time' => $transaction->time,
                 'description' => $transaction->description,
-                'product' => $transaction->product,
-                'isin' => $transaction->isin,
                 'fx' => $this->setFX($transaction->fx),
                 'mutation' => CurrencyType::EUR->value,
                 'amount' => $this->setAmount($transaction->mutation_value),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            $dividend->stock()->associate($stock);
+
+            $dividend->save();
         }
     }
 
@@ -114,17 +121,23 @@ class DividendSeeder extends Seeder
                 continue;
             }
 
+            $stocks = Stock::all()->keyBy('isin');
+
             if (in_array($transaction['description'], ['Dividend', 'Dividendbelasting'])) {
-                Dividend::create([
+                $stock = $stocks->get($transaction['isin']);
+
+                $dividend = new Dividend([
                     'date' => $transaction['date'],
                     'time' => $transaction['time'],
                     'description' => $transaction['description'],
-                    'product' => $transaction['product'],
-                    'isin' => $transaction['isin'],
                     'mutation' => CurrencyType::USD->value,
                     'amount' => $this->setAmount($transaction['mutation_value']),
                     'fx' => $currentFx,
                 ]);
+
+                $dividend->stock()->associate($stock);
+
+                $dividend->save();
             }
         }
     }
@@ -137,7 +150,7 @@ class DividendSeeder extends Seeder
      */
     private function setAmount($amount): float|int
     {
-        // In the case of dividend tax we want to set its value to a positive value/
+        // In the case of dividend tax we want to set its value to a positive value.
         // This makes working with the data easier.
         if ($amount < 0) {
             return abs($amount);
