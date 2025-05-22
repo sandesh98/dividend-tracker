@@ -94,8 +94,8 @@ class StockRepository extends AbstractRepository
      * @param string $stock
      * @return string
      */
-    public function getCurrency(string $stock): string
+    public function getCurrency(Stock $stock): string
     {
-        return $this->stock->newQuery()->where('name', 'LIKE', $stock)->first()->getCurrency();
+        return $stock->currency;
     }
 }

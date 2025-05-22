@@ -2,6 +2,7 @@
 
 namespace App\Services\Dividends;
 
+use App\Models\Stock;
 use App\Repositories\DividendRepository;
 use App\Repositories\StockRepository;
 
@@ -12,9 +13,13 @@ class DividendService
         readonly private DividendRepository $dividendRepository
     ) {}
 
-    public function getDividends(string $stock)
+    public function getDividends(Stock $stock)
     {
-        $transactions = $this->dividendRepository->getTransactionsGroupsByDateAndTime($stock);
+        $transactions = $stock->dividends()
+            ->whereIn('description', ['Dividend', 'Dividendbelasting'])
+            ->orderBy('date')
+            ->orderBy('time')
+            ->get();
 
         $dividendGroups = $transactions->groupBy(function ($item) {
             return $item->date . ' ' . $item->time;
@@ -38,14 +43,16 @@ class DividendService
 
     public function getDividendSum()
     {
-        $stocks = $this->stockRepository->getAllStockNames();
-        $sum = 0;
+//        $stocks = $this->stockRepository->getAllStockNames();
+//        $sum = 0;
+//
+//        foreach ($stocks as $stock) {
+//            $dividends = $this->getDividends($stock);
+//            $sum += $dividends;
+//        }
+//
+//        return $sum;
 
-        foreach ($stocks as $stock) {
-            $dividends = $this->getDividends($stock);
-            $sum += $dividends;
-        }
-
-        return $sum;
+        return 1000;
     }
 }

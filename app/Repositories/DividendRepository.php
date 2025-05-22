@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Dividend;
+use App\Models\Stock;
 use Illuminate\Support\Collection;
 
 class DividendRepository extends AbstractRepository
