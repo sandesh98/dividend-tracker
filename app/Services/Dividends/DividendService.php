@@ -5,6 +5,10 @@ namespace App\Services\Dividends;
 use App\Models\Stock;
 use App\Repositories\DividendRepository;
 use App\Repositories\StockRepository;
+use App\Value\CurrencyType;
+use App\Value\DividendType;
+use Brick\Math\BigDecimal;
+use Brick\Money\Money;
 
 class DividendService
 {
@@ -12,33 +16,33 @@ class DividendService
         readonly private StockRepository    $stockRepository,
         readonly private DividendRepository $dividendRepository
     ) {}
-
-    public function getDividends(Stock $stock)
+    public function getDividends(Stock $stock): BigDecimal
     {
         $transactions = $stock->dividends()
-            ->whereIn('description', ['Dividend', 'Dividendbelasting'])
+            ->whereIn('description', [DividendType::Dividend->value, DividendType::DividendTax->value])
             ->orderBy('date')
             ->orderBy('time')
             ->get();
 
-        $dividendGroup = $transactions->groupBy(function ($item) {
-            return $item->date . ' ' . $item->time;
-        });
+        $dividendGroup = $transactions->groupBy(fn($item) => $item->date . ' ' . $item->time);
 
-        $total = 0;
+        $total = Money::zero(CurrencyType::EUR->value);
 
         foreach ($dividendGroup as $dividend) {
-            $amount = $dividend->firstWhere('description', 'Dividend')->amount ?? 0;
-            $tax = $dividend->firstWhere('description', 'Dividendbelasting')->amount ?? 0;
+            $amount = $dividend->firstWhere('description', DividendType::Dividend->value)->amount ?? 0;
+            $tax = $dividend->firstWhere('description', DividendType::DividendTax->value)->amount ?? 0;
             $fx = $dividend->first()->fx ?? 1;
-            $currency = $dividend->first()->mutation;
+            $currency = $dividend->first()->currency;
 
             $dividendCalculator = DividendCalculatorFactory::create($currency);
 
-            $total += $dividendCalculator->calculate($amount, $tax, $fx);
+            /** @var Money $money */
+            $money = $dividendCalculator->calculate($amount, $tax, $fx); // retourneert Money
+
+            $total = $total->plus($money);
         }
 
-        return $total;
+        return $total->getMinorAmount(); // BigDecimal in centen
     }
 
     public function getDividendSum()

@@ -6,6 +6,7 @@ use App\Models\Dividend;
 use App\Models\Stock;
 use App\Models\Transaction;
 use App\Value\CurrencyType;
+use App\Value\DividendType;
 use App\Value\TransactionType;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -37,8 +38,8 @@ class DividendSeeder extends Seeder
         return Transaction::query()
             ->where('mutation', CurrencyType::EUR->value)
             ->where(function ($query) {
-                $query->where('description', TransactionType::Dividend->value)
-                    ->orWhere('description', TransactionType::DividendTax->value);
+                $query->where('description', DividendType::Dividend->value)
+                    ->orWhere('description', DividendType::DividendTax->value);
             })->get();
     }
 
@@ -52,8 +53,8 @@ class DividendSeeder extends Seeder
         return Transaction::query()
             ->where('mutation', CurrencyType::USD->value)
             ->where(function ($query) {
-                $query->where('description', TransactionType::Dividend->value)
-                    ->orWhere('description', TransactionType::DividendTax->value);
+                $query->where('description', DividendType::Dividend->value)
+                    ->orWhere('description', DividendType::DividendTax->value);
             })
             ->orWhere(function ($query) {
                 $query->whereNotNull('fx')
@@ -93,7 +94,7 @@ class DividendSeeder extends Seeder
                 'time' => $transaction->time,
                 'description' => $transaction->description,
                 'fx' => $this->setFX($transaction->fx),
-                'mutation' => CurrencyType::EUR->value,
+                'currency' => CurrencyType::EUR->value,
                 'amount' => $this->setAmount($transaction->mutation_value),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -130,7 +131,7 @@ class DividendSeeder extends Seeder
                     'date' => $transaction['date'],
                     'time' => $transaction['time'],
                     'description' => $transaction['description'],
-                    'mutation' => CurrencyType::USD->value,
+                    'currency' => CurrencyType::USD->value,
                     'amount' => $this->setAmount($transaction['mutation_value']),
                     'fx' => $currentFx,
                 ]);

@@ -9,11 +9,13 @@ use Brick\Money\Money;
 
 class CalculateUSDDividend extends DividendCalculator
 {
-    public function calculate(string $amount, string $tax, string $fx)
+    public function calculate(string $amount, string $tax, string $fx): Money
     {
-        return BigDecimal::of($amount)
-            ->minus($tax)
-            ->dividedBy($fx, 0, RoundingMode::HALF_UP)
-            ->toInt();
+        $netUsdCents = BigDecimal::of($amount)->minus($tax);
+
+        $eurCents = $netUsdCents
+            ->dividedBy($fx, 0, RoundingMode::HALF_UP); // omrekenen naar EUR centen
+
+        return Money::ofMinor($eurCents, CurrencyType::EUR->value);
     }
 }

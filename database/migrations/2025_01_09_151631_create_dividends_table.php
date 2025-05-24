@@ -18,7 +18,7 @@ return new class extends Migration
             $table->time('time');
             $table->string('description');
             $table->string('fx')->nullable();
-            $table->string('mutation')->nullable();
+            $table->string('currency')->nullable();
             $table->integer('amount')->nullable();
             $table->timestamps();
         });
