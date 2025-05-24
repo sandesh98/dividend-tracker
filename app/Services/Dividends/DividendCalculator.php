@@ -4,5 +4,5 @@ namespace App\Services\Dividends;
 
 abstract class DividendCalculator
 {
-    abstract public function calculate(float $amount, float $tax, float $fx);
+    abstract public function calculate(string $amount, string $tax, string $fx);
 }

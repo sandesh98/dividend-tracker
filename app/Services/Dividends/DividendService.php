@@ -21,24 +21,24 @@ class DividendService
             ->orderBy('time')
             ->get();
 
-        $dividendGroups = $transactions->groupBy(function ($item) {
+        $dividendGroup = $transactions->groupBy(function ($item) {
             return $item->date . ' ' . $item->time;
         });
 
-        $results = [];
+        $total = 0;
 
-        foreach ($dividendGroups as $group) {
-            $amount = $group->firstWhere('description', 'Dividend')->amount ?? 0;
-            $tax = $group->firstWhere('description', 'Dividendbelasting')->amount ?? 0;
-            $fx = $group->first()->fx ?? 1;
+        foreach ($dividendGroup as $dividend) {
+            $amount = $dividend->firstWhere('description', 'Dividend')->amount ?? 0;
+            $tax = $dividend->firstWhere('description', 'Dividendbelasting')->amount ?? 0;
+            $fx = $dividend->first()->fx ?? 1;
+            $currency = $dividend->first()->mutation;
 
-            $currency = $this->stockRepository->getCurrency($stock);
             $dividendCalculator = DividendCalculatorFactory::create($currency);
 
-            $results[] = $dividendCalculator->calculate($amount, $tax, $fx);
+            $total += $dividendCalculator->calculate($amount, $tax, $fx);
         }
 
-        return round(array_sum($results), 2);
+        return $total;
     }
 
     public function getDividendSum()

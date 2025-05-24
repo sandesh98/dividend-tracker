@@ -87,15 +87,4 @@ class StockRepository extends AbstractRepository
     {
         return $stock->type;
     }
-
-    /**
-     * Get the currency type for a given stock
-     *
-     * @param string $stock
-     * @return string
-     */
-    public function getCurrency(Stock $stock): string
-    {
-        return $stock->currency;
-    }
 }

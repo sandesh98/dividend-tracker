@@ -155,7 +155,8 @@ class StockService
         $dividends = $this->dividendService->getDividends($stock);
         $transactionCost = $this->tradeRepository->getTransactioncostsFor($stock);
 
-        return $dividends - $transactionCost;
+        return 100;
+//        return $dividends - $transactionCost;
     }
 
     public function getLastPrice(Stock $stock)
