@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Feature\Services;
+namespace Tests\Feature\Services\Dividends;
 
-use App\Models\Stock;
 use App\Services\Dividends\DividendService;
 use App\Value\CurrencyType;
 use App\Value\DividendType;

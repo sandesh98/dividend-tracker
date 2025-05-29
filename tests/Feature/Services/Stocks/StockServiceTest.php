@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Services;
+namespace Tests\Feature\Services\Stocks;
 
 use App\Services\Stocks\StockService;
 use App\Value\CurrencyType;
+use App\Value\DescriptionType;
 use App\Value\TransactionType;
 use Database\Factories\StockFactory;
 use Database\Factories\TradeFactory;
-use App\Value\DescriptionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,9 +15,6 @@ class StockServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     */
     public function testItCalculatesStockQuantity(): void
     {
         $stock = StockFactory::new()->createOne();
