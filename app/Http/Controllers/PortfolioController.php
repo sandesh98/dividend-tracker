@@ -14,13 +14,12 @@ class PortfolioController extends Controller
         readonly private TransactionService $transactionService,
         readonly private DividendService $dividendService,
         readonly private TableService $tableService,
-        readonly private StockService $stockService
     ) {
     }
 
     public function index()
     {
-        $transactionCosts = $this->transactionService->getTransactionscostsSum();
+        $transactionCosts = $this->transactionService->getTransactionsCostsSum();
         $availableCash = $this->transactionService->getAvailableCash();
         $dividend = $this->dividendService->getDividendSum();
         [$active, $closed] = $this->tableService->loadTable();

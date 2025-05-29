@@ -2,38 +2,68 @@
 
 namespace App\Services\Transactions;
 
+use App\Models\CashMovement;
+use App\Models\Trade;
+use App\Models\Transaction;
 use App\Repositories\TradeRepository;
 use App\Repositories\TransactionRepository;
+use App\Value\CurrencyType;
+use App\Value\DescriptionType;
+use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Money\Exception\MoneyMismatchException;
+use Brick\Money\Exception\UnknownCurrencyException;
+use Brick\Money\Money;
+use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
-    public function __construct(
-        readonly private TransactionRepository $transactionRepository,
-        readonly private TradeRepository $tradeRepository
-    ) {
-    }
-
     /**
-     * Get available cash
+     * Get available cash.
      *
-     * @return void
+     * @return BigDecimal
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws MoneyMismatchException
+     * @throws UnknownCurrencyException
      */
-    public function getAvailableCash()
+    public function getAvailableCash(): BigDecimal
     {
         // TODO: Alle gemaakte kosten moeten hier nog van afgetrokken worden.
-        $deposits = $this->transactionRepository->getDeposits() / 100;
-        $withdrawals = $this->transactionRepository->getWithdrawals() / 100;
+        $deposits = CashMovement::query()
+            ->where('description', DescriptionType::Deposit->value)
+            ->sum('total_transaction_value');
 
-        return $deposits - $withdrawals;
+        $withdrawals = CashMovement::query()
+            ->where('description', DescriptionType::Withdrawal->value)
+            ->sum('total_transaction_value');
+
+        $balance = Money::ofMinor($deposits, CurrencyType::EUR->value)
+            ->minus(Money::ofMinor($withdrawals, CurrencyType::EUR->value));
+
+        return $balance->getMinorAmount();
     }
 
     /**
-     * Get the sum of transactionscosts
+     * Get the sum of the transaction costs.
      *
      * @return integer
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
      */
-    public function getTransactionscostsSum(): int
+    public function getTransactionsCostsSum(): int
     {
-        return $this->tradeRepository->getAllTransactionscosts()->sum();
+        $transactions = Trade::query()
+            ->where('description', DescriptionType::DegiroTransactionCost->value)
+            ->sum('total_transaction_value');
+
+        $transactionCost = Money::ofMinor($transactions, CurrencyType::EUR->value);
+
+        return $transactionCost->getMinorAmount()->toInt();
     }
 }

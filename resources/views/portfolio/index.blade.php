@@ -14,11 +14,11 @@
         ])
         @include('portfolio.components.header-card', [
             'title' => 'Besteedbare ruimte (onjuist)',
-            'value' => number_format($availableCash / 100, 2, ','),
+            'value' => $availableCash,
         ])
         @include('portfolio.components.header-card', [
             'title' => 'Transactiekosten',
-            'value' => number_format($transactionCosts / 100, 2, ','),
+            'value' => $transactionCosts,
         ])
     </div>
 

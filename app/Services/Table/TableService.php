@@ -12,7 +12,6 @@ use App\Services\Dividends\DividendService;
 class TableService
 {
     public function __construct(
-        readonly private DividendRepository $dividendRepository,
         readonly private DividendService $dividendService,
         readonly private StockRepository $stockRepository,
         readonly private StockService $stockService
@@ -32,9 +31,6 @@ class TableService
     {
         $stockData = [];
         $stocks = Stock::all();
-//        $uniqueStocks = Stock::query()
-//            ->pluck('name', 'display_name')
-//            ->all();
 
         foreach ($stocks as $stock) {
             $stockData[] = $this->getStockDetails($stock);
