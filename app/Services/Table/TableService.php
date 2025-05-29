@@ -13,10 +13,11 @@ class TableService
 {
     public function __construct(
         readonly private DividendRepository $dividendRepository,
-        readonly private DividendService    $dividendService,
-        readonly private StockRepository    $stockRepository,
-        readonly private StockService       $stockService
-    ) {}
+        readonly private DividendService $dividendService,
+        readonly private StockRepository $stockRepository,
+        readonly private StockService $stockService
+    ) {
+    }
 
     public function loadTable(): Collection
     {
@@ -86,6 +87,5 @@ class TableService
             'dividend' => $dividend,
             'averageStockSellPrice' => $averageStockSellPrice
         ];
-
     }
 }

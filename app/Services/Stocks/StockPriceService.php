@@ -9,10 +9,11 @@ use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 class StockPriceService
 {
     public function __construct(
-        readonly private YahooClient     $yahooClient,
+        readonly private YahooClient $yahooClient,
         readonly private StockRepository $stockRepository,
         readonly private TradeRepository $tradeRepository
-    ) {}
+    ) {
+    }
 
     public function updatePrice(): void
     {

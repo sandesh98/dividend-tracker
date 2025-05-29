@@ -2,7 +2,8 @@
 
 namespace App\Value;
 
-enum DividendType: string {
+enum DividendType: string
+{
     case Dividend = 'Dividend';
     case DividendTax = 'Dividendbelasting';
 

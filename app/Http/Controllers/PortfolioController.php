@@ -12,10 +12,11 @@ class PortfolioController extends Controller
 {
     public function __construct(
         readonly private TransactionService $transactionService,
-        readonly private DividendService    $dividendService,
-        readonly private TableService       $tableService,
-        readonly private StockService       $stockService
-    ) {}
+        readonly private DividendService $dividendService,
+        readonly private TableService $tableService,
+        readonly private StockService $stockService
+    ) {
+    }
 
     public function index()
     {

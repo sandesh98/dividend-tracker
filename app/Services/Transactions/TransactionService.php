@@ -10,7 +10,8 @@ class TransactionService
     public function __construct(
         readonly private TransactionRepository $transactionRepository,
         readonly private TradeRepository $tradeRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Get available cash

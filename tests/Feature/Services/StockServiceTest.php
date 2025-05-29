@@ -14,6 +14,7 @@ use Tests\TestCase;
 class StockServiceTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      */
@@ -249,6 +250,5 @@ class StockServiceTest extends TestCase
             ((15 + 7 - 10) * 100) - (2300 + 6500 - 7200),
             $data->toInt()
         );
-
     }
 }

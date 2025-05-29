@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use App\Services\Stocks\StockPriceService;
 use Scheb\YahooFinanceApi\ApiClientFactory;
 
-
 class UpdateStockPrice extends Command
 {
     /**

@@ -4,6 +4,7 @@ namespace App\Services\Stocks;
 
 use App\Models\Stock;
 use App\Value\CurrencyType;
+use App\Value\DescriptionType;
 use App\Value\TransactionType;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
@@ -28,9 +29,10 @@ class StockService
      * @param DividendService $dividendService
      */
     public function __construct(
-        readonly private TradeRepository    $tradeRepository,
-        readonly private DividendService    $dividendService,
-    ) {}
+        readonly private TradeRepository $tradeRepository,
+        readonly private DividendService $dividendService,
+    ) {
+    }
 
     /**
      * Get quantity for the given stock
@@ -173,7 +175,7 @@ class StockService
         });
 
         $trades = $sellTrades->mapWithKeys(function ($trade, $orderId) {
-            $transactionCost = $trade->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden');
+            $transactionCost = $trade->firstWhere('description', DescriptionType::DegiroTransactionCost->value);
             $transactionValue = $trade->firstWhere('action', 'LIKE', 'sell');
 
             return [
@@ -222,7 +224,7 @@ class StockService
     private function calculateInvestmentEUR(Collection $tradeGroup)
     {
         $transactionCost = optional(
-            $tradeGroup->firstWhere('description', 'DEGIRO Transactiekosten en/of kosten van derden')
+            $tradeGroup->firstWhere('description', DescriptionType::DegiroTransactionCost->value)
         )->total_transaction_value ?? 0;
         $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value');
         $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value');
@@ -241,7 +243,7 @@ class StockService
         $fx = (float) $tradeGroup->pluck('fx')->filter()->first() ?: 1;
 
         $transactionCost = optional(
-            $tradeGroup->firstWhere('description', 'LIKE', 'DEGIRO Transactiekosten en/of kosten van derden')
+            $tradeGroup->firstWhere('description', DescriptionType::DegiroTransactionCost->value)
         )->total_transaction_value ?? 0;
         $buy = $tradeGroup->where('action', 'buy')->sum('total_transaction_value');
         $sell = $tradeGroup->where('action', 'sell')->sum('total_transaction_value') ?? 0;
