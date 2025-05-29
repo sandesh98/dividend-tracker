@@ -3,19 +3,23 @@
 namespace App\Services\Dividends;
 
 use App\Models\Stock;
-use App\Repositories\DividendRepository;
-use App\Repositories\StockRepository;
 use App\Value\CurrencyType;
 use App\Value\DividendType;
 use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
+use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Money;
 
 class DividendService
 {
-    public function __construct(
-        readonly private StockRepository    $stockRepository,
-        readonly private DividendRepository $dividendRepository
-    ) {}
+    /**
+     * Get total dividend amount for given stock.
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws MathException
+     * @throws MoneyMismatchException
+     */
     public function getDividends(Stock $stock): BigDecimal
     {
         $transactions = $stock->dividends()
@@ -37,26 +41,30 @@ class DividendService
             $dividendCalculator = DividendCalculatorFactory::create($currency);
 
             /** @var Money $money */
-            $money = $dividendCalculator->calculate($amount, $tax, $fx); // retourneert Money
+            $money = $dividendCalculator->calculate($amount, $tax, $fx);
 
             $total = $total->plus($money);
         }
 
-        return $total->getMinorAmount(); // BigDecimal in centen
+        return $total->getMinorAmount();
     }
 
-    public function getDividendSum()
+    /**
+     * @return BigDecimal
+     * @throws MathException
+     * @throws MoneyMismatchException
+     */
+    public function getDividendSum(): BigDecimal
     {
-//        $stocks = $this->stockRepository->getAllStockNames();
-//        $sum = 0;
-//
-//        foreach ($stocks as $stock) {
-//            $dividends = $this->getDividends($stock);
-//            $sum += $dividends;
-//        }
-//
-//        return $sum;
+        $stocks = Stock::all();
 
-        return 1000;
+        $total = BigDecimal::zero();
+
+        foreach ($stocks as $stock) {
+            $dividend = $this->getDividends($stock);
+            $total = $total->plus($dividend);
+        }
+
+        return $total;
     }
 }

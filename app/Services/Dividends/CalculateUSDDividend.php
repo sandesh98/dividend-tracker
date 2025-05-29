@@ -14,7 +14,7 @@ class CalculateUSDDividend extends DividendCalculator
         $netUsdCents = BigDecimal::of($amount)->minus($tax);
 
         $eurCents = $netUsdCents
-            ->dividedBy($fx, 0, RoundingMode::HALF_UP); // omrekenen naar EUR centen
+            ->dividedBy($fx, 0, RoundingMode::HALF_UP);
 
         return Money::ofMinor($eurCents, CurrencyType::EUR->value);
     }
