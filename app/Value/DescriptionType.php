@@ -2,6 +2,7 @@
 
 namespace App\Value;
 
-enum DescriptionType: string {
+enum DescriptionType: string
+{
     case DegiroTransactionCost = 'DEGIRO Transactiekosten en/of kosten van derden';
 }

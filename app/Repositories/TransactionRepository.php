@@ -5,8 +5,8 @@ namespace App\Repositories;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
-class TransactionRepository {
-
+class TransactionRepository
+{
     /**
      * Get all transactions from the manual_transactions table
      *
@@ -24,7 +24,10 @@ class TransactionRepository {
      */
     public function getDeposits(): int
     {
-        return $this->manualTransactions()->where('total_transaction_value', '>', 0)->pluck('total_transaction_value')->sum();
+        return $this->manualTransactions()
+            ->where('total_transaction_value', '>', 0)
+            ->pluck('total_transaction_value')
+            ->sum();
     }
 
     /**
@@ -34,6 +37,9 @@ class TransactionRepository {
      */
     public function getWithdrawals(): int
     {
-        return $this->manualTransactions()->where('total_transaction_value', '<', 0)->pluck('total_transaction_value')->sum();
+        return $this->manualTransactions()
+            ->where('total_transaction_value', '<', 0)
+            ->pluck('total_transaction_value')
+            ->sum();
     }
 }

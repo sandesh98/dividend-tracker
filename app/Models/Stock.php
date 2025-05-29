@@ -41,6 +41,4 @@ class Stock extends Model
     {
         return $this->hasMany(Dividend::class);
     }
-
-
 }

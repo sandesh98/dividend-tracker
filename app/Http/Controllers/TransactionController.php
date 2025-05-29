@@ -12,7 +12,7 @@ class TransactionController extends Controller
             // - aankopen van aandelen
             // - verkopen van aandelen
             // - ontvangen dividenden
-            
+
         return view('transaction.index');
     }
 }
