@@ -47,26 +47,11 @@ class TableService
         $isin = $this->stockRepository->getIsinsByName($stock);
         $marketValue = $this->stockService->getMarketValue($stock);
         $profitLoss = $this->stockService->getProfitOrLoss($stock);
-        $rializedProfitLoss = $this->stockService->getrealizedProfitLoss($stock);
+        $realizedProfitLoss = $this->stockService->getrealizedProfitLoss($stock);
         $lastPrice = $this->stockService->getLastPrice($stock);
         $type = $this->stockRepository->getType($stock);
         $dividend = $this->dividendService->getDividends($stock);
         $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($stock);
-
-//        return [
-//            'product' => 'name',
-//            'isin' => $isin,
-//            'quantity' => $quantity,
-//            'averageStockPrice' => $averageStockPrice,
-//            'totalAmountInvested' => $totalAmountInvested,
-//            'totalValue' => $totalValue,
-//            'profitLoss' => $profitLoss,
-//            'rializedProfitLoss' => $rializedProfitLoss,
-//            'lastPrice' => $lastPrice,
-//            'type' => $type,
-//            'dividend' => $dividend,
-//            'averageStockSellPrice' => $averageStockSellPrice
-//        ];
 
         return [
             'stock' => $stock,
@@ -77,7 +62,7 @@ class TableService
             'totalAmountInvested' => $totalAmountInvested,
             'marketValue' => $marketValue,
             'profitLoss' => $profitLoss,
-            'rializedProfitLoss' => $rializedProfitLoss,
+            'realizedProfitLoss' => $realizedProfitLoss,
             'lastPrice' => $lastPrice,
             'type' => $type,
             'dividend' => $dividend,

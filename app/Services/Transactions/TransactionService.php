@@ -3,9 +3,8 @@
 namespace App\Services\Transactions;
 
 use App\Models\CashMovement;
+use App\Models\Stock;
 use App\Models\Trade;
-use App\Models\Transaction;
-use App\Repositories\TradeRepository;
 use App\Repositories\TransactionRepository;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
@@ -46,6 +45,27 @@ class TransactionService
 
         return $balance->getMinorAmount();
     }
+
+    /**
+     * Get transaction costs in cents for the given stock.
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getTransactionCosts(Stock $stock): BigDecimal
+    {
+        $trades = $stock->trades()
+            ->where('description', DescriptionType::DegiroTransactionCost->value)
+            ->sum('total_transaction_value');
+
+        $costs = Money::ofMinor($trades, CurrencyType::EUR->value);
+
+        return $costs->getMinorAmount();
+    }
+
 
     /**
      * Get the sum of the transaction costs.

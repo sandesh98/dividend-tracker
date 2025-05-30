@@ -114,8 +114,7 @@
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="d-flex gap-3">
-                                    {{-- Make this conditional--}}
-                                    <img src="{{ asset('build/icons/graph-down.svg') }}"
+                                    <img src="{{ $stock['profitLoss']->toInt() > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
                                         alt="graph down icon">
                                     <span class="ml-2">€</span>
                                 </span>
@@ -125,11 +124,12 @@
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="d-flex gap-3">
-                                    <img src="{{ $stock['rializedProfitLoss'] > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                    <img src="{{ $stock['realizedProfitLoss']->toInt() > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
+                                    <img src="{{ $stock['realizedProfitLoss'] }}"
                                         alt="graph up icon">
                                     <span class="ml-2">€</span>
                                 </span>
-                                <div class="ml-auto">{{ $stock['rializedProfitLoss'] }}</div>
+                                <div class="ml-auto">{{ $stock['realizedProfitLoss'] }}</div>
                             </div>
                         </td>
                     </tr>

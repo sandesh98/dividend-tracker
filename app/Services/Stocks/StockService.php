@@ -3,6 +3,7 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
+use App\Services\Transactions\TransactionService;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
 use App\Value\TransactionType;
@@ -27,10 +28,12 @@ class StockService
      *
      * @param TradeRepository $tradeRepository
      * @param DividendService $dividendService
+     * @param TransactionService $transactionService
      */
     public function __construct(
         readonly private TradeRepository $tradeRepository,
         readonly private DividendService $dividendService,
+        readonly private TransactionService $transactionService,
     ) {
     }
 
@@ -152,13 +155,25 @@ class StockService
         return $totalValue->minus($totalAmountInvested);
     }
 
-    public function getRealizedProfitLoss(Stock $stock)
+    /**
+     * Get the profit or loss without a dividend and transaction cost in cents for the given stock.
+     *
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getRealizedProfitLoss(Stock $stock): BigDecimal
     {
-        $dividends = $this->dividendService->getDividends($stock);
-        $transactionCost = $this->tradeRepository->getTransactioncostsFor($stock);
+        $profitOrLoss = $this->getProfitOrLoss($stock);
+        $dividend = $this->dividendService->getDividends($stock);
+        $transactionCost = $this->transactionService->getTransactionCosts($stock);
 
-        return 100;
-//        return $dividends - $transactionCost;
+        return $profitOrLoss->minus($dividend)->minus($transactionCost);
     }
 
     public function getLastPrice(Stock $stock)
