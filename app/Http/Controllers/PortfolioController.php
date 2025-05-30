@@ -19,7 +19,7 @@ class PortfolioController extends Controller
 
     public function index()
     {
-        $transactionCosts = $this->transactionService->getTransactionsCostsSum();
+        $transactionCosts = $this->transactionService->getTransactionCosts();
         $availableCash = $this->transactionService->getAvailableCash();
         $dividend = $this->dividendService->getDividendSum();
         [$active, $closed] = $this->tableService->loadTable();

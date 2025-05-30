@@ -248,4 +248,19 @@ class StockServiceTest extends TestCase
             $data->toInt()
         );
     }
+
+    public function testItReturnsTheLastPrice(): void
+    {
+        $stock = StockFactory::new()
+            ->createOne([
+                'currency' => CurrencyType::EUR->value,
+                'price' => 100,
+            ]);
+
+        $service = app(StockService::class);
+
+        $data = $service->getLastPrice($stock);
+
+        $this->assertEquals(100, $data->toInt());
+    }
 }

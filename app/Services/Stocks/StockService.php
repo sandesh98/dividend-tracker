@@ -24,7 +24,7 @@ use stdClass;
 class StockService
 {
     /**
-     * Create a new StockService instance
+     * Create a new StockService instance.
      *
      * @param TradeRepository $tradeRepository
      * @param DividendService $dividendService
@@ -38,7 +38,7 @@ class StockService
     }
 
     /**
-     * Get quantity for the given stock
+     * Get quantity for the given stock.
      *
      * @param Stock $stock
      * @return int
@@ -59,7 +59,7 @@ class StockService
     }
 
     /**
-     * Get the total amount invested including fee's in cents for the given stock
+     * Get the total amount invested including fee's in cents for the given stock.
      *
      * @param Stock $stock
      * @return BigDecimal
@@ -86,7 +86,7 @@ class StockService
     }
 
     /**
-     * Get the average stock price in cents for the given stock
+     * Get the average stock price in cents for the given stock.
      *
      * @param Stock $stock
      * @return BigDecimal|int
@@ -109,7 +109,7 @@ class StockService
     }
 
     /**
-     * Get the market value in cents for the given stock
+     * Get the market value in cents for the given stock.
      *
      * @param Stock $stock
      * @return BigDecimal|int
@@ -133,7 +133,7 @@ class StockService
     }
 
     /**
-     * Get the total profit of loss in cents for the given stock
+     * Get the total profit of loss in cents for the given stock.
      *
      * @param Stock $stock
      * @return BigDecimal
@@ -158,7 +158,6 @@ class StockService
     /**
      * Get the profit or loss without a dividend and transaction cost in cents for the given stock.
      *
-     *
      * @param Stock $stock
      * @return BigDecimal
      * @throws MathException
@@ -176,7 +175,16 @@ class StockService
         return $profitOrLoss->minus($dividend)->minus($transactionCost);
     }
 
-    public function getLastPrice(Stock $stock)
+    /**
+     * Get the last price in cents for the given stock.
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getLastPrice(Stock $stock): BigDecimal
     {
         return Money::of($stock->price, CurrencyType::EUR->value)->getAmount();
     }
@@ -225,6 +233,15 @@ class StockService
         return $result;
     }
 
+    /**
+     * Calculate the investment for the given trade group.
+     *
+     * @param Collection $tradeGroup
+     * @return Money
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
     private function calculateInvestment(Collection $tradeGroup)
     {
         $currency = $tradeGroup->first()->currency;
@@ -236,6 +253,17 @@ class StockService
         };
     }
 
+    /**
+     * Calculate the eur investment for the given trade group.
+     *
+     * @param Collection $tradeGroup
+     * @return Money
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
     private function calculateInvestmentEUR(Collection $tradeGroup)
     {
         $transactionCost = optional(
@@ -253,6 +281,17 @@ class StockService
             ->plus($transactionMoney);
     }
 
+    /**
+     *  Calculate the eur investment for the given trade group.
+     *
+     * @param Collection $tradeGroup
+     * @return Money
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
     private function calculateInvestmentUSD(Collection $tradeGroup)
     {
         $fx = (float) $tradeGroup->pluck('fx')->filter()->first() ?: 1;
