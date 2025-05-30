@@ -26,4 +26,10 @@
         </properties>
     </rule>
 
+    <rule ref="Generic.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="max" value="1"/>
+        </properties>
+    </rule>
+
 </ruleset>

@@ -5,7 +5,6 @@ namespace App\Services\Transactions;
 use App\Models\CashMovement;
 use App\Models\Stock;
 use App\Models\Trade;
-use App\Repositories\TransactionRepository;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
 use Brick\Math\BigDecimal;
@@ -15,12 +14,11 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
     /**
-     * Get available cash.
+     * Get available cash in cents.
      *
      * @return BigDecimal
      * @throws MathException
@@ -47,43 +45,27 @@ class TransactionService
     }
 
     /**
-     * Get transaction costs in cents for the given stock.
+     * Get transaction costs in cents.
      *
-     * @param Stock $stock
+     * @param Stock|null $stock
      * @return BigDecimal
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
-    public function getTransactionCosts(Stock $stock): BigDecimal
+    public function getTransactionCosts(Stock $stock = null): BigDecimal
     {
-        $trades = $stock->trades()
+        $query = $stock
+            ? $stock->trades()
+            : Trade::query();
+
+        $sum = $query
             ->where('description', DescriptionType::DegiroTransactionCost->value)
             ->sum('total_transaction_value');
 
-        $costs = Money::ofMinor($trades, CurrencyType::EUR->value);
+        $money = Money::ofMinor($sum, CurrencyType::EUR->value);
 
-        return $costs->getMinorAmount();
+        return $money->getMinorAmount();
     }
 
-
-    /**
-     * Get the sum of the transaction costs.
-     *
-     * @return integer
-     * @throws MathException
-     * @throws NumberFormatException
-     * @throws RoundingNecessaryException
-     * @throws UnknownCurrencyException
-     */
-    public function getTransactionsCostsSum(): int
-    {
-        $transactions = Trade::query()
-            ->where('description', DescriptionType::DegiroTransactionCost->value)
-            ->sum('total_transaction_value');
-
-        $transactionCost = Money::ofMinor($transactions, CurrencyType::EUR->value);
-
-        return $transactionCost->getMinorAmount()->toInt();
-    }
 }
