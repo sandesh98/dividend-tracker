@@ -106,7 +106,7 @@ class StockService
     }
 
     /**
-     * Get the total value in cents for the given stock
+     * Get the market value in cents for the given stock
      *
      * @param Stock $stock
      * @return BigDecimal|int
@@ -114,7 +114,7 @@ class StockService
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
-    public function getTotalValue(Stock $stock): BigDecimal|int
+    public function getMarketValue(Stock $stock): BigDecimal|int
     {
         $quantity = $this->getStockQuantity($stock);
 
@@ -143,7 +143,7 @@ class StockService
     public function getProfitOrLoss(Stock $stock): BigDecimal
     {
         $totalValue = Money::ofMinor(
-            $this->getTotalValue($stock),
+            $this->getMarketValue($stock),
             CurrencyType::EUR->value
         )->getMinorAmount();
 

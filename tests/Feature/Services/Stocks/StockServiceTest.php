@@ -85,7 +85,7 @@ class StockServiceTest extends TestCase
         $this->assertEquals(((1000 + 5500 - 2000) / (20 + 10 - 15)), $data->toInt());
     }
 
-    public function testItCalculatesStockValue(): void
+    public function testItCalculatesMarketValue(): void
     {
         $stock = StockFactory::new()
             ->createOne([
@@ -126,7 +126,7 @@ class StockServiceTest extends TestCase
 
         $service = app(StockService::class);
 
-        $data = $service->getTotalValue($stock);
+        $data = $service->getMarketValue($stock);
 
         $this->assertEquals((100 * (20 + 5 + 30 - 4)), $data->toInt());
     }

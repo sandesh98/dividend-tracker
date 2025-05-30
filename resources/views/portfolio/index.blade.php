@@ -58,11 +58,11 @@
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-title="Naam van het aandeel">Aandeel</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Huidige prijs * koers">Totale waarde</span></th>
+                            data-bs-title="Huidige prijs * koers">Marktwaarde</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-title="Aankoopprijs * aantal">Tot geïnvesteerd</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Het aantal aandelingen in bezetting">Aantal</span></th>
+                            data-bs-title="Het aantal aandelingen in bezit">Aantal</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-title="Gemiddelde aankoopkoers">GAK</span></th>
                     <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
@@ -87,7 +87,7 @@
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="mr-auto">€</span>
-                                <div class="ml-auto">{{ $stock['totalValue'] }}</div>
+                                <div class="ml-auto">{{ $stock['marketValue'] }}</div>
                             </div>
                         </td>
                         <td class="text-nowrap">

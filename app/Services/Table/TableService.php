@@ -45,7 +45,7 @@ class TableService
         $totalAmountInvested = $this->stockService->getTotalAmoundInvested($stock);
         $averageStockPrice = $this->stockService->getAverageStockPrice($stock);
         $isin = $this->stockRepository->getIsinsByName($stock);
-        $totalValue = $this->stockService->getTotalValue($stock);
+        $marketValue = $this->stockService->getMarketValue($stock);
         $profitLoss = $this->stockService->getProfitOrLoss($stock);
         $rializedProfitLoss = $this->stockService->getrealizedProfitLoss($stock);
         $lastPrice = $this->stockService->getLastPrice($stock);
@@ -75,7 +75,7 @@ class TableService
             'quantity' => $quantity,
             'averageStockPrice' => $averageStockPrice,
             'totalAmountInvested' => $totalAmountInvested,
-            'totalValue' => $totalValue,
+            'marketValue' => $marketValue,
             'profitLoss' => $profitLoss,
             'rializedProfitLoss' => $rializedProfitLoss,
             'lastPrice' => $lastPrice,
