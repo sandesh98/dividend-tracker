@@ -7,9 +7,7 @@ use App\Models\Stock;
 use App\Models\Transaction;
 use App\Value\CurrencyType;
 use App\Value\DividendType;
-use App\Value\TransactionType;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Collection;
 
 class DividendSeeder extends Seeder

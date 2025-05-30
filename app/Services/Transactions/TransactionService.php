@@ -67,5 +67,4 @@ class TransactionService
 
         return $money->getMinorAmount();
     }
-
 }

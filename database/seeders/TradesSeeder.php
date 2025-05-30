@@ -6,8 +6,11 @@ use App\Models\Stock;
 use App\Models\Trade;
 use App\Models\Transaction;
 use App\Value\TransactionType;
+use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
-use Brick\Money\Context;
+use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
@@ -24,6 +27,10 @@ class TradesSeeder extends Seeder
 
         foreach ($transactions as $transaction) {
             $stock = $stocks->get($transaction->isin);
+
+            if (empty($transaction->date)) {
+                continue;
+            }
 
             $trade = new Trade([
                 'date' => $transaction->date,
@@ -46,7 +53,13 @@ class TradesSeeder extends Seeder
         }
     }
 
-    private function determineAction($description)
+    /**
+     * Determine the action of the transaction
+     *
+     * @param $description
+     * @return TransactionType|null
+     */
+    private function determineAction($description): ?TransactionType
     {
         // Input: Koop 13 @ 36,234 USD
         // Output: "Koop"
@@ -61,7 +74,14 @@ class TradesSeeder extends Seeder
         return null;
     }
 
-    private function determineQuantity($description)
+
+    /**
+     * Determine the quantity of the transaction
+     *
+     * @param $description
+     * @return int
+     */
+    private function determineQuantity($description): int
     {
         // Input: Koop 13 @ 36,234 USD
         // Output: 13
@@ -74,7 +94,19 @@ class TradesSeeder extends Seeder
         return $value;
     }
 
-    private function determinePricePerUnit($description, $currency)
+
+    /**
+     * Determine the price per unit of the transaction
+     *
+     * @param $description
+     * @param $currency
+     * @return int
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    private function determinePricePerUnit($description, $currency): int
     {
         // Input: Koop 13 @ 36,234 USD
         // Output: "36,234"
