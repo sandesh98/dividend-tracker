@@ -32,7 +32,7 @@ class TransactionServiceTest extends TestCase
         CashMovementFactory::new()
             ->createOne([
                 'description' => DescriptionType::Withdrawal->value,
-                'total_transaction_value' => -75000,
+                'total_transaction_value' => 75000,
             ]);
 
         $service = app(TransactionService::class);

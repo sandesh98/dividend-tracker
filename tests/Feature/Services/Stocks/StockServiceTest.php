@@ -263,4 +263,107 @@ class StockServiceTest extends TestCase
 
         $this->assertEquals(100, $data->toInt());
     }
+
+    public function testItReturnsAverageSellPriceInUSD(): void
+    {
+        $stock = StockFactory::new()->createOne();
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => null,
+                'currency' => CurrencyType::USD->value,
+                'description' => DescriptionType::CurrencyDebit->value,
+                'fx' => null,
+                'order_id' => 'e71b7007-cbd3-3e0c-aafb-ab75cebb14a2',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => null,
+                'currency' => CurrencyType::USD->value,
+                'description' => DescriptionType::CurrencyCredit->value,
+                'fx' => 1.200,
+                'order_id' => 'e71b7007-cbd3-3e0c-aafb-ab75cebb14a2',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Sell->value,
+                'currency' => CurrencyType::USD->value,
+                'total_transaction_value' => 1000,
+                'quantity' => 10,
+                'fx' => null,
+                'order_id' => 'e71b7007-cbd3-3e0c-aafb-ab75cebb14a2',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'currency' => CurrencyType::EUR->value,
+                'action' => null,
+                'description' => DescriptionType::DegiroTransactionCost->value,
+                'quantity' => 1,
+                'total_transaction_value' => 300,
+                'fx' => null,
+                'order_id' => 'e71b7007-cbd3-3e0c-aafb-ab75cebb14a2',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => null,
+                'currency' => CurrencyType::USD->value,
+                'description' => DescriptionType::CurrencyDebit->value,
+                'fx' => null,
+                'order_id' => '4746758c-2f01-39d3-b319-7950345cf5f1',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => null,
+                'currency' => CurrencyType::USD->value,
+                'description' => DescriptionType::CurrencyCredit->value,
+                'fx' => 1.200,
+                'order_id' => '4746758c-2f01-39d3-b319-7950345cf5f1',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Sell->value,
+                'currency' => CurrencyType::USD->value,
+                'total_transaction_value' => 15000,
+                'quantity' => 12,
+                'fx' => null,
+                'order_id' => '4746758c-2f01-39d3-b319-7950345cf5f1',
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'currency' => CurrencyType::EUR->value,
+                'action' => null,
+                'description' => DescriptionType::DegiroTransactionCost->value,
+                'quantity' => 1,
+                'total_transaction_value' => 250,
+                'fx' => null,
+                'order_id' => '4746758c-2f01-39d3-b319-7950345cf5f1',
+            ]);
+
+        $service = app(StockService::class);
+
+        $data = $service->getAverageStockSellPrice($stock);
+
+        $this->assertEquals(
+            (int) round(
+                (((1000 + 300) * 1.200) + ((15000 + 250) * 1.200)) / (10 + 12)
+            ),
+            $data->toInt(),
+        );
+    }
+
 }
