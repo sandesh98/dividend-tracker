@@ -41,14 +41,14 @@ class SellCalculator
 
     private function calculateSellEUR(Collection $tradeGroup)
     {
-        $transactionCost = optional($tradeGroup->firstWhere('description', DescriptionType::DegiroTransactionCost->value))->total_transaction_value ?? 0;
-        $fx = $tradeGroup->firstWhere('fx', '!=', null)->fx ?? 1;
+        $transactionCost = optional(
+            $tradeGroup->firstWhere('description', DescriptionType::DegiroTransactionCost->value)
+        )->total_transaction_value ?? 0;
         $totalPrice = $tradeGroup->firstWhere('action', TransactionType::Sell->value)->total_transaction_value;
 
         $value = BigDecimal::of($totalPrice)
             ->plus($transactionCost)
-            ->multipliedBy($fx)
-            ->toScale(0, RoundingMode::UP)
+            ->toScale(0, RoundingMode::HALF_UP)
             ->toInt();
 
         return Money::ofMinor($value, CurrencyType::EUR->value);
@@ -67,17 +67,18 @@ class SellCalculator
      */
     private function calculateSellUSD(Collection $tradeGroup): Money
     {
-        $transactionCost = optional($tradeGroup->firstWhere('description', DescriptionType::DegiroTransactionCost->value))->total_transaction_value ?? 0;
+        $transactionCost = optional(
+            $tradeGroup->firstWhere('description', DescriptionType::DegiroTransactionCost->value)
+        )->total_transaction_value ?? 0;
         $fx = $tradeGroup->firstWhere('fx', '!=', null)->fx;
         $totalPrice = $tradeGroup->firstWhere('action', TransactionType::Sell->value)->total_transaction_value;
 
         $value = BigDecimal::of($totalPrice)
             ->plus($transactionCost)
             ->multipliedBy($fx)
-            ->toScale(0, RoundingMode::UP)
+            ->toScale(0, RoundingMode::HALF_UP)
             ->toInt();
 
         return Money::ofMinor($value, CurrencyType::EUR->value);
-
     }
 }
