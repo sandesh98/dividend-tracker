@@ -193,7 +193,18 @@ class StockService
         return Money::ofMinor($stock->price, CurrencyType::EUR->value)->getMinorAmount();
     }
 
-    public function getAverageStockSellPrice(Stock $stock)
+    /**
+     * Get the average stock sell price in cents for the given stock.
+     *
+     * @param Stock $stock
+     * @return BigDecimal
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
+    public function getAverageStockSellPrice(Stock $stock): BigDecimal
     {
         $trades = $stock->trades()->get();
 
