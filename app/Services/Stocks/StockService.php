@@ -3,11 +3,8 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
-use App\Models\Trade;
-use App\Repositories\StockRepository;
 use App\Services\Transactions\TransactionService;
 use App\Value\CurrencyType;
-use App\Value\DescriptionType;
 use App\Value\TransactionType;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
@@ -17,7 +14,6 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use Illuminate\Support\Str;
 use App\Repositories\TradeRepository;
 use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,12 +24,12 @@ class StockService
     /**
      * Create a new StockService instance.
      *
-     * @param TradeRepository $tradeRepository
      * @param DividendService $dividendService
      * @param TransactionService $transactionService
+     * @param InvestmentCalculator $investmentCalculator
+     * @param SellCalculator $sellCalculator
      */
     public function __construct(
-        readonly private TradeRepository $tradeRepository,
         readonly private DividendService $dividendService,
         readonly private TransactionService $transactionService,
         readonly private InvestmentCalculator $investmentCalculator,

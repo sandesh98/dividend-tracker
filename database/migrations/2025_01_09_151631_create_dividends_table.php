@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dividends', function (Blueprint $table) {
             $table->id();
             $table->foreignId('stock_id')->constrained();
-            $table->string('date');
+            $table->date('date');
             $table->time('time');
             $table->string('description');
             $table->string('fx')->nullable();

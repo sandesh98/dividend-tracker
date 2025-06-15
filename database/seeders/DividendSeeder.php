@@ -7,6 +7,8 @@ use App\Models\Stock;
 use App\Models\Transaction;
 use App\Value\CurrencyType;
 use App\Value\DividendType;
+use Carbon\Carbon;
+use Carbon\Traits\Date;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
@@ -88,7 +90,7 @@ class DividendSeeder extends Seeder
             $stock = $stocks->get($transaction->isin);
 
             $dividend = new Dividend([
-                'date' => $transaction->date,
+                'date' => Carbon::parse($transaction->date),
                 'time' => $transaction->time,
                 'description' => $transaction->description,
                 'fx' => $this->setFX($transaction->fx),
@@ -126,7 +128,7 @@ class DividendSeeder extends Seeder
                 $stock = $stocks->get($transaction['isin']);
 
                 $dividend = new Dividend([
-                    'date' => $transaction['date'],
+                    'date' => Carbon::parse($transaction['date']),
                     'time' => $transaction['time'],
                     'description' => $transaction['description'],
                     'currency' => CurrencyType::USD->value,

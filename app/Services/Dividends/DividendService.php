@@ -2,13 +2,17 @@
 
 namespace App\Services\Dividends;
 
+use App\Models\Dividend;
 use App\Models\Stock;
+use App\Models\Trade;
 use App\Value\CurrencyType;
 use App\Value\DividendType;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Money;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class DividendService
 {
@@ -16,14 +20,19 @@ class DividendService
      * Get total dividend amount for given stock.
      *
      * @param Stock $stock
+     * @param int|null $year
      * @return BigDecimal
      * @throws MathException
      * @throws MoneyMismatchException
      */
-    public function getDividends(Stock $stock): BigDecimal
+    public function getDividends(Stock $stock, ?int $year = null): BigDecimal
     {
         $transactions = $stock->dividends()
-            ->whereIn('description', [DividendType::Dividend->value, DividendType::DividendTax->value])
+            ->when($year, fn($query) => $query->whereYear('date', $year))
+            ->whereIn('description', [
+                DividendType::Dividend->value,
+                DividendType::DividendTax->value
+            ])
             ->orderBy('date')
             ->orderBy('time')
             ->get();
@@ -39,8 +48,6 @@ class DividendService
             $currency = $dividend->first()->currency;
 
             $dividendCalculator = DividendCalculatorFactory::create($currency);
-
-            /** @var Money $money */
             $money = $dividendCalculator->calculate($amount, $tax, $fx);
 
             $total = $total->plus($money);
@@ -48,6 +55,7 @@ class DividendService
 
         return $total->getMinorAmount();
     }
+
 
     /**
      * @return BigDecimal
@@ -66,5 +74,28 @@ class DividendService
         }
 
         return $total;
+    }
+
+    public function getDividendsPerYear(): array
+    {
+        $stocks = Stock::all();
+
+        $firstTradeYear = Trade::orderBy('date')->first() ?? Date::now()->year;
+        $startYear = Carbon::createFromFormat('d-m-Y', $firstTradeYear->date)->year;
+        $endYear = Date::now()->year;
+
+        $perYear = [];
+
+        foreach (range($startYear, $endYear) as $year) {
+            $yearTotal = BigDecimal::zero();
+
+            foreach ($stocks as $stock) {
+                $yearTotal = $yearTotal->plus($this->getDividends($stock, $year));
+            }
+
+            $perYear[$year] = $yearTotal->toInt(); // centen
+        }
+
+        return $perYear;
     }
 }
