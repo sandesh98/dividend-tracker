@@ -58,6 +58,8 @@ class DividendService
 
 
     /**
+     * Get total dividend sum for all stocks.
+     *
      * @return BigDecimal
      * @throws MathException
      * @throws MoneyMismatchException
@@ -76,7 +78,7 @@ class DividendService
         return $total;
     }
 
-    public function getDividendsPerYear(): array
+    public function getDividendSumPerYear(): array
     {
         $stocks = Stock::all();
 
@@ -97,5 +99,27 @@ class DividendService
         }
 
         return $perYear;
+    }
+
+    public function getDividendPerYear(int $year)
+    {
+        $stocks = Stock::all();
+
+        $total = [];
+
+        foreach ($stocks as $stock) {
+            $dividend = $this->getDividends($stock, $year);
+
+            if ($dividend->isZero()) {
+                continue;
+            }
+
+            $total[] = [
+                'name' => $stock->name,
+                'amount' => $dividend->toInt(),
+            ];
+        }
+
+        return $total;
     }
 }

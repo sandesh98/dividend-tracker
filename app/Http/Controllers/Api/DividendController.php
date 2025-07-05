@@ -13,8 +13,7 @@ class DividendController extends Controller
 {
     public function __construct(
         private readonly DividendService $dividendService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -22,7 +21,7 @@ class DividendController extends Controller
      */
     public function index()
     {
-        $perYear = $this->dividendService->getDividendsPerYear();
+        $perYear = $this->dividendService->getDividendSumPerYear();
 
         return response()->json([
             'labels' => array_keys($perYear),
