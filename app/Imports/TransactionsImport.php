@@ -12,6 +12,7 @@ class TransactionsImport implements ToModel, WithStartRow
     {
         return 2;
     }
+
     /**
     * @param array $row
     *
