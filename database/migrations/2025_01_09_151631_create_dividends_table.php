@@ -18,8 +18,8 @@ return new class extends Migration
             $table->time('time');
             $table->string('description');
             $table->string('fx')->nullable();
-            $table->string('currency')->nullable();
-            $table->integer('amount')->nullable();
+            $table->string('dividend_amount_currency')->nullable();
+            $table->integer('dividend_amount')->nullable();
             $table->timestamps();
         });
     }

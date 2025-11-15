@@ -19,42 +19,43 @@ class TradesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
     public function run(): void
     {
         $stocks = Stock::all()->keyBy('isin');
-        $transactions = Transaction::whereNotNull('order_id')->get();
+
+        $transactions = Transaction::query()
+            ->whereNotNull('order_id')
+            ->get();
 
         foreach ($transactions as $transaction) {
             $stock = $stocks->get($transaction->isin);
 
-            if (empty($transaction->date)) {
+            if ($transaction->date === null) {
                 continue;
             }
 
-            $trade = new Trade([
-                'date' => $transaction->date,
-                'time' => $transaction->time,
-                'description' => $transaction->description,
-                'currency' => $transaction->mutation,
-                'total_transaction_value' => abs($transaction->mutation_value),
-                'action' => $this->determineAction($transaction->description),
-                'price_per_unit' => $this->determinePricePerUnit($transaction->description, $transaction->mutation),
-                'quantity' => $this->determineQuantity($transaction->description),
-                'order_id' => $transaction->order_id,
-                'fx' => $transaction->fx,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            $trade = new Trade();
+            $trade->date = $transaction->date;
+            $trade->time = $transaction->time;
+            $trade->description = $transaction->description;
+            $trade->currency = $transaction->mutation;
+            $trade->total_transaction_value = abs($transaction->mutation_value);
+            $trade->action = $this->determineAction($transaction->description);
+            $trade->price_per_unit = $this->determinePricePerUnit($transaction->description, $transaction->mutation);
+            $trade->quantity = $this->determineQuantity($transaction->description);
+            $trade->order_id = $transaction->order_id;
+            $trade->fx = $transaction->fx;
 
             $trade->stock()->associate($stock);
-
             $trade->save();
         }
     }
 
     /**
-     * Determine the action of the transaction
+     * Determine the action of the transaction.
      *
      * @param $description
      * @return TransactionType|null
@@ -76,7 +77,7 @@ class TradesSeeder extends Seeder
 
 
     /**
-     * Determine the quantity of the transaction
+     * Determine the quantity of the transaction.
      *
      * @param $description
      * @return int
@@ -96,7 +97,7 @@ class TradesSeeder extends Seeder
 
 
     /**
-     * Determine the price per unit of the transaction
+     * Determine the price per unit of the transaction.
      *
      * @param $description
      * @param $currency
