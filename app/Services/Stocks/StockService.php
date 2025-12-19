@@ -112,19 +112,19 @@ class StockService
      * Get the market value in cents for the given stock.
      *
      * @param Stock $stock
-     * @return BigDecimal|int
+     * @return BigDecimal
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
-    public function getMarketValue(Stock $stock): BigDecimal|int
+    public function getMarketValue(Stock $stock): BigDecimal
     {
         $quantity = $this->getStockQuantity($stock);
 
         $price = $stock->price;
 
         if ($quantity < 0 && $price < 0) {
-            return 0;
+            Money::zero(CurrencyType::EUR->value)->getMinorAmount();
         }
 
         $value = $price * $quantity;
@@ -169,10 +169,11 @@ class StockService
     public function getRealizedProfitLoss(Stock $stock): BigDecimal
     {
         $profitOrLoss = $this->getProfitOrLoss($stock);
-        $dividend = $this->dividendService->getDividends($stock);
+//        $dividend = $this->dividendService->getDividends($stock);
         $transactionCost = $this->transactionService->getTransactionCosts($stock);
 
-        return $profitOrLoss->minus($dividend)->minus($transactionCost);
+        return $profitOrLoss->minus($transactionCost);
+//        return $profitOrLoss->minus($dividend)->minus($transactionCost);
     }
 
     /**

@@ -21,10 +21,10 @@ class PortfolioController extends Controller
     {
         $transactionCosts = $this->transactionService->getTransactionCosts();
         $availableCash = $this->transactionService->getAvailableCash();
-        $dividend = $this->dividendService->getDividendSum();
+//        $dividend = $this->dividendService->getDividendSum();
         [$active, $closed] = $this->tableService->loadTable();
 
-        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'dividend', 'active', 'closed'));
+        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'active', 'closed'));
     }
 
     public function show(Stock $stock)

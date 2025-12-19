@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('dividends', function (Blueprint $table) {
             $table->id();
             $table->foreignId('stock_id')->constrained();
-            $table->date('date');
-            $table->time('time');
+            $table->timestamp('paid_out_at');
             $table->string('description');
             $table->string('fx')->nullable();
             $table->string('dividend_amount_currency')->nullable();
-            $table->integer('dividend_amount')->nullable();
+            $table->string('dividend_amount')->nullable();
             $table->timestamps();
         });
     }

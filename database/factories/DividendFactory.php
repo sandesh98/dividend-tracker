@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Value\CurrencyType;
 use App\Value\DividendType;
+use Brick\Money\Currency;
+use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,11 +22,12 @@ class DividendFactory extends Factory
     {
         return [
             'stock_id' => StockFactory::new(),
-            'date' => $this->faker->dateTimeThisYear()->format('d-m-Y'),
-            'time' => $this->faker->time(),
+            'paid_out_at' => $this->faker->dateTime(),
             'fx' => $this->faker->randomFloat(4, 0.5, 1.5),
-            'amount' => $this->faker->numberBetween(1, 10000),
-            'currency' => $this->faker->randomElement([CurrencyType::USD->value, CurrencyType::EUR->value]),
+            'dividend_amount' => $this->faker->passthrough(
+                Money::ofMinor($this->faker->randomNumber(),
+                $this->faker->randomElement(['EUR', 'USD'])),
+            ),
             'description' => $this->faker->randomElement([DividendType::Dividend->value, DividendType::DividendTax->value]),
         ];
     }

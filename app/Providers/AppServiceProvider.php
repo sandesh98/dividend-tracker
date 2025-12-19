@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Scheb\YahooFinanceApi\ApiClient;
@@ -24,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::unguard();
+
         $this->app->bind(ApiClient::class, function (Application $app) {
             return new ApiClient(new Client(), new ResultDecoder(new ValueMapper()));
         });

@@ -5,6 +5,7 @@ namespace Tests\Feature\Services\Dividends;
 use App\Services\Dividends\DividendService;
 use App\Value\CurrencyType;
 use App\Value\DividendType;
+use Brick\Money\Money;
 use Database\Factories\DividendFactory;
 use Database\Factories\StockFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,44 +25,36 @@ class DividendServiceTest extends TestCase
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now(),
-                'time' => Date::now()->toTimeString(),
+                'paid_out_at' => Date::now()->addDay(),
                 'description' => DividendType::Dividend->value,
-                'currency' => CurrencyType::EUR->value,
-                'amount' => 1000,
+                'dividend_amount' => Money::ofMinor(1000, CurrencyType::EUR->value),
                 'fx' => 1
             ]);
 
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now(),
-                'time' => Date::now()->toTimeString(),
+                'paid_out_at' => Date::now()->addDay(),
                 'description' => DividendType::DividendTax->value,
-                'currency' => CurrencyType::EUR->value,
-                'amount' => 200,
+                'dividend_amount' => Money::ofMinor(200, CurrencyType::EUR->value),
                 'fx' => 1
             ]);
 
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now()->addDay(),
-                'time' => Date::now()->addDay(1)->toTimeString(),
+                'paid_out_at' => Date::now()->subDay(),
                 'description' => DividendType::Dividend->value,
-                'currency' => CurrencyType::EUR->value,
-                'amount' => 800,
+                'dividend_amount' => Money::ofMinor(800, CurrencyType::EUR->value),
                 'fx' => 1
             ]);
 
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now()->addDay(),
-                'time' => Date::now()->addDay()->toTimeString(),
+                'paid_out_at' => Date::now()->subDay(),
                 'description' => DividendType::DividendTax->value,
-                'currency' => CurrencyType::EUR->value,
-                'amount' => 150,
+                'dividend_amount' => Money::ofMinor(150, CurrencyType::EUR->value),
                 'fx' => 1
             ]);
 
@@ -69,7 +62,7 @@ class DividendServiceTest extends TestCase
 
         $result = $service->getDividends($stock);
 
-        $this->assertEquals((1000 - 200) + (800 - 150), $result->toInt());
+        $this->assertEquals((1000 - 200) + (800 - 150), $result->getMinorAmount()->toInt());
     }
 
     public function testItCalculatesUsdDividend(): void
@@ -81,52 +74,46 @@ class DividendServiceTest extends TestCase
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now(),
-                'time' => Date::now()->toTimeString(),
+                'paid_out_at' => Date::now(),
                 'description' => DividendType::Dividend->value,
-                'currency' => CurrencyType::USD->value,
-                'amount' => 1000,
-                'fx' => 1.2500
+                'dividend_amount' => Money::ofMinor(1000, CurrencyType::USD->value),
+                'fx' => '1.2500'
             ]);
 
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now(),
-                'time' => Date::now()->toTimeString(),
+                'paid_out_at' => Date::now(),
                 'description' => DividendType::DividendTax->value,
-                'currency' => CurrencyType::USD->value,
-                'amount' => 200,
-                'fx' => 1.2500
+                'dividend_amount' => Money::ofMinor(200, CurrencyType::USD->value),
+                'fx' => '1.2500'
             ]);
 
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now()->addDay(),
-                'time' => Date::now()->addDay()->toTimeString(),
+                'paid_out_at' => Date::now()->addDay(),
                 'description' => DividendType::Dividend->value,
-                'currency' => CurrencyType::USD->value,
-                'amount' => 750,
-                'fx' => 1.2500
+                'dividend_amount' => Money::ofMinor(750, CurrencyType::USD->value),
+                'fx' => '1.2500'
             ]);
 
         DividendFactory::new()
             ->for($stock)
             ->createOne([
-                'date' => Date::now()->addDay(),
-                'time' => Date::now()->addDay()->toTimeString(),
+                'paid_out_at' => Date::now()->addDay(),
                 'description' => DividendType::DividendTax->value,
-                'currency' => CurrencyType::USD->value,
-                'amount' => 250,
-                'fx' => 1.2500
+                'dividend_amount' => Money::ofMinor(250, CurrencyType::USD->value),
+                'fx' => '1.2500'
             ]);
 
         $service = app(DividendService::class);
 
         $result = $service->getDividends($stock);
 
-        $this->assertEquals(((1000 - 200) / 1.2500) + ((750 - 250) / 1.2500), $result->toInt());
+        $this->assertEquals((
+            (1000 - 200) * (1/1.2500)) +
+            ((750 - 250) * (1/1.2500)), $result->getMinorAmount()->toInt());
     }
 
     public function testItCalculatesDividendSum(): void

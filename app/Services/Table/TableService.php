@@ -50,7 +50,7 @@ class TableService
         $realizedProfitLoss = $this->stockService->getrealizedProfitLoss($stock);
         $lastPrice = $this->stockService->getLastPrice($stock);
         $type = $this->stockRepository->getType($stock);
-        $dividend = $this->dividendService->getDividends($stock);
+//        $dividend = $this->dividendService->getDividends($stock);
         $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($stock);
 
         return [
@@ -65,7 +65,7 @@ class TableService
             'realizedProfitLoss' => $realizedProfitLoss,
             'lastPrice' => $lastPrice,
             'type' => $type,
-            'dividend' => $dividend,
+//            'dividend' => $dividend,
             'averageStockSellPrice' => $averageStockSellPrice
         ];
     }

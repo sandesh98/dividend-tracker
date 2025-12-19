@@ -10,7 +10,8 @@
         ])
         @include('portfolio.components.header-card', [
             'title' => 'Ontvangen dividend',
-            'value' => $dividend,
+            'value' => '200'
+//            'value' => $dividend,
         ])
         @include('portfolio.components.header-card', [
             'title' => 'Besteedbare ruimte (onjuist)',
@@ -105,12 +106,12 @@
                                 <div class="ml-auto">{{ $stock['averageStockPrice'] }}</div>
                             </div>
                         </td>
-                        <td class="text-nowrap">
-                            <div class="d-flex justify-content-between w-100 text-nowrap gap-3">
-                                <span class="mr-auto">€</span>
-                                <div class="ml-auto">{{ $stock['dividend'] }}</div>
-                            </div>
-                        </td>
+{{--                        <td class="text-nowrap">--}}
+{{--                            <div class="d-flex justify-content-between w-100 text-nowrap gap-3">--}}
+{{--                                <span class="mr-auto">€</span>--}}
+{{--                                <div class="ml-auto">{{ $stock['dividend'] }}</div>--}}
+{{--                            </div>--}}
+{{--                        </td>--}}
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="d-flex gap-3">
@@ -205,12 +206,12 @@
                                         <div class="ml-auto">{{ $stock['averageStockSellPrice'] }}</div>
                                     </div>
                                 </td>
-                                <td class="text-nowrap">
-                                    <div class="d-flex justify-content-between w-100 text-nowrap">
-                                        <span class="mr-auto">€</span>
-                                        <div class="ml-auto">{{ $stock['dividend'] }}</div>
-                                    </div>
-                                </td>
+{{--                                <td class="text-nowrap">--}}
+{{--                                    <div class="d-flex justify-content-between w-100 text-nowrap">--}}
+{{--                                        <span class="mr-auto">€</span>--}}
+{{--                                        <div class="ml-auto">{{ $stock['dividend'] }}</div>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
                                 <td class="text-nowrap">
                                     <div class="d-flex justify-content-between w-100 text-nowrap">
                                         <span class="d-flex gap-2">

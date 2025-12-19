@@ -90,9 +90,8 @@ class DividendSeeder extends Seeder
             $stock = $stocks->get($transaction->isin);
 
             $dividend = new Dividend([
-                'date' => Carbon::parse($transaction->date),
-                'time' => $transaction->time,
-                'description' => $transaction->description,
+                'paid_out_at' => Carbon::parse("{$transaction->date} {$transaction->time}"),
+                'description' => DividendType::from($transaction->description),
                 'fx' => $this->setFX($transaction->fx),
                 'dividend_amount' => Money::of(
                     $this->setAmount($transaction->mutation_value),
@@ -130,9 +129,8 @@ class DividendSeeder extends Seeder
                 $stock = $stocks->get($transaction['isin']);
 
                 $dividend = new Dividend([
-                    'date' => Carbon::parse($transaction['date']),
-                    'time' => $transaction['time'],
-                    'description' => $transaction['description'],
+                    'paid_out_at' => Carbon::parse("{$transaction['date']} {$transaction['time']}"),
+                    'description' => DividendType::from($transaction['description']),
                     'dividend_amount' => Money::of(
                         $this->setAmount($transaction->mutation_value),
                         CurrencyType::USD->value

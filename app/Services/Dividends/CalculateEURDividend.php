@@ -9,13 +9,10 @@ use Brick\Money\Money;
 
 class CalculateEURDividend extends DividendCalculator
 {
-    public function calculate(string $amount, string $tax, string $fx): Money
+    public function calculate($amount, $tax, $fx)
     {
-        $netCents = BigDecimal::of($amount)
+        return $amount
             ->minus($tax)
-            ->multipliedBy($fx)
-            ->toScale(0, RoundingMode::HALF_UP);
-
-        return Money::ofMinor($netCents, CurrencyType::EUR->value);
+            ->multipliedBy($fx);
     }
 }

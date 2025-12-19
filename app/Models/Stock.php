@@ -8,19 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Stock extends Model
 {
-    use HasFactory;
-
     protected $fillable = ['product', 'isin', 'type', 'ticker', 'currency', 'price', 'display_name'];
-
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
 
     /**
      * Query the trades.
