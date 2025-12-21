@@ -17,8 +17,5 @@ class TradesSeeder extends TestCase
 
     public function testItSeedsTradesFromTransactions(): void
     {
-
-
     }
-
 }

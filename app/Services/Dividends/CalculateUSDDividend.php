@@ -7,7 +7,7 @@ use Brick\Money\Money;
 
 class CalculateUSDDividend extends DividendCalculator
 {
-    public function calculate($amount,  $tax,  $fx): Money
+    public function calculate($amount, $tax, $fx): Money
     {
         return $amount->minus($tax)->multipliedBy($fx)->toCurrency('EUR');
 //        return $amount

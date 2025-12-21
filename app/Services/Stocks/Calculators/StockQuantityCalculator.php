@@ -25,6 +25,12 @@ class StockQuantityCalculator
             return $item->action === TransactionType::Sell->value;
         })->sum('quantity');
 
+        $total = $buy - $sell;
+
+        if ($total <= 0) {
+            return 0;
+        }
+
         return ($buy - $sell);
     }
 }

@@ -36,7 +36,6 @@ class DividendService
         $dividendGroup = $stock->dividends->groupBy('paid_out_at');
 
         foreach ($dividendGroup as $dividendTransaction) {
-
             $dividendAmount = $dividendTransaction
                 ->firstWhere('description', DividendType::Dividend)
                 ->dividend_amount ?? Money::zero('EUR');

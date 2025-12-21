@@ -7,7 +7,6 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Webmozart\Assert\Assert;
 
-
 /**
  * @implements \Illuminate\Contracts\Database\Eloquent\CastsAttributes<\Brick\Money\Money, array<string, string>>
  */

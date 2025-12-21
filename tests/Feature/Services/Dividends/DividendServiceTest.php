@@ -111,8 +111,7 @@ class DividendServiceTest extends TestCase
 
         $result = $service->getDividends($stock);
 
-        $this->assertEquals((
-            (1000 - 200) * (1/1.2500)) +
+        $this->assertEquals(((1000 - 200) * (1/1.2500)) +
             ((750 - 250) * (1/1.2500)), $result->getMinorAmount()->toInt());
     }
 

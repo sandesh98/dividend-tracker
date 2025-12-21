@@ -11,7 +11,8 @@ readonly class AverageStockPriceCalculator
     public function __construct(
         private StockQuantityCalculator $stockQuantityCalculator,
         private InvestmentCalculator $investmentCalculator,
-    ) {}
+    ) {
+    }
 
     /**
      * Get quantity for the given stock.

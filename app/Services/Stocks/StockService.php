@@ -32,16 +32,13 @@ readonly class StockService
      * @param SellCalculator $sellCalculator
      */
     public function __construct(
-        private StockQuantityCalculator     $stockQuantity,
+        private StockQuantityCalculator $stockQuantity,
         private AverageStockPriceCalculator $averageStockPrice,
         private TotalInvestedCalculator $totalInvested,
-
-
-
-        private DividendService             $dividendService,
-        private TransactionService          $transactionService,
-        private InvestmentCalculator        $investmentCalculator,
-        private SellCalculator              $sellCalculator
+        private DividendService $dividendService,
+        private TransactionService $transactionService,
+        private InvestmentCalculator $investmentCalculator,
+        private SellCalculator $sellCalculator
     ) {
     }
 
@@ -60,8 +57,9 @@ readonly class StockService
      * Get the total amount invested including fee's in cents for the given stock.
      *
      * @param Stock $stock
+     * return BigDecimal
      */
-    public function totalAmountInvested(Stock $stock)
+    public function totalAmountInvested(Stock $stock): BigDecimal
     {
         return $this->totalInvested->calculate($stock)->getMinorAmount();
     }

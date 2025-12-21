@@ -46,4 +46,39 @@ class StockQuantityCalculatorTest extends TestCase
 
         $this->assertEquals((5 + 3 - 4), $data);
     }
+
+    public function testItReturnZeroWhenMoreStockWhereSold(): void
+    {
+        $stock = StockFactory::new()->createOne();
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Buy->value,
+                'quantity' => 5,
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Buy->value,
+                'quantity' => 3,
+            ]);
+
+        TradeFactory::new()
+            ->for($stock)
+            ->createOne([
+                'action' => TransactionType::Sell->value,
+                'quantity' => 9,
+            ]);
+
+        $service = app(StockService::class);
+
+        $data = $service->quantity($stock);
+
+        // Calculation
+        // Buy: 5 + 3 = 8
+        // Sell: 9
+        $this->assertEquals(0, $data);
+    }
 }

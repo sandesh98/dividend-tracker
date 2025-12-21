@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportTransactions
 {
-
     /**
      * Create a new action instance.
      *
