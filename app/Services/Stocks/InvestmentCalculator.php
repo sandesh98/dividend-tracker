@@ -59,8 +59,8 @@ class InvestmentCalculator
         $buyMoney = Money::ofMinor($buy, CurrencyType::EUR->value);
 
         return $buyMoney
-        ->minus($sellMoney)
-        ->plus($transactionMoney);
+            ->minus($sellMoney)
+            ->plus($transactionMoney);
     }
 
 /**
@@ -88,10 +88,9 @@ class InvestmentCalculator
         $sellMoney = Money::ofMinor($sell, CurrencyType::USD->value);
         $buyMoney = Money::ofMinor($buy, CurrencyType::USD->value);
 
-        $investmentInUSD = $buyMoney
-        ->minus($sellMoney)
-        ->dividedBy($fx, roundingMode: RoundingMode::HALF_UP)
-        ->plus($transactionMoney);
+        $investmentInUSD = $buyMoney->minus($sellMoney)
+            ->dividedBy($fx, roundingMode: RoundingMode::HALF_UP)
+            ->plus($transactionMoney);
 
         return Money::of($investmentInUSD->getAmount(), CurrencyType::EUR->value);
     }

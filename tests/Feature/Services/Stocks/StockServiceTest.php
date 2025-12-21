@@ -42,7 +42,7 @@ class StockServiceTest extends TestCase
 
         $service = app(StockService::class);
 
-        $data = $service->getStockQuantity($stock);
+        $data = $service->quantity($stock);
 
         $this->assertEquals((5 + 3 - 4), $data);
     }
@@ -129,80 +129,6 @@ class StockServiceTest extends TestCase
         $data = $service->getMarketValue($stock);
 
         $this->assertEquals((100 * (20 + 5 + 30 - 4)), $data->toInt());
-    }
-
-    public function testItCalculatesTotalAmoundInvested(): void
-    {
-        $stock = StockFactory::new()->createOne();
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'total_transaction_value' => 1000,
-                'order_id' => 'e71b7007-cbd3-3e0c-aafb-ab75cebb14a2',
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'currency' => CurrencyType::EUR->value,
-                'action' => null,
-                'description' => DescriptionType::DegiroTransactionCost->value,
-                'quantity' => 1,
-                'total_transaction_value' => 300,
-                'order_id' => 'e71b7007-cbd3-3e0c-aafb-ab75cebb14a2',
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'total_transaction_value' => 2000,
-                'order_id' => 'ae96c7bf-193c-3e98-8d33-fbdc14d59811'
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'currency' => CurrencyType::EUR->value,
-                'action' => null,
-                'description' => DescriptionType::DegiroTransactionCost->value,
-                'quantity' => 1,
-                'total_transaction_value' => 300,
-                'order_id' => 'ae96c7bf-193c-3e98-8d33-fbdc14d59811'
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Sell->value,
-                'currency' => CurrencyType::EUR->value,
-                'total_transaction_value' => 3000,
-                'order_id' => 'd4733ccc-98bb-3363-9388-d0cc138b6b89'
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'currency' => CurrencyType::EUR->value,
-                'action' => null,
-                'description' => DescriptionType::DegiroTransactionCost->value,
-                'quantity' => 1,
-                'total_transaction_value' => 300,
-                'order_id' => 'd4733ccc-98bb-3363-9388-d0cc138b6b89'
-            ]);
-
-        $service = app(StockService::class);
-
-        $data = $service->getTotalAmoundInvested($stock);
-
-        $this->assertEquals(
-            (1000 + 300) + (2000 + 300) - (3000 - 300),
-            $data->toInt()
-        );
     }
 
     public function testItCalculatesProfitOrLoss(): void

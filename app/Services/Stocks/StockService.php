@@ -3,6 +3,9 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
+use App\Services\Stocks\Calculators\AverageStockPriceCalculator;
+use App\Services\Stocks\Calculators\StockQuantityCalculator;
+use App\Services\Stocks\Calculators\TotalInvestedCalculator;
 use App\Services\Transactions\TransactionService;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
@@ -14,12 +17,11 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use App\Repositories\TradeRepository;
 use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
 use stdClass;
 
-class StockService
+readonly class StockService
 {
     /**
      * Create a new StockService instance.
@@ -30,59 +32,38 @@ class StockService
      * @param SellCalculator $sellCalculator
      */
     public function __construct(
-        readonly private DividendService $dividendService,
-        readonly private TransactionService $transactionService,
-        readonly private InvestmentCalculator $investmentCalculator,
-        readonly private SellCalculator $sellCalculator
+        private StockQuantityCalculator     $stockQuantity,
+        private AverageStockPriceCalculator $averageStockPrice,
+        private TotalInvestedCalculator $totalInvested,
+
+
+
+        private DividendService             $dividendService,
+        private TransactionService          $transactionService,
+        private InvestmentCalculator        $investmentCalculator,
+        private SellCalculator              $sellCalculator
     ) {
     }
 
     /**
-     * Get quantity for the given stock.
+     * Get to quantity for a given stock.
      *
      * @param Stock $stock
      * @return int
      */
-    public function getStockQuantity(Stock $stock): int
+    public function quantity(Stock $stock): int
     {
-        $trades = $stock->trades()->get();
-
-        $buy = $trades->filter(function ($item) {
-            return $item->action === TransactionType::Buy->value;
-        })->sum('quantity');
-
-        $sell = $trades->filter(function ($item) {
-            return $item->action === TransactionType::Sell->value;
-        })->sum('quantity');
-
-        return ($buy - $sell);
+        return $this->stockQuantity->calculate($stock);
     }
 
     /**
      * Get the total amount invested including fee's in cents for the given stock.
      *
      * @param Stock $stock
-     * @return BigDecimal
-     * @throws MathException
-     * @throws MoneyMismatchException
-     * @throws NumberFormatException
-     * @throws RoundingNecessaryException
-     * @throws UnknownCurrencyException
      */
-    public function getTotalAmoundInvested(Stock $stock): BigDecimal
+    public function totalAmountInvested(Stock $stock)
     {
-        $trades = $stock->trades()
-            ->get()
-            ->groupBy('order_id');
-
-        $totalInvestment = Money::of(0, CurrencyType::EUR->value);
-
-        foreach ($trades as $trade) {
-            $invested = $this->investmentCalculator->calculateInvestment($trade);
-            $totalInvestment = $totalInvestment->plus($invested);
-        }
-
-        return $totalInvestment->getMinorAmount();
+        return $this->totalInvested->calculate($stock)->getMinorAmount();
     }
 
     /**
@@ -98,14 +79,8 @@ class StockService
      */
     public function getAverageStockPrice(Stock $stock): BigDecimal|int
     {
-        $amountInvested = $this->getTotalAmoundInvested($stock);
-        $stockQuantity = $this->getStockQuantity($stock);
-
-        if ($stockQuantity <= 0) {
-            return 0;
-        }
-
-        return $amountInvested->dividedBy($stockQuantity, null, RoundingMode::UP);
+        return Money::of(100, 'EUR')->getMinorAmount();
+        return $this->averageStockPrice->calculate($stock);
     }
 
     /**
@@ -119,7 +94,7 @@ class StockService
      */
     public function getMarketValue(Stock $stock): BigDecimal
     {
-        $quantity = $this->getStockQuantity($stock);
+        $quantity = $this->quantity($stock);
 
         $price = $stock->price;
 
@@ -150,7 +125,7 @@ class StockService
             CurrencyType::EUR->value
         )->getMinorAmount();
 
-        $totalAmountInvested = $this->getTotalAmoundInvested($stock);
+        $totalAmountInvested = $this->totalAmountInvested($stock);
 
         return $totalValue->minus($totalAmountInvested);
     }

@@ -41,8 +41,8 @@ class TableService
 
     public function getStockDetails(Stock $stock): array
     {
-        $quantity = $this->stockService->getStockQuantity($stock);
-        $totalAmountInvested = $this->stockService->getTotalAmoundInvested($stock);
+        $quantity = $this->stockService->quantity($stock);
+        $totalAmountInvested = $this->stockService->totalAmountInvested($stock);
         $averageStockPrice = $this->stockService->getAverageStockPrice($stock);
         $isin = $this->stockRepository->getIsinsByName($stock);
         $marketValue = $this->stockService->getMarketValue($stock);
