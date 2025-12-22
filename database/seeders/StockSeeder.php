@@ -28,12 +28,12 @@ class StockSeeder extends Seeder
                 'name' => $stock->product,
                 'isin' => $stock->isin,
                 'display_name' => $stock->product,
-                'type' => Arr::random(['S', 'ETF']), // replace with real data
+                'type' => Arr::random(['S', 'ETF']), // replace it with real data
                 'ticker' => Arr::random([
-                    'VHYL', 'INGA.AS', 'VWRL', 'PQEFF', 'VUSA', 'KHC', 'KO', 'AAPL', 'MA', 'BESI.AS', 'MTTR', 'CSPX', 'ABN.AS',
-                    'BFIT.AS', 'EBUS.AS', 'BBBYQ', 'MULN', 'GME', 'DGTL', 'SHEL', 'BB', 'SNDL'
-                ]), // replace with real data
-                'currency' => Arr::random([CurrencyType::EUR->value, CurrencyType::USD->value]), // replace with real data
+                    'VHYL', 'INGA.AS', 'VWRL', 'PQEFF', 'VUSA', 'KHC', 'KO', 'AAPL', 'MA', 'BESI.AS', 'MTTR', 'CSPX',
+                    'ABN.AS', 'BFIT.AS', 'EBUS.AS', 'BBBYQ', 'MULN', 'GME', 'DGTL', 'SHEL', 'BB', 'SNDL'
+                ]), // replace it with real data
+                'currency' => Arr::random([CurrencyType::EUR, CurrencyType::USD]), // replace it with real data
                 'price' => Money::of(random_int(1, 100), 'EUR')->getMinorAmount()->toInt(),
             ]);
         }
