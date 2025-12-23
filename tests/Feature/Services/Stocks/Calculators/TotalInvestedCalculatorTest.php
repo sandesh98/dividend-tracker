@@ -6,6 +6,7 @@ use App\Services\Stocks\Calculators\TotalInvestedCalculator;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
 use App\Value\TransactionType;
+use Brick\Money\Money;
 use Database\Factories\StockFactory;
 use Database\Factories\TradeFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -92,6 +93,7 @@ class TotalInvestedCalculatorTest extends TestCase
         // Costs: 300 + 300 + 300 = 900
         // Total: 3000 - 2000 + 900 = 1900
         $this->assertEquals(1900, $service->getMinorAmount()->toInt());
+        $this->assertInstanceOf(Money::class, $service);
     }
 
     public function testItCalculatesTotalAmoundInvestedInDollar(): void
@@ -169,6 +171,7 @@ class TotalInvestedCalculatorTest extends TestCase
         // Costs: 300 + 300 + 300 = 900
         // Total: 3000 - 1500 + 900 = 2400
         $this->assertEquals(2400, $service->getMinorAmount()->toInt());
+        $this->assertInstanceOf(Money::class, $service);
     }
 
     public function testItCalculatesTotalAmoundInvestedWhenAllStocksAreSold(): void
@@ -226,5 +229,6 @@ class TotalInvestedCalculatorTest extends TestCase
         // Costs: 300 + 300 = 900
         // Total: 3000 - 3000 + 600 = 3600
         $this->assertEquals(600, $service->getMinorAmount()->toInt());
+        $this->assertInstanceOf(Money::class, $service);
     }
 }

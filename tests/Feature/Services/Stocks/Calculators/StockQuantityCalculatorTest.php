@@ -42,7 +42,11 @@ class StockQuantityCalculatorTest extends TestCase
 
         $data = $service->calculate($stock);
 
-        $this->assertEquals((5 + 3 - 4), $data);
+        // Buy: 5 + 3 = 8
+        // Sell: 4
+        // Total: 8 - 4 = 4
+        $this->assertEquals(4, $data);
+        $this->assertIsInt($service);
     }
 
     public function testItReturnZeroWhenMoreStockWhereSold(): void
@@ -70,14 +74,12 @@ class StockQuantityCalculatorTest extends TestCase
                 'quantity' => 9,
             ]);
 
-        $service = app(StockQuantityCalculator::class);
+        $service = app(StockQuantityCalculator::class)->calculate($stock);
 
-        $data = $service->calculate($stock);
-
-        // Calculation
         // Buy: 5 + 3 = 8
         // Sell: 9
         // Total: 8 - 9 = -1 should be 0
-        $this->assertEquals(0, $data);
+        $this->assertEquals(0, $service);
+        $this->assertIsInt($service);
     }
 }
