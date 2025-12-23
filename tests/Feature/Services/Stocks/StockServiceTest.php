@@ -179,7 +179,7 @@ class StockServiceTest extends TestCase
     {
         $stock = StockFactory::new()
             ->createOne([
-                'currency' => CurrencyType::EUR->value,
+                'currency' => CurrencyType::EUR,
                 'price' => 100,
             ]);
 
