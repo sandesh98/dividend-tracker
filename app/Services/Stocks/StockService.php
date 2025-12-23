@@ -4,6 +4,7 @@ namespace App\Services\Stocks;
 
 use App\Models\Stock;
 use App\Services\Stocks\Calculators\AverageStockPriceCalculator;
+use App\Services\Stocks\Calculators\MarketValueCalculator;
 use App\Services\Stocks\Calculators\StockQuantityCalculator;
 use App\Services\Stocks\Calculators\TotalInvestedCalculator;
 use App\Services\Transactions\TransactionService;
@@ -35,6 +36,7 @@ readonly class StockService
         private StockQuantityCalculator $stockQuantity,
         private AverageStockPriceCalculator $averageStockPrice,
         private TotalInvestedCalculator $totalInvested,
+        private MarketValueCalculator $marketValue,
         private DividendService $dividendService,
         private TransactionService $transactionService,
         private InvestmentCalculator $investmentCalculator,
@@ -91,17 +93,7 @@ readonly class StockService
      */
     public function getMarketValue(Stock $stock): BigDecimal
     {
-        $quantity = $this->quantity($stock);
-
-        $price = $stock->price;
-
-        if ($quantity < 0 && $price < 0) {
-            Money::zero(CurrencyType::EUR->value)->getMinorAmount();
-        }
-
-        $value = $price * $quantity;
-
-        return Money::ofMinor($value, CurrencyType::EUR->value)->getMinorAmount();
+        return $this->marketValue->calculate($stock)->getMinorAmount();
     }
 
     /**
