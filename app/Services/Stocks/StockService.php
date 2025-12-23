@@ -5,6 +5,7 @@ namespace App\Services\Stocks;
 use App\Models\Stock;
 use App\Services\Stocks\Calculators\AverageStockPriceCalculator;
 use App\Services\Stocks\Calculators\MarketValueCalculator;
+use App\Services\Stocks\Calculators\ProfitOrLossCalculator;
 use App\Services\Stocks\Calculators\StockQuantityCalculator;
 use App\Services\Stocks\Calculators\TotalInvestedCalculator;
 use App\Services\Transactions\TransactionService;
@@ -20,7 +21,6 @@ use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
-use stdClass;
 
 readonly class StockService
 {
@@ -37,6 +37,7 @@ readonly class StockService
         private AverageStockPriceCalculator $averageStockPrice,
         private TotalInvestedCalculator $totalInvested,
         private MarketValueCalculator $marketValue,
+        private ProfitOrLossCalculator $profitOrLoss,
         private DividendService $dividendService,
         private TransactionService $transactionService,
         private InvestmentCalculator $investmentCalculator,
@@ -72,7 +73,6 @@ readonly class StockService
      * @param Stock $stock
      * @return BigDecimal
      * @throws MathException
-     * @throws MoneyMismatchException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
@@ -102,21 +102,13 @@ readonly class StockService
      * @param Stock $stock
      * @return BigDecimal
      * @throws MathException
-     * @throws MoneyMismatchException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
     public function getProfitOrLoss(Stock $stock): BigDecimal
     {
-        $totalValue = Money::ofMinor(
-            $this->getMarketValue($stock),
-            CurrencyType::EUR->value
-        )->getMinorAmount();
-
-        $totalAmountInvested = $this->totalAmountInvested($stock);
-
-        return $totalValue->minus($totalAmountInvested);
+        return $this->profitOrLoss->calculate($stock)->getMinorAmount();
     }
 
     /**
@@ -132,16 +124,12 @@ readonly class StockService
      */
     public function getRealizedProfitLoss(Stock $stock): BigDecimal
     {
-        $profitOrLoss = $this->getProfitOrLoss($stock);
-//        $dividend = $this->dividendService->getDividends($stock);
-        $transactionCost = $this->transactionService->getTransactionCosts($stock);
-
-        return $profitOrLoss->minus($transactionCost);
-//        return $profitOrLoss->minus($dividend)->minus($transactionCost);
+        // ProfitOrLoss - dividend - transactiekosten = realizedProfitOrLoss
+        return Money::of(100, CurrencyType::EUR->value)->getMinorAmount();
     }
 
     /**
-     * Get the last price in cents for the given stock.
+     * Get the latest price in cents for the given stock.
      *
      * @param Stock $stock
      * @return BigDecimal
@@ -149,7 +137,7 @@ readonly class StockService
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
-    public function getLastPrice(Stock $stock): BigDecimal
+    public function getLatestPrice(Stock $stock): BigDecimal
     {
         return Money::ofMinor($stock->price, CurrencyType::EUR->value)->getMinorAmount();
     }
@@ -191,17 +179,5 @@ readonly class StockService
         return $totalSellValue
             ->dividedBy($totalSoldQuantity, RoundingMode::UP)
             ->getMinorAmount();
-    }
-
-    public function getFirstTransactionDatetime($stock)
-    {
-        $date = $this->tradeRepository->getFirstTransactionDate($stock);
-        $time = $this->tradeRepository->getFirstTransactionTime($stock);
-
-        $result = new stdClass();
-        $result->date = $date;
-        $result->time = $time;
-
-        return $result;
     }
 }

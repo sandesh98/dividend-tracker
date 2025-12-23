@@ -38,14 +38,12 @@ class StockQuantityCalculatorTest extends TestCase
                 'quantity' => 4,
             ]);
 
-        $service = app(StockQuantityCalculator::class);
-
-        $data = $service->calculate($stock);
+        $service = app(StockQuantityCalculator::class)->calculate($stock);
 
         // Buy: 5 + 3 = 8
         // Sell: 4
         // Total: 8 - 4 = 4
-        $this->assertEquals(4, $data);
+        $this->assertEquals(4, $service);
         $this->assertIsInt($service);
     }
 

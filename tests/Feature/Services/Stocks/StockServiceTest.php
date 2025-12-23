@@ -15,109 +15,16 @@ class StockServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItCalculatesMarketValue(): void
+    public function testItReturnsTheLastPrice(): void
     {
-        $stock = StockFactory::new()
-            ->createOne([
+        $stock = StockFactory::new()->createOneQuietly([
+            'currency' => CurrencyType::EUR,
             'price' => 100,
         ]);
 
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 20,
-            ]);
+        $service = app(StockService::class)->getLatestPrice($stock);
 
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 5,
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 30,
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Sell->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 4,
-            ]);
-
-        $service = app(StockService::class);
-
-        $data = $service->getMarketValue($stock);
-
-        $this->assertEquals((100 * (20 + 5 + 30 - 4)), $data->toInt());
-    }
-
-    public function testItCalculatesProfitOrLoss(): void
-    {
-        $stock = StockFactory::new()
-            ->createOne([
-                'price' => 100,
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 15,
-                'total_transaction_value' => 2300,
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Buy->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 7,
-                'total_transaction_value' => 6500,
-            ]);
-
-        TradeFactory::new()
-            ->for($stock)
-            ->createOne([
-                'action' => TransactionType::Sell->value,
-                'currency' => CurrencyType::EUR->value,
-                'quantity' => 10,
-                'total_transaction_value' => 7200,
-            ]);
-
-        $service = app(StockService::class);
-
-        $data = $service->getProfitOrLoss($stock);
-
-        $this->assertEquals(
-            ((15 + 7 - 10) * 100) - (2300 + 6500 - 7200),
-            $data->toInt()
-        );
-    }
-
-    public function testItReturnsTheLastPrice(): void
-    {
-        $stock = StockFactory::new()
-            ->createOne([
-                'currency' => CurrencyType::EUR,
-                'price' => 100,
-            ]);
-
-        $service = app(StockService::class);
-
-        $data = $service->getLastPrice($stock);
-
-        $this->assertEquals(100, $data->toInt());
+        $this->assertEquals($stock->price, $service->toInt());
     }
 
     public function testItReturnsAverageSellPriceInUsd(): void

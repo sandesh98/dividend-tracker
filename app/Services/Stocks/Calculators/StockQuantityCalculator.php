@@ -3,6 +3,7 @@
 namespace App\Services\Stocks\Calculators;
 
 use App\Models\Stock;
+use App\Models\Trade;
 use App\Value\TransactionType;
 
 class StockQuantityCalculator
@@ -17,11 +18,11 @@ class StockQuantityCalculator
     {
         $trades = $stock->trades()->get();
 
-        $buy = $trades->filter(function ($item) {
-            return $item->action === TransactionType::Buy->value;
+        $buy = $trades->filter(function (Trade $trade) {
+            return $trade->action === TransactionType::Buy->value;
         })->sum('quantity');
 
-        $sell = $trades->filter(function ($item) {
+        $sell = $trades->filter(function (Trade $item) {
             return $item->action === TransactionType::Sell->value;
         })->sum('quantity');
 
@@ -31,6 +32,6 @@ class StockQuantityCalculator
             return 0;
         }
 
-        return ($buy - $sell);
+        return $total;
     }
 }
