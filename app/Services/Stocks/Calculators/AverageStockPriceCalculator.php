@@ -3,36 +3,35 @@
 namespace App\Services\Stocks\Calculators;
 
 use App\Models\Stock;
-use App\Services\Stocks\InvestmentCalculator;
+use App\Value\CurrencyType;
 use Brick\Math\RoundingMode;
+use Brick\Money\Exception\UnknownCurrencyException;
+use Brick\Money\Money;
 
 readonly class AverageStockPriceCalculator
 {
     public function __construct(
         private StockQuantityCalculator $stockQuantityCalculator,
-        private InvestmentCalculator $investmentCalculator,
+        private TotalInvestedCalculator $totalInvestedCalculator,
     ) {
     }
 
     /**
-     * Get quantity for the given stock.
+     * Get the average buy price for a given stock.
      *
      * @param Stock $stock
-     * @return int
+     * @return Money
+     * @throws UnknownCurrencyException
      */
-    public function calculate(Stock $stock): int
+    public function calculate(Stock $stock): Money
     {
-        // hoeveel ik zelf heb ingelegd / quantity
-
-
-        $stocks = $stock->trades()->get();
-        $amountInvested = $this->investmentCalculator->calculateInvestment($stocks);
+        $amountInvested = $this->totalInvestedCalculator->calculate($stock);
         $stockQuantity = $this->stockQuantityCalculator->calculate($stock);
 
         if ($stockQuantity <= 0) {
-            return 0;
+            return Money::of(0, CurrencyType::EUR->value);
         }
 
-        return $amountInvested->dividedBy($stockQuantity, null, RoundingMode::UP);
+        return $amountInvested->dividedBy($stockQuantity, RoundingMode::HALF_EVEN);
     }
 }

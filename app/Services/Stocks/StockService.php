@@ -68,17 +68,16 @@ readonly class StockService
      * Get the average stock price in cents for the given stock.
      *
      * @param Stock $stock
-     * @return BigDecimal|int
+     * @return BigDecimal
      * @throws MathException
      * @throws MoneyMismatchException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
-    public function getAverageStockPrice(Stock $stock): BigDecimal|int
+    public function getAverageStockPrice(Stock $stock): BigDecimal
     {
-        return Money::of(100, 'EUR')->getMinorAmount();
-        return $this->averageStockPrice->calculate($stock);
+        return $this->averageStockPrice->calculate($stock)->getMinorAmount();
     }
 
     /**

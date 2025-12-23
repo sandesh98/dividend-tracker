@@ -23,7 +23,7 @@ class StockFactory extends Factory
             'display_name' => $this->faker->name,
             'type' => $this->faker->randomElement(['ETF', 'S']),
             'ticker' => strtoupper($this->faker->lexify('???')),
-            'currency' => $this->faker->randomElement([CurrencyType::USD->value, CurrencyType::EUR->value]),
+            'currency' => $this->faker->randomElement(CurrencyType::class),
             'price' => $this->faker->numberBetween(1, 10000),
         ];
     }

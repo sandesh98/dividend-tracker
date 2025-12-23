@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Services\Stocks\Calculators;
 
-use App\Services\Stocks\StockService;
-use App\Value\CurrencyType;
-use App\Value\DescriptionType;
+use App\Services\Stocks\Calculators\StockQuantityCalculator;
 use App\Value\TransactionType;
 use Database\Factories\StockFactory;
 use Database\Factories\TradeFactory;
@@ -40,9 +38,9 @@ class StockQuantityCalculatorTest extends TestCase
                 'quantity' => 4,
             ]);
 
-        $service = app(StockService::class);
+        $service = app(StockQuantityCalculator::class);
 
-        $data = $service->quantity($stock);
+        $data = $service->calculate($stock);
 
         $this->assertEquals((5 + 3 - 4), $data);
     }
@@ -72,13 +70,14 @@ class StockQuantityCalculatorTest extends TestCase
                 'quantity' => 9,
             ]);
 
-        $service = app(StockService::class);
+        $service = app(StockQuantityCalculator::class);
 
-        $data = $service->quantity($stock);
+        $data = $service->calculate($stock);
 
         // Calculation
         // Buy: 5 + 3 = 8
         // Sell: 9
+        // Total: 8 - 9 = -1 should be 0
         $this->assertEquals(0, $data);
     }
 }

@@ -16,7 +16,8 @@ class CurrencyRuleTest extends TestCase
     public function testGetReturnsCurrencyEnum(string $value, CurrencyType $expected): void
     {
         $cast = new AsCurrency();
-        $model = new class () extends Model {};
+        $model = new class () extends Model {
+        };
 
         $this->assertSame(
             $expected,
@@ -36,7 +37,8 @@ class CurrencyRuleTest extends TestCase
         ));
 
         $cast = new AsCurrency();
-        $model = new class () extends Model {};
+        $model = new class () extends Model {
+        };
 
         $cast->get($model, 'currency', $value, []);
     }
@@ -46,7 +48,8 @@ class CurrencyRuleTest extends TestCase
     public function testSetAcceptsCurrencyEnum(string $value, CurrencyType $expected): void
     {
         $cast = new AsCurrency();
-        $model = new class () extends Model {};
+        $model = new class () extends Model {
+        };
 
         $this->assertSame(
             $value,
@@ -67,7 +70,8 @@ class CurrencyRuleTest extends TestCase
         ));
 
         $cast = new AsCurrency();
-        $model = new class () extends Model {};
+        $model = new class () extends Model {
+        };
 
         $cast->set($model, 'currency', $value, []);
     }
