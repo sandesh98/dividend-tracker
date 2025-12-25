@@ -24,8 +24,6 @@ class Stock extends Model
 
     /**
      * Query the trades.
-     *
-     * @return HasMany
      */
     public function trades(): HasMany
     {
@@ -34,8 +32,6 @@ class Stock extends Model
 
     /**
      * Query the dividends.
-     *
-     * @return HasMany
      */
     public function dividends(): HasMany
     {

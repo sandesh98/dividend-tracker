@@ -9,7 +9,5 @@ class TradesSeeder extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItSeedsTradesFromTransactions(): void
-    {
-    }
+    public function test_it_seeds_trades_from_transactions(): void {}
 }

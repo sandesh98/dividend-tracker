@@ -3,32 +3,29 @@
 namespace App\Services\Table;
 
 use App\Models\Stock;
+use App\Repositories\StockRepository;
+use App\Services\Dividends\DividendService;
 use App\Services\Stocks\Calculators\CalculateAverageBuyPrice;
 use App\Services\Stocks\Calculators\CalculateMarketValue;
 use App\Services\Stocks\Calculators\CalculateProfitOrLoss;
 use App\Services\Stocks\Calculators\CalculateQuantity;
 use App\Services\Stocks\Calculators\CalculateTotalInvested;
-use Illuminate\Support\Collection;
-use App\Repositories\StockRepository;
 use App\Services\Stocks\StockService;
-use App\Repositories\DividendRepository;
-use App\Services\Dividends\DividendService;
+use Illuminate\Support\Collection;
 
 class TableService
 {
     public function __construct(
-        readonly private CalculateQuantity $quantity,
-        readonly private CalculateTotalInvested $totalInvested,
-        readonly private CalculateAverageBuyPrice $averageBuyPrice,
-        readonly private CalculateMarketValue $marketValue,
-        readonly private CalculateProfitOrLoss $profitOrLoss,
+        private readonly CalculateQuantity $quantity,
+        private readonly CalculateTotalInvested $totalInvested,
+        private readonly CalculateAverageBuyPrice $averageBuyPrice,
+        private readonly CalculateMarketValue $marketValue,
+        private readonly CalculateProfitOrLoss $profitOrLoss,
 
-
-        readonly private DividendService $dividendService,
-        readonly private StockRepository $stockRepository,
-        readonly private StockService $stockService
-    ) {
-    }
+        private readonly DividendService $dividendService,
+        private readonly StockRepository $stockRepository,
+        private readonly StockService $stockService
+    ) {}
 
     public function loadTable(): Collection
     {
@@ -62,7 +59,7 @@ class TableService
         $realizedProfitLoss = $this->profitOrLoss->__invoke($stock);
         $lastPrice = $this->stockService->getLatestPrice($stock);
         $type = $stock->type;
-//        $dividend = $this->dividendService->getDividends($stock);
+        //        $dividend = $this->dividendService->getDividends($stock);
         $averageStockSellPrice = $this->stockService->getAverageStockSellPrice($stock);
 
         return [
@@ -77,8 +74,8 @@ class TableService
             'realizedProfitLoss' => $realizedProfitLoss,
             'lastPrice' => $lastPrice,
             'type' => $type,
-//            'dividend' => $dividend,
-            'averageStockSellPrice' => $averageStockSellPrice
+            //            'dividend' => $dividend,
+            'averageStockSellPrice' => $averageStockSellPrice,
         ];
     }
 }

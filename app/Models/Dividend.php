@@ -28,8 +28,6 @@ class Dividend extends Model
 
     /**
      * Query the stock.
-     *
-     * @return BelongsTo
      */
     public function stock(): BelongsTo
     {

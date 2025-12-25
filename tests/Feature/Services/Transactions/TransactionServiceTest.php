@@ -15,7 +15,7 @@ class TransactionServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItCalculatesAvailableCash(): void
+    public function test_it_calculates_available_cash(): void
     {
         CashMovementFactory::new()
             ->createOne([
@@ -42,7 +42,7 @@ class TransactionServiceTest extends TestCase
         $this->assertEquals((10000 + 150000 - 75000), $value->toInt());
     }
 
-    public function testItCalculatesTransactionCostSum(): void
+    public function test_it_calculates_transaction_cost_sum(): void
     {
         $stock = StockFactory::new()->createOne();
 
@@ -53,7 +53,7 @@ class TransactionServiceTest extends TestCase
             ->createOne([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
-                'total_transaction_value' => 200
+                'total_transaction_value' => 200,
             ]);
 
         TradeFactory::new()
@@ -61,7 +61,7 @@ class TransactionServiceTest extends TestCase
             ->createOne([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
-                'total_transaction_value' => 100
+                'total_transaction_value' => 100,
             ]);
 
         TradeFactory::new()
@@ -69,7 +69,7 @@ class TransactionServiceTest extends TestCase
             ->createOne([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
-                'total_transaction_value' => 200
+                'total_transaction_value' => 200,
             ]);
 
         TradeFactory::new()
@@ -77,7 +77,7 @@ class TransactionServiceTest extends TestCase
             ->createOne([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
-                'total_transaction_value' => 150
+                'total_transaction_value' => 150,
             ]);
 
         $service = app(TransactionService::class);
@@ -87,7 +87,7 @@ class TransactionServiceTest extends TestCase
         $this->assertEquals((200 + 100 + 200 + 150), $value->toInt());
     }
 
-    public function testItCalculatesTransactionCostForStock(): void
+    public function test_it_calculates_transaction_cost_for_stock(): void
     {
         $stock = StockFactory::new()->createOne();
 
@@ -100,7 +100,7 @@ class TransactionServiceTest extends TestCase
             ->createOne([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
-                'total_transaction_value' => 200
+                'total_transaction_value' => 200,
             ]);
 
         TradeFactory::new()
@@ -112,7 +112,7 @@ class TransactionServiceTest extends TestCase
             ->createOne([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
-                'total_transaction_value' => 150
+                'total_transaction_value' => 150,
             ]);
 
         $service = app(TransactionService::class);

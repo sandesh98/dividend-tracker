@@ -37,7 +37,7 @@ class TradeFactory extends Factory
                     $attributes['currency'],
                 );
             },
-            'order_id' => $this->faker->uuid()
+            'order_id' => $this->faker->uuid(),
         ];
     }
 }

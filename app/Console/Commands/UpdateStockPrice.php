@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\Stocks\StockPriceService;
-use Scheb\YahooFinanceApi\ApiClientFactory;
+use Illuminate\Console\Command;
 
 class UpdateStockPrice extends Command
 {

@@ -13,11 +13,10 @@ class CurrencyRuleTest extends TestCase
 {
     #[TestWith(['EUR', CurrencyType::EUR])]
     #[TestWith(['USD', CurrencyType::USD])]
-    public function testGetReturnsCurrencyEnum(string $value, CurrencyType $expected): void
+    public function test_get_returns_currency_enum(string $value, CurrencyType $expected): void
     {
-        $cast = new AsCurrency();
-        $model = new class () extends Model {
-        };
+        $cast = new AsCurrency;
+        $model = new class extends Model {};
 
         $this->assertSame(
             $expected,
@@ -27,7 +26,7 @@ class CurrencyRuleTest extends TestCase
 
     #[TestWith(['GBP'])]
     #[TestWith([''])]
-    public function testGetThrowsExceptionForInvalidValue(string $value): void
+    public function test_get_throws_exception_for_invalid_value(string $value): void
     {
         $this->expectException(ValueError::class);
         $this->expectExceptionMessage(sprintf(
@@ -36,20 +35,18 @@ class CurrencyRuleTest extends TestCase
             CurrencyType::class,
         ));
 
-        $cast = new AsCurrency();
-        $model = new class () extends Model {
-        };
+        $cast = new AsCurrency;
+        $model = new class extends Model {};
 
         $cast->get($model, 'currency', $value, []);
     }
 
     #[TestWith(['EUR', CurrencyType::EUR])]
     #[TestWith(['USD', CurrencyType::USD])]
-    public function testSetAcceptsCurrencyEnum(string $value, CurrencyType $expected): void
+    public function test_set_accepts_currency_enum(string $value, CurrencyType $expected): void
     {
-        $cast = new AsCurrency();
-        $model = new class () extends Model {
-        };
+        $cast = new AsCurrency;
+        $model = new class extends Model {};
 
         $this->assertSame(
             $value,
@@ -57,10 +54,9 @@ class CurrencyRuleTest extends TestCase
         );
     }
 
-
     #[TestWith(['GBP'])]
     #[TestWith([''])]
-    public function testSetThrowsExceptionForInvalidString(string $value): void
+    public function test_set_throws_exception_for_invalid_string(string $value): void
     {
         $this->expectException(ValueError::class);
         $this->expectExceptionMessage(sprintf(
@@ -69,9 +65,8 @@ class CurrencyRuleTest extends TestCase
             CurrencyType::class,
         ));
 
-        $cast = new AsCurrency();
-        $model = new class () extends Model {
-        };
+        $cast = new AsCurrency;
+        $model = new class extends Model {};
 
         $cast->set($model, 'currency', $value, []);
     }

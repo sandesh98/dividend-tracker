@@ -4,7 +4,6 @@ namespace App\Services\Stocks\Calculators;
 
 use App\Models\Stock;
 use App\Value\CurrencyType;
-use App\Value\TransactionType;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 
@@ -12,14 +11,11 @@ class CalculateMarketValue
 {
     public function __construct(
         private CalculateQuantity $stockQuantityCalculator,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the market value for the given stock.
      *
-     * @param Stock $stock
-     * @return Money
      * @throws UnknownCurrencyException
      */
     public function __invoke(Stock $stock): Money

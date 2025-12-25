@@ -16,8 +16,6 @@ class DividendSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -30,8 +28,6 @@ class DividendSeeder extends Seeder
 
     /**
      * Get all EUR dividend transactions
-     *
-     * @return Collection
      */
     private function getEURTransactions(): Collection
     {
@@ -45,8 +41,6 @@ class DividendSeeder extends Seeder
 
     /**
      * Get all USD dividend transactions
-     *
-     * @return Collection
      */
     private function getUSDTransactions(): Collection
     {
@@ -67,9 +61,6 @@ class DividendSeeder extends Seeder
 
     /**
      * Determine the FX value for the transaction
-     *
-     * @param $fx
-     * @return int
      */
     private function setFX($fx): int
     {
@@ -78,9 +69,6 @@ class DividendSeeder extends Seeder
 
     /**
      * Process the EUR dividend transactions
-     *
-     * @param Collection $transactions
-     * @return void
      */
     private function processEURTransaction(Collection $transactions): void
     {
@@ -109,17 +97,15 @@ class DividendSeeder extends Seeder
 
     /**
      * Process the USD dividend transactions
-     *
-     * @param Collection $transactions
-     * @return void
      */
     private function processUSDTransaction(Collection $transactions): void
     {
         $currentFx = null;
 
         foreach ($transactions as $transaction) {
-            if (!empty($transaction['fx']) && $transaction['description'] === 'Valuta Debitering') {
+            if (! empty($transaction['fx']) && $transaction['description'] === 'Valuta Debitering') {
                 $currentFx = $transaction['fx'];
+
                 continue;
             }
 
@@ -147,9 +133,6 @@ class DividendSeeder extends Seeder
 
     /**
      * Set the dividend amount to a positive value
-     *
-     * @param $amount
-     * @return float|int
      */
     private function setAmount($amount): float|int
     {

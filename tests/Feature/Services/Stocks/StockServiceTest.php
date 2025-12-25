@@ -15,7 +15,7 @@ class StockServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItReturnsTheLastPrice(): void
+    public function test_it_returns_the_last_price(): void
     {
         $stock = StockFactory::new()->createOneQuietly([
             'currency' => CurrencyType::EUR,
@@ -27,7 +27,7 @@ class StockServiceTest extends TestCase
         $this->assertEquals($stock->price, $service->toInt());
     }
 
-    public function testItReturnsAverageSellPriceInUsd(): void
+    public function test_it_returns_average_sell_price_in_usd(): void
     {
         $stock = StockFactory::new()->createOne();
 
@@ -129,7 +129,7 @@ class StockServiceTest extends TestCase
         );
     }
 
-    public function testItReturnsAverageSellPriceInEur(): void
+    public function test_it_returns_average_sell_price_in_eur(): void
     {
         $stock = StockFactory::new()->createOne();
 

@@ -9,18 +9,17 @@ class ImportTransactions
 {
     /**
      * Create a new action instance.
-     *
-     * @return void
      */
     public function __invoke(): void
     {
         $filepath = storage_path('app/public/Account-full.csv');
 
         if (! file_exists($filepath)) {
-            echo "Account.csv file not found inside app/public folder.";
+            echo 'Account.csv file not found inside app/public folder.';
+
             return;
         }
 
-        Excel::import(new TransactionsImport(), $filepath);
+        Excel::import(new TransactionsImport, $filepath);
     }
 }

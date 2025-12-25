@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         $this->app->bind(ApiClient::class, function (Application $app) {
-            return new ApiClient(new Client(), new ResultDecoder(new ValueMapper()));
+            return new ApiClient(new Client, new ResultDecoder(new ValueMapper));
         });
 
         \Illuminate\Support\Str::macro('centsToEuro', function ($value) {

@@ -6,7 +6,6 @@ use App\Models\Stock;
 use App\Models\Transaction;
 use App\Value\CurrencyType;
 use Brick\Money\Money;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
@@ -31,7 +30,7 @@ class StockSeeder extends Seeder
                 'type' => Arr::random(['S', 'ETF']), // replace it with real data
                 'ticker' => Arr::random([
                     'VHYL', 'INGA.AS', 'VWRL', 'PQEFF', 'VUSA', 'KHC', 'KO', 'AAPL', 'MA', 'BESI.AS', 'MTTR', 'CSPX',
-                    'ABN.AS', 'BFIT.AS', 'EBUS.AS', 'BBBYQ', 'MULN', 'GME', 'DGTL', 'SHEL', 'BB', 'SNDL'
+                    'ABN.AS', 'BFIT.AS', 'EBUS.AS', 'BBBYQ', 'MULN', 'GME', 'DGTL', 'SHEL', 'BB', 'SNDL',
                 ]), // replace it with real data
                 'currency' => Arr::random([CurrencyType::EUR, CurrencyType::USD]), // replace it with real data
                 'price' => Money::of(random_int(1, 100), 'EUR')->getMinorAmount()->toInt(),

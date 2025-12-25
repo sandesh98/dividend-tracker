@@ -20,7 +20,6 @@ class TransactionService
     /**
      * Get available cash in cents.
      *
-     * @return BigDecimal
      * @throws MathException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
@@ -47,13 +46,11 @@ class TransactionService
     /**
      * Get transaction costs in cents.
      *
-     * @param Stock|null $stock
-     * @return BigDecimal
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
      */
-    public function getTransactionCosts(Stock $stock = null): BigDecimal
+    public function getTransactionCosts(?Stock $stock = null): BigDecimal
     {
         $query = $stock
             ? $stock->trades()

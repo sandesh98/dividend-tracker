@@ -10,9 +10,6 @@ class CalculateQuantity
 {
     /**
      * Get quantity for the given stock.
-     *
-     * @param Stock $stock
-     * @return int
      */
     public function __invoke(Stock $stock): int
     {

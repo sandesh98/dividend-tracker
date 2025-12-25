@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Services\Stocks\Calculators;
 
-use App\Services\Stocks\Calculators\CalculateAverageBuyPrice;
 use App\Services\Stocks\Calculators\CalculateMarketValue;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
@@ -16,10 +15,10 @@ class CalculateMarketValueTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItCalculatesMarketValue(): void
+    public function test_it_calculates_market_value(): void
     {
         $stock = StockFactory::new()->createOneQuietly([
-            'price' => 1000
+            'price' => 1000,
         ]);
 
         TradeFactory::new()
@@ -49,10 +48,10 @@ class CalculateMarketValueTest extends TestCase
         $this->assertInstanceOf(Money::class, $service);
     }
 
-    public function testItReturnsZeroWhenQuantityIsNegative(): void
+    public function test_it_returns_zero_when_quantity_is_negative(): void
     {
         $stock = StockFactory::new()->createOneQuietly([
-            'price' => 1000
+            'price' => 1000,
         ]);
 
         TradeFactory::new()
@@ -82,10 +81,10 @@ class CalculateMarketValueTest extends TestCase
         $this->assertInstanceOf(Money::class, $service);
     }
 
-    public function testItReturnsZeroWhenPriceIsNegative(): void
+    public function test_it_returns_zero_when_price_is_negative(): void
     {
         $stock = StockFactory::new()->createOneQuietly([
-            'price' => -1000
+            'price' => -1000,
         ]);
 
         TradeFactory::new()
