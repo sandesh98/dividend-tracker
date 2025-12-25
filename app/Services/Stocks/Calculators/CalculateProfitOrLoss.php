@@ -5,11 +5,11 @@ namespace App\Services\Stocks\Calculators;
 use App\Models\Stock;
 use Brick\Money\Money;
 
-readonly class ProfitOrLossCalculator
+readonly class CalculateProfitOrLoss
 {
     public function __construct(
-        private MarketValueCalculator $marketValue,
-        private TotalInvestedCalculator $totalInvested,
+        private CalculateMarketValue   $marketValue,
+        private CalculateTotalInvested $totalInvested,
     ) {
     }
 
@@ -19,10 +19,10 @@ readonly class ProfitOrLossCalculator
      * @param Stock $stock
      * @return Money
      */
-    public function calculate(Stock $stock): Money
+    public function __invoke(Stock $stock): Money
     {
-        $totalInvested = $this->totalInvested->calculate($stock);
-        $marketValue = $this->marketValue->calculate($stock);
+        $totalInvested = $this->totalInvested->__invoke($stock);
+        $marketValue = $this->marketValue->__invoke($stock);
 
         return $marketValue->minus($totalInvested);
     }

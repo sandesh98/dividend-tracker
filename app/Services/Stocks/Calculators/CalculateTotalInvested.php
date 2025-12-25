@@ -3,13 +3,12 @@
 namespace App\Services\Stocks\Calculators;
 
 use App\Models\Stock;
-use App\Services\Stocks\InvestmentCalculator;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
 use App\Value\TransactionType;
 use Brick\Money\Money;
 
-readonly class TotalInvestedCalculator
+readonly class CalculateTotalInvested
 {
     /**
      * Get the total amount invested including fee's in cents for the given stock.
@@ -17,7 +16,7 @@ readonly class TotalInvestedCalculator
      * @param Stock $stock
      * @return Money
      */
-    public function calculate(Stock $stock): Money
+    public function __invoke(Stock $stock): Money
     {
         $eurTrades = $stock->trades()
             ->where('currency', CurrencyType::EUR->value)

@@ -8,10 +8,10 @@ use App\Value\TransactionType;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 
-class MarketValueCalculator
+class CalculateMarketValue
 {
     public function __construct(
-        private StockQuantityCalculator $stockQuantityCalculator,
+        private CalculateQuantity $stockQuantityCalculator,
     ) {
     }
 
@@ -22,9 +22,9 @@ class MarketValueCalculator
      * @return Money
      * @throws UnknownCurrencyException
      */
-    public function calculate(Stock $stock): Money
+    public function __invoke(Stock $stock): Money
     {
-        $quantity = $this->stockQuantityCalculator->calculate($stock);
+        $quantity = $this->stockQuantityCalculator->__invoke($stock);
         $price = $stock->price;
 
         if ($quantity <= 0 || $price <= 0) {

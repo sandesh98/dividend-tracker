@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Services\Stocks\Calculators;
 
-use App\Services\Stocks\Calculators\AverageStockPriceCalculator;
-use App\Services\Stocks\Calculators\MarketValueCalculator;
+use App\Services\Stocks\Calculators\CalculateAverageBuyPrice;
+use App\Services\Stocks\Calculators\CalculateMarketValue;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
 use Brick\Money\Money;
@@ -12,7 +12,7 @@ use Database\Factories\TradeFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class MarketValueCalculatorTest extends TestCase
+class CalculateMarketValueTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -38,7 +38,7 @@ class MarketValueCalculatorTest extends TestCase
                 'quantity' => 15,
             ]);
 
-        $service = app(MarketValueCalculator::class)->calculate($stock);
+        $service = app(CalculateMarketValue::class)->__invoke($stock);
 
         // Price = 1000
         // Buy: 20
@@ -71,7 +71,7 @@ class MarketValueCalculatorTest extends TestCase
                 'quantity' => 25,
             ]);
 
-        $service = app(MarketValueCalculator::class)->calculate($stock);
+        $service = app(CalculateMarketValue::class)->__invoke($stock);
 
         // Price = 1000
         // Buy: 20
@@ -96,7 +96,7 @@ class MarketValueCalculatorTest extends TestCase
                 'quantity' => 20,
             ]);
 
-        $service = app(MarketValueCalculator::class)->calculate($stock);
+        $service = app(CalculateMarketValue::class)->__invoke($stock);
 
         // Price = -1000 return 0
         // Buy: 20

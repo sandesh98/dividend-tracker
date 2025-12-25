@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services\Stocks\Calculators;
 
-use App\Services\Stocks\Calculators\AverageStockPriceCalculator;
+use App\Services\Stocks\Calculators\CalculateAverageBuyPrice;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
 use Brick\Money\Money;
@@ -11,7 +11,7 @@ use Database\Factories\TradeFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AverageStockPriceCalculatorTest extends TestCase
+class CalculateAverageBuyPriceTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -46,7 +46,7 @@ class AverageStockPriceCalculatorTest extends TestCase
                 'total_transaction_value' => 2000,
             ]);
 
-        $service = app(AverageStockPriceCalculator::class)->calculate($stock);
+        $service = app(CalculateAverageBuyPrice::class)->__invoke($stock);
 
         // Buy: 1000 + 5500 = 6500
         // Sold: 2000

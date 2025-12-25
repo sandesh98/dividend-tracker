@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Services\Stocks\Calculators;
 
-use App\Services\Stocks\Calculators\StockQuantityCalculator;
+use App\Services\Stocks\Calculators\CalculateQuantity;
 use App\Value\TransactionType;
 use Database\Factories\StockFactory;
 use Database\Factories\TradeFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class StockQuantityCalculatorTest extends TestCase
+class CalculateQuantityTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -38,7 +38,7 @@ class StockQuantityCalculatorTest extends TestCase
                 'quantity' => 4,
             ]);
 
-        $service = app(StockQuantityCalculator::class)->calculate($stock);
+        $service = app(CalculateQuantity::class)->__invoke($stock);
 
         // Buy: 5 + 3 = 8
         // Sell: 4
@@ -72,7 +72,7 @@ class StockQuantityCalculatorTest extends TestCase
                 'quantity' => 9,
             ]);
 
-        $service = app(StockQuantityCalculator::class)->calculate($stock);
+        $service = app(CalculateQuantity::class)->__invoke($stock);
 
         // Buy: 5 + 3 = 8
         // Sell: 9

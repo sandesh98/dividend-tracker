@@ -6,7 +6,7 @@ use App\Models\Stock;
 use App\Models\Trade;
 use App\Value\TransactionType;
 
-class StockQuantityCalculator
+class CalculateQuantity
 {
     /**
      * Get quantity for the given stock.
@@ -14,7 +14,7 @@ class StockQuantityCalculator
      * @param Stock $stock
      * @return int
      */
-    public function calculate(Stock $stock): int
+    public function __invoke(Stock $stock): int
     {
         $trades = $stock->trades()->get();
 

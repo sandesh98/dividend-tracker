@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services\Stocks\Calculators;
 
-use App\Services\Stocks\Calculators\TotalInvestedCalculator;
+use App\Services\Stocks\Calculators\CalculateTotalInvested;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
 use App\Value\TransactionType;
@@ -12,7 +12,7 @@ use Database\Factories\TradeFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class TotalInvestedCalculatorTest extends TestCase
+class CalculateTotalInvestedTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -50,7 +50,7 @@ class TotalInvestedCalculatorTest extends TestCase
                 'quantity' => 2,
                 'action' => TransactionType::Buy,
                 'total_transaction_value' => 2000,
-                'order_id' => 'order-1',
+                'order_id' => 'order-2',
             ]);
 
         TradeFactory::new()
@@ -85,7 +85,7 @@ class TotalInvestedCalculatorTest extends TestCase
                 'order_id' => 'order-3',
             ]);
 
-        $service = app(TotalInvestedCalculator::class)->calculate($stock);
+        $service = app(CalculateTotalInvested::class)->__invoke($stock);
 
         // Calculation:
         // Buy: 1000 + 2000 = 3000
@@ -163,7 +163,7 @@ class TotalInvestedCalculatorTest extends TestCase
                 'order_id' => 'order-3',
             ]);
 
-        $service = app(TotalInvestedCalculator::class)->calculate($stock);
+        $service = app(CalculateTotalInvested::class)->__invoke($stock);
 
         // Calculation:
         // Buy: 1000 + 2000 = 3000
@@ -221,7 +221,7 @@ class TotalInvestedCalculatorTest extends TestCase
                 'order_id' => 'order-2',
             ]);
 
-        $service = app(TotalInvestedCalculator::class)->calculate($stock);
+        $service = app(CalculateTotalInvested::class)->__invoke($stock);
 
         // Calculation:
         // Buy: 3000

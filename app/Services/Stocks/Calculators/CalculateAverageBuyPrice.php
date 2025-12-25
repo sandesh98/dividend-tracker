@@ -8,11 +8,11 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 
-readonly class AverageStockPriceCalculator
+readonly class CalculateAverageBuyPrice
 {
     public function __construct(
-        private StockQuantityCalculator $stockQuantityCalculator,
-        private TotalInvestedCalculator $totalInvestedCalculator,
+        private CalculateQuantity      $stockQuantityCalculator,
+        private CalculateTotalInvested $totalInvestedCalculator,
     ) {
     }
 
@@ -23,10 +23,10 @@ readonly class AverageStockPriceCalculator
      * @return Money
      * @throws UnknownCurrencyException
      */
-    public function calculate(Stock $stock): Money
+    public function __invoke(Stock $stock): Money
     {
-        $amountInvested = $this->totalInvestedCalculator->calculate($stock);
-        $stockQuantity = $this->stockQuantityCalculator->calculate($stock);
+        $amountInvested = $this->totalInvestedCalculator->__invoke($stock);
+        $stockQuantity = $this->stockQuantityCalculator->__invoke($stock);
 
         if ($stockQuantity <= 0) {
             return Money::of(0, CurrencyType::EUR->value);

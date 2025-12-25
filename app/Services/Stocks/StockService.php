@@ -3,11 +3,6 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
-use App\Services\Stocks\Calculators\AverageStockPriceCalculator;
-use App\Services\Stocks\Calculators\MarketValueCalculator;
-use App\Services\Stocks\Calculators\ProfitOrLossCalculator;
-use App\Services\Stocks\Calculators\StockQuantityCalculator;
-use App\Services\Stocks\Calculators\TotalInvestedCalculator;
 use App\Services\Transactions\TransactionService;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
@@ -33,99 +28,11 @@ readonly class StockService
      * @param SellCalculator $sellCalculator
      */
     public function __construct(
-        private StockQuantityCalculator $stockQuantity,
-        private AverageStockPriceCalculator $averageStockPrice,
-        private TotalInvestedCalculator $totalInvested,
-        private MarketValueCalculator $marketValue,
-        private ProfitOrLossCalculator $profitOrLoss,
-        private DividendService $dividendService,
-        private TransactionService $transactionService,
-        private InvestmentCalculator $investmentCalculator,
-        private SellCalculator $sellCalculator
+        private DividendService          $dividendService,
+        private TransactionService       $transactionService,
+        private InvestmentCalculator     $investmentCalculator,
+        private SellCalculator           $sellCalculator
     ) {
-    }
-
-    /**
-     * Get to quantity for a given stock.
-     *
-     * @param Stock $stock
-     * @return int
-     */
-    public function quantity(Stock $stock): int
-    {
-        return $this->stockQuantity->calculate($stock);
-    }
-
-    /**
-     * Get the total amount invested including fee's in cents for the given stock.
-     *
-     * @param Stock $stock
-     * return BigDecimal
-     */
-    public function totalAmountInvested(Stock $stock): BigDecimal
-    {
-        return $this->totalInvested->calculate($stock)->getMinorAmount();
-    }
-
-    /**
-     * Get the average stock price in cents for the given stock.
-     *
-     * @param Stock $stock
-     * @return BigDecimal
-     * @throws MathException
-     * @throws NumberFormatException
-     * @throws RoundingNecessaryException
-     * @throws UnknownCurrencyException
-     */
-    public function getAverageStockPrice(Stock $stock): BigDecimal
-    {
-        return $this->averageStockPrice->calculate($stock)->getMinorAmount();
-    }
-
-    /**
-     * Get the market value in cents for the given stock.
-     *
-     * @param Stock $stock
-     * @return BigDecimal
-     * @throws NumberFormatException
-     * @throws RoundingNecessaryException
-     * @throws UnknownCurrencyException
-     */
-    public function getMarketValue(Stock $stock): BigDecimal
-    {
-        return $this->marketValue->calculate($stock)->getMinorAmount();
-    }
-
-    /**
-     * Get the total profit of loss in cents for the given stock.
-     *
-     * @param Stock $stock
-     * @return BigDecimal
-     * @throws MathException
-     * @throws NumberFormatException
-     * @throws RoundingNecessaryException
-     * @throws UnknownCurrencyException
-     */
-    public function getProfitOrLoss(Stock $stock): BigDecimal
-    {
-        return $this->profitOrLoss->calculate($stock)->getMinorAmount();
-    }
-
-    /**
-     * Get the profit or loss without a dividend and transaction cost in cents for the given stock.
-     *
-     * @param Stock $stock
-     * @return BigDecimal
-     * @throws MathException
-     * @throws MoneyMismatchException
-     * @throws NumberFormatException
-     * @throws RoundingNecessaryException
-     * @throws UnknownCurrencyException
-     */
-    public function getRealizedProfitLoss(Stock $stock): BigDecimal
-    {
-        // ProfitOrLoss - dividend - transactiekosten = realizedProfitOrLoss
-        return Money::of(100, CurrencyType::EUR->value)->getMinorAmount();
     }
 
     /**
