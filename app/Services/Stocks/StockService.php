@@ -3,6 +3,7 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
+use App\Services\Dividends\DividendService;
 use App\Services\Transactions\TransactionService;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
@@ -14,32 +15,23 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use App\Services\Dividends\DividendService;
 use Illuminate\Database\Eloquent\Collection;
 
 readonly class StockService
 {
     /**
      * Create a new StockService instance.
-     *
-     * @param DividendService $dividendService
-     * @param TransactionService $transactionService
-     * @param InvestmentCalculator $investmentCalculator
-     * @param SellCalculator $sellCalculator
      */
     public function __construct(
-        private DividendService          $dividendService,
-        private TransactionService       $transactionService,
-        private InvestmentCalculator     $investmentCalculator,
-        private SellCalculator           $sellCalculator
-    ) {
-    }
+        private DividendService $dividendService,
+        private TransactionService $transactionService,
+        private InvestmentCalculator $investmentCalculator,
+        private SellCalculator $sellCalculator
+    ) {}
 
     /**
      * Get the latest price in cents for the given stock.
      *
-     * @param Stock $stock
-     * @return BigDecimal
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
@@ -52,8 +44,6 @@ readonly class StockService
     /**
      * Get the average stock sell price in cents for the given stock.
      *
-     * @param Stock $stock
-     * @return BigDecimal
      * @throws MathException
      * @throws MoneyMismatchException
      * @throws NumberFormatException
@@ -65,7 +55,7 @@ readonly class StockService
         $trades = $stock->trades()->get();
 
         $sellTrades = $trades->groupBy('order_id')->filter(function (Collection $group) {
-            return $group->contains(fn($trade) => $trade->action === TransactionType::Sell->value);
+            return $group->contains(fn ($trade) => $trade->action === TransactionType::Sell->value);
         });
 
         $totalSellValue = Money::of(0, CurrencyType::EUR->value);

@@ -15,7 +15,7 @@ class CalculateAverageBuyPriceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItCalculatesAverageStockPrice(): void
+    public function test_it_calculates_average_stock_price(): void
     {
         $stock = StockFactory::new()->createOne();
 

@@ -16,7 +16,7 @@ class CalculateTotalInvestedTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItCalculatesInvestmentInEuro(): void
+    public function test_it_calculates_investment_in_euro(): void
     {
         $stock = StockFactory::new()->createOneQuietly();
 
@@ -96,7 +96,7 @@ class CalculateTotalInvestedTest extends TestCase
         $this->assertInstanceOf(Money::class, $service);
     }
 
-    public function testItCalculatesTotalAmoundInvestedInDollar(): void
+    public function test_it_calculates_total_amound_invested_in_dollar(): void
     {
         $stock = StockFactory::new()->createOneQuietly();
 
@@ -174,7 +174,7 @@ class CalculateTotalInvestedTest extends TestCase
         $this->assertInstanceOf(Money::class, $service);
     }
 
-    public function testItCalculatesTotalAmoundInvestedWhenAllStocksAreSold(): void
+    public function test_it_calculates_total_amound_invested_when_all_stocks_are_sold(): void
     {
         $stock = StockFactory::new()->createOneQuietly();
 

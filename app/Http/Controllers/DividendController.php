@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dividend;
 use App\Models\Trade;
 use App\Services\Dividends\DividendService;
 use Carbon\Carbon;
@@ -11,9 +10,8 @@ use Illuminate\Support\Facades\Date;
 class DividendController extends Controller
 {
     public function __construct(
-        readonly private DividendService $dividendService,
-    ) {
-    }
+        private readonly DividendService $dividendService,
+    ) {}
 
     public function index()
     {

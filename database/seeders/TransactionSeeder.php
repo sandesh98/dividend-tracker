@@ -9,9 +9,6 @@ class TransactionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param ImportTransactions $importTransactions
-     * @return void
      */
     public function run(ImportTransactions $importTransactions): void
     {

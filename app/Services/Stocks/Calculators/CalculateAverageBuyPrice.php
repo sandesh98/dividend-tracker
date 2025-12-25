@@ -11,16 +11,13 @@ use Brick\Money\Money;
 readonly class CalculateAverageBuyPrice
 {
     public function __construct(
-        private CalculateQuantity      $stockQuantityCalculator,
+        private CalculateQuantity $stockQuantityCalculator,
         private CalculateTotalInvested $totalInvestedCalculator,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the average buy price for a given stock.
      *
-     * @param Stock $stock
-     * @return Money
      * @throws UnknownCurrencyException
      */
     public function __invoke(Stock $stock): Money

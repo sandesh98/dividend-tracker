@@ -8,16 +8,12 @@ use Brick\Money\Money;
 readonly class CalculateProfitOrLoss
 {
     public function __construct(
-        private CalculateMarketValue   $marketValue,
+        private CalculateMarketValue $marketValue,
         private CalculateTotalInvested $totalInvested,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the total profit or loss for a given stock.
-     *
-     * @param Stock $stock
-     * @return Money
      */
     public function __invoke(Stock $stock): Money
     {

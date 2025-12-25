@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Stock;
 use App\Models\Trade;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class TradeRepository extends AbstractRepository
@@ -16,8 +15,6 @@ class TradeRepository extends AbstractRepository
 
     /**
      * Get a Collection of ISINS and products from Trade
-     *
-     * @return Collection
      */
     public function allUniqueProductAndIsins(): Collection
     {
@@ -26,21 +23,16 @@ class TradeRepository extends AbstractRepository
 
     /**
      * Get all trades from a given stock
-     *
-     * @param Stock $stock
-     * @return Collection
      */
     public function getAllTradesFor(Stock $stock): Collection
     {
         return $stock->trades()->get();
 
-//        return $this->trade->newQuery()->where('product', 'like', $stock)->get();
+        //        return $this->trade->newQuery()->where('product', 'like', $stock)->get();
     }
 
     /**
      * Get all transactionscosts from trades
-     *
-     * @return Collection
      */
     public function getAllTransactionscosts(): Collection
     {
@@ -51,8 +43,7 @@ class TradeRepository extends AbstractRepository
     /**
      * Get the sum of the transactioncosts for a given stock
      *
-     * @param string $stock
-     * @return float
+     * @param  string  $stock
      */
     public function getTransactioncostsFor(Stock $stock): float
     {

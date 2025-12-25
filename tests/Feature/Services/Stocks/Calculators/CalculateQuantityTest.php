@@ -13,7 +13,7 @@ class CalculateQuantityTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testItCalculatesStockQuantity(): void
+    public function test_it_calculates_stock_quantity(): void
     {
         $stock = StockFactory::new()->createOne();
 
@@ -47,7 +47,7 @@ class CalculateQuantityTest extends TestCase
         $this->assertIsInt($service);
     }
 
-    public function testItReturnZeroWhenMoreStockWhereSold(): void
+    public function test_it_return_zero_when_more_stock_where_sold(): void
     {
         $stock = StockFactory::new()->createOne();
 

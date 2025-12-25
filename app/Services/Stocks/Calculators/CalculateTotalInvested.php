@@ -12,9 +12,6 @@ readonly class CalculateTotalInvested
 {
     /**
      * Get the total amount invested including fee's in cents for the given stock.
-     *
-     * @param Stock $stock
-     * @return Money
      */
     public function __invoke(Stock $stock): Money
     {

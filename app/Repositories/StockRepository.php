@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Stock;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class StockRepository extends AbstractRepository
@@ -15,9 +14,6 @@ class StockRepository extends AbstractRepository
 
     /**
      * Find a stock by ISIN
-     *
-     * @param string $isin
-     * @return Stock
      */
     public function findByIsin(string $isin): Stock
     {
@@ -26,9 +22,6 @@ class StockRepository extends AbstractRepository
 
     /**
      * Get a Collection of ISINS by stock name
-     *
-     * @param string $stock
-     * @return Collection
      */
     public function getIsinsByName(string $stock): Collection
     {
@@ -37,9 +30,6 @@ class StockRepository extends AbstractRepository
 
     /**
      * Get a Stock by name
-     *
-     * @param string $stock
-     * @return Stock
      */
     public function findByName(string $stock): Stock
     {
@@ -49,8 +39,7 @@ class StockRepository extends AbstractRepository
     /**
      * Get a Stock by ticker
      *
-     * @param string $ticker
-     * @return Stock
+     * @param  string  $ticker
      */
     public function findByTicker(Stock $stock): Stock
     {
@@ -59,8 +48,6 @@ class StockRepository extends AbstractRepository
 
     /**
      * Get a Collection of all tickers
-     *
-     * @return Collection
      */
     public function getAllTickers(): Collection
     {
@@ -69,8 +56,6 @@ class StockRepository extends AbstractRepository
 
     /**
      * Get a collection of all stocks by name
-     *
-     * @return Collection
      */
     public function getAllStockNames(): Collection
     {
@@ -80,7 +65,7 @@ class StockRepository extends AbstractRepository
     /**
      * Get the type for a given stock
      *
-     * @param string $stock
+     * @param  string  $stock
      * @return string
      */
     public function getType(Stock $stock)

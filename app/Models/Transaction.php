@@ -7,8 +7,8 @@ use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
@@ -17,8 +17,6 @@ class Transaction extends Model
     /**
      * Set Mutation Value to minor
      *
-     * @param $value
-     * @return void
      * @throws MathException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
@@ -28,6 +26,7 @@ class Transaction extends Model
     {
         if (is_null($value) || is_null($this->mutation)) {
             $this->attributes['mutation_value'] = null;
+
             return;
         }
 
@@ -39,8 +38,6 @@ class Transaction extends Model
     /**
      * Set Balance Value to minor
      *
-     * @param $value
-     * @return void
      * @throws MathException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
@@ -50,6 +47,7 @@ class Transaction extends Model
     {
         if (is_null($value)) {
             $this->attributes['balance_value'] = null;
+
             return;
         }
         $money = Money::of($value, $this->balance);

@@ -15,11 +15,8 @@ final class AsMoney implements CastsAttributes
     /**
      * Transform the attribute from the underlying model values.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $key
-     * @param mixed $value
-     * @param array<string, mixed> $attributes
-     * @return \Brick\Money\Money|null
+     * @param  array<string, mixed>  $attributes
+     *
      * @throws \Brick\Math\Exception\NumberFormatException
      * @throws \Brick\Math\Exception\RoundingNecessaryException
      * @throws \Brick\Money\Exception\UnknownCurrencyException
@@ -41,10 +38,7 @@ final class AsMoney implements CastsAttributes
     /**
      * Transform the attribute to its underlying model values.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $key
-     * @param mixed $value
-     * @param array<string, mixed> $attributes
+     * @param  array<string, mixed>  $attributes
      * @return array<string, string|null>
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): array

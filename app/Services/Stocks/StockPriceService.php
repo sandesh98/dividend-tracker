@@ -9,11 +9,10 @@ use Scheb\YahooFinanceApi\ApiClient as YahooClient;
 class StockPriceService
 {
     public function __construct(
-        readonly private YahooClient $yahooClient,
-        readonly private StockRepository $stockRepository,
-        readonly private TradeRepository $tradeRepository
-    ) {
-    }
+        private readonly YahooClient $yahooClient,
+        private readonly StockRepository $stockRepository,
+        private readonly TradeRepository $tradeRepository
+    ) {}
 
     public function updatePrice(): void
     {
@@ -35,7 +34,7 @@ class StockPriceService
 
         $stock->update([
             'price' => $conversion['price'],
-            'currency' => $conversion['currency']
+            'currency' => $conversion['currency'],
         ]);
     }
 
@@ -46,13 +45,13 @@ class StockPriceService
         if ($currency === 'EUR') {
             return [
                 'price' => $this->convertPriceToCents($initialPrice),
-                'currency' => 'EUR'
+                'currency' => 'EUR',
             ];
         }
 
         return [
             'price' => $this->convertPriceToCents(($initialPrice / $exchangeRate)),
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ];
     }
 

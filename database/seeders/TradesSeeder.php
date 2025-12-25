@@ -12,15 +12,13 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class TradesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -37,7 +35,7 @@ class TradesSeeder extends Seeder
                 continue;
             }
 
-            $trade = new Trade();
+            $trade = new Trade;
             $trade->date = $transaction->date;
             $trade->time = $transaction->time;
             $trade->description = $transaction->description;
@@ -56,9 +54,6 @@ class TradesSeeder extends Seeder
 
     /**
      * Determine the action of the transaction.
-     *
-     * @param $description
-     * @return TransactionType|null
      */
     private function determineAction($description): ?TransactionType
     {
@@ -75,12 +70,8 @@ class TradesSeeder extends Seeder
         return null;
     }
 
-
     /**
      * Determine the quantity of the transaction.
-     *
-     * @param $description
-     * @return int
      */
     private function determineQuantity($description): int
     {
@@ -95,13 +86,9 @@ class TradesSeeder extends Seeder
         return $value;
     }
 
-
     /**
      * Determine the price per unit of the transaction.
      *
-     * @param $description
-     * @param $currency
-     * @return int
      * @throws MathException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException

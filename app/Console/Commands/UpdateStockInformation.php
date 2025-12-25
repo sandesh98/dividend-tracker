@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\Stocks\StockUpdateService;
+use Illuminate\Console\Command;
 
 class UpdateStockInformation extends Command
 {

@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
             CashMovementSeeder::class,
 
             TradesSeeder::class,
-            DividendSeeder::class
+            DividendSeeder::class,
         ]);
 
-//        Artisan::call('stock:update');
-//        $this->command->info('Done updating stock information');
-//        Artisan::call('stock:price');
-//        $this->command->info('Done updating stocks price');
+        //        Artisan::call('stock:update');
+        //        $this->command->info('Done updating stock information');
+        //        Artisan::call('stock:price');
+        //        $this->command->info('Done updating stocks price');
     }
 }

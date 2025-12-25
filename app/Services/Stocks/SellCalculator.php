@@ -20,8 +20,6 @@ class SellCalculator
     /**
      * Determine the sell value of a trade group based on its currency.
      *
-     * @param Collection $tradeGroup
-     * @return Money
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException
@@ -57,8 +55,6 @@ class SellCalculator
     /**
      * Calculate the sell value for a trade group in USD.
      *
-     * @param Collection $tradeGroup
-     * @return Money
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
      * @throws UnknownCurrencyException

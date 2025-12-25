@@ -15,15 +15,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 class InvestmentCalculator
 {
-/**
- * Calculate the investment for the given trade group.
- *
- * @param Collection $tradeGroup
- * @return Money
- * @throws NumberFormatException
- * @throws RoundingNecessaryException
- * @throws UnknownCurrencyException
- */
+    /**
+     * Calculate the investment for the given trade group.
+     *
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
     public function calculateInvestment(Collection $tradeGroup): Money
     {
         $currency = $tradeGroup->first()->currency;
@@ -35,17 +33,17 @@ class InvestmentCalculator
         };
     }
 
-/**
- * Calculate the eur investment for the given trade group.
- *
- * @param Collection $tradeGroup
- * @return Money
- * @throws MathException
- * @throws MoneyMismatchException
- * @throws NumberFormatException
- * @throws RoundingNecessaryException
- * @throws UnknownCurrencyException
- */
+    /**
+     * Calculate the eur investment for the given trade group.
+     *
+     * @return Money
+     *
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
     private function calculateInvestmentEUR(Collection $tradeGroup)
     {
         $transactionCost = optional(
@@ -63,17 +61,17 @@ class InvestmentCalculator
             ->plus($transactionMoney);
     }
 
-/**
- *  Calculate the eur investment for the given trade group.
- *
- * @param Collection $tradeGroup
- * @return Money
- * @throws MathException
- * @throws MoneyMismatchException
- * @throws NumberFormatException
- * @throws RoundingNecessaryException
- * @throws UnknownCurrencyException
- */
+    /**
+     *  Calculate the eur investment for the given trade group.
+     *
+     * @return Money
+     *
+     * @throws MathException
+     * @throws MoneyMismatchException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     * @throws UnknownCurrencyException
+     */
     private function calculateInvestmentUSD(Collection $tradeGroup)
     {
         $fx = (float) $tradeGroup->pluck('fx')->filter()->first() ?: 1;
