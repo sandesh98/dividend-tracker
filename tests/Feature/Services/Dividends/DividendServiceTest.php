@@ -64,7 +64,7 @@ class DividendServiceTest extends TestCase
 
         $this->assertTrue(true);
 
-//        $this->assertEquals((1000 - 200) + (800 - 150), $result->getMinorAmount()->toInt());
+        //        $this->assertEquals((1000 - 200) + (800 - 150), $result->getMinorAmount()->toInt());
     }
 
     public function test_it_calculates_usd_dividend(): void
@@ -115,8 +115,7 @@ class DividendServiceTest extends TestCase
 
         $this->assertTrue(true);
 
-
-//        $this->assertEquals(((1000 - 200) * (1 / 1.2500)) + ((750 - 250) * (1 / 1.2500)), $result->getMinorAmount()->toInt());
+        //        $this->assertEquals(((1000 - 200) * (1 / 1.2500)) + ((750 - 250) * (1 / 1.2500)), $result->getMinorAmount()->toInt());
     }
 
     public function test_it_calculates_dividend_sum(): void
@@ -198,17 +197,16 @@ class DividendServiceTest extends TestCase
 
         $service = app(DividendService::class);
 
-//        $result = $service->getDividendSum($stock);
+        //        $result = $service->getDividendSum($stock);
 
         $this->assertTrue(true);
 
-
-//        $this->assertEquals(
-//            ((1000 - 200) / 1.2500) +
-//            ((750 - 250) / 1.2500) +
-//            (1000 - 200) +
-//            (800 - 150),
-//            $result->toInt()
-//        );
+        //        $this->assertEquals(
+        //            ((1000 - 200) / 1.2500) +
+        //            ((750 - 250) / 1.2500) +
+        //            (1000 - 200) +
+        //            (800 - 150),
+        //            $result->toInt()
+        //        );
     }
 }
