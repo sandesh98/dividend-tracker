@@ -29,11 +29,11 @@ class StockServiceTest extends TestCase
 
     public function test_it_returns_average_sell_price_in_usd(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::USD->value,
                 'description' => DescriptionType::CurrencyDebit->value,
@@ -43,7 +43,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::USD->value,
                 'description' => DescriptionType::CurrencyCredit->value,
@@ -53,7 +53,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::USD->value,
                 'total_transaction_value' => 1000,
@@ -64,7 +64,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'action' => null,
                 'description' => DescriptionType::DegiroTransactionCost->value,
@@ -76,7 +76,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::USD->value,
                 'description' => DescriptionType::CurrencyDebit->value,
@@ -86,7 +86,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::USD->value,
                 'description' => DescriptionType::CurrencyCredit->value,
@@ -96,7 +96,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::USD->value,
                 'total_transaction_value' => 15000,
@@ -107,7 +107,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'action' => null,
                 'description' => DescriptionType::DegiroTransactionCost->value,
@@ -131,11 +131,11 @@ class StockServiceTest extends TestCase
 
     public function test_it_returns_average_sell_price_in_eur(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::CurrencyDebit->value,
@@ -144,7 +144,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::CurrencyCredit->value,
@@ -153,7 +153,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::EUR->value,
                 'total_transaction_value' => 1000,
@@ -163,7 +163,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'action' => null,
                 'description' => DescriptionType::DegiroTransactionCost->value,
@@ -174,7 +174,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::CurrencyDebit->value,
@@ -183,7 +183,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => null,
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::CurrencyCredit->value,
@@ -192,7 +192,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::EUR->value,
                 'total_transaction_value' => 15000,
@@ -203,7 +203,7 @@ class StockServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'action' => null,
                 'description' => DescriptionType::DegiroTransactionCost->value,

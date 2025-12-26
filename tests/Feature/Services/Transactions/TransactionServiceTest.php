@@ -17,23 +17,20 @@ class TransactionServiceTest extends TestCase
 
     public function test_it_calculates_available_cash(): void
     {
-        CashMovementFactory::new()
-            ->createOne([
-                'description' => DescriptionType::Deposit->value,
-                'total_transaction_value' => 10000,
-            ]);
+        CashMovementFactory::new()->createOneQuietly([
+            'description' => DescriptionType::Deposit->value,
+            'total_transaction_value' => 10000,
+        ]);
 
-        CashMovementFactory::new()
-            ->createOne([
-                'description' => DescriptionType::Deposit->value,
-                'total_transaction_value' => 150000,
-            ]);
+        CashMovementFactory::new()->createOneQuietly([
+            'description' => DescriptionType::Deposit->value,
+            'total_transaction_value' => 150000,
+        ]);
 
-        CashMovementFactory::new()
-            ->createOne([
-                'description' => DescriptionType::Withdrawal->value,
-                'total_transaction_value' => 75000,
-            ]);
+        CashMovementFactory::new()->createOneQuietly([
+            'description' => DescriptionType::Withdrawal->value,
+            'total_transaction_value' => 75000,
+        ]);
 
         $service = app(TransactionService::class);
 
@@ -44,13 +41,13 @@ class TransactionServiceTest extends TestCase
 
     public function test_it_calculates_transaction_cost_sum(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
-        $otherStock = StockFactory::new()->createOne();
+        $otherStock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
                 'total_transaction_value' => 200,
@@ -58,7 +55,7 @@ class TransactionServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
                 'total_transaction_value' => 100,
@@ -66,7 +63,7 @@ class TransactionServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($otherStock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
                 'total_transaction_value' => 200,
@@ -74,7 +71,7 @@ class TransactionServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($otherStock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
                 'total_transaction_value' => 150,
@@ -89,15 +86,15 @@ class TransactionServiceTest extends TestCase
 
     public function test_it_calculates_transaction_cost_for_stock(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne();
+            ->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
                 'total_transaction_value' => 200,
@@ -105,11 +102,11 @@ class TransactionServiceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne();
+            ->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'currency' => CurrencyType::EUR->value,
                 'description' => DescriptionType::DegiroTransactionCost->value,
                 'total_transaction_value' => 150,

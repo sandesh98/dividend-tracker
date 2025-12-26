@@ -15,25 +15,25 @@ class CalculateQuantityTest extends TestCase
 
     public function test_it_calculates_stock_quantity(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'quantity' => 5,
             ]);
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'quantity' => 3,
             ]);
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'quantity' => 4,
             ]);
@@ -49,25 +49,25 @@ class CalculateQuantityTest extends TestCase
 
     public function test_it_return_zero_when_more_stock_where_sold(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'quantity' => 5,
             ]);
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'quantity' => 3,
             ]);
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'quantity' => 9,
             ]);

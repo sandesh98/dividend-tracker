@@ -23,7 +23,7 @@ class CalculateMarketValueTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 20,
@@ -31,7 +31,7 @@ class CalculateMarketValueTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 15,
@@ -56,7 +56,7 @@ class CalculateMarketValueTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 20,
@@ -64,7 +64,7 @@ class CalculateMarketValueTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 25,
@@ -89,7 +89,7 @@ class CalculateMarketValueTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 20,

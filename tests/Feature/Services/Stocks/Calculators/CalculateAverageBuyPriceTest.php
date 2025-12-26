@@ -17,11 +17,11 @@ class CalculateAverageBuyPriceTest extends TestCase
 
     public function test_it_calculates_average_stock_price(): void
     {
-        $stock = StockFactory::new()->createOne();
+        $stock = StockFactory::new()->createOneQuietly();
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 20,
@@ -30,7 +30,7 @@ class CalculateAverageBuyPriceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Buy->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 10,
@@ -39,7 +39,7 @@ class CalculateAverageBuyPriceTest extends TestCase
 
         TradeFactory::new()
             ->for($stock)
-            ->createOne([
+            ->createOneQuietly([
                 'action' => TransactionType::Sell->value,
                 'currency' => CurrencyType::EUR->value,
                 'quantity' => 15,
