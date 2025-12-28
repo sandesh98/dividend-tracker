@@ -62,7 +62,7 @@ class DividendSeeder extends Seeder
     /**
      * Determine the FX value for the transaction
      */
-    private function setFX($fx): int
+    private function setFX(?int $fx): int
     {
         return empty($fx) ? 1 : $fx;
     }
