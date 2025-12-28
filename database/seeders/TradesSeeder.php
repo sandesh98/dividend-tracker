@@ -72,6 +72,8 @@ class TradesSeeder extends Seeder
 
     /**
      * Determine the quantity of the transaction.
+     *
+     * return int
      */
     private function determineQuantity($description): int
     {

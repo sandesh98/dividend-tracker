@@ -4,14 +4,11 @@ namespace App\Models;
 
 use App\Models\Casts\AsMoney;
 use App\Value\DividendType;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Dividend extends Model
 {
-    use HasFactory;
-
     /**
      * Get the attributes that should be cast.
      *

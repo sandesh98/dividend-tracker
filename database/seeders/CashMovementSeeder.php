@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\CashMovement;
 use App\Models\Transaction;
 use App\Value\DescriptionType;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class CashMovementSeeder extends Seeder
@@ -18,8 +19,7 @@ class CashMovementSeeder extends Seeder
             ->whereIn('description', [DescriptionType::Deposit, DescriptionType::Withdrawal])
             ->each(function (Transaction $transaction) {
                 $cashMovement = new CashMovement;
-                $cashMovement->date = $transaction->date;
-                $cashMovement->time = $transaction->time;
+                $cashMovement->occurred_at = Carbon::parse("{$transaction->date} {$transaction->time}");
                 $cashMovement->description = $transaction->description;
                 $cashMovement->currency = $transaction->mutation;
                 $cashMovement->total_transaction_value = $this->determineMutationValue($transaction->mutation_value);

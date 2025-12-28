@@ -19,8 +19,7 @@ class CashMovementFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => $this->faker->dateTimeThisYear()->format('d-m-Y'),
-            'time' => $this->faker->time(),
+            'occurred_at' => $this->faker->dateTime(),
             'total_transaction_value' => $this->faker->numberBetween(100, 100000),
             'currency' => CurrencyType::EUR->value,
             'description' => $this->faker->randomElement(

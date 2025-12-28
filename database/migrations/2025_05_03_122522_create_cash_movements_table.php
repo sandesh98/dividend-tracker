@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('cash_movements', function (Blueprint $table) {
             $table->id();
-            $table->string('date');
-            $table->time('time');
+            $table->timestamp('occurred_at');
             $table->string('description');
             $table->string('currency');
             $table->integer('total_transaction_value');
