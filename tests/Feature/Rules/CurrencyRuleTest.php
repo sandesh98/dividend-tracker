@@ -13,7 +13,7 @@ class CurrencyRuleTest extends TestCase
 {
     #[TestWith(['EUR', CurrencyType::EUR])]
     #[TestWith(['USD', CurrencyType::USD])]
-    public function test_get_returns_currency_enum(string $value, CurrencyType $expected): void
+    public function test_get_currency(string $value, CurrencyType $expected): void
     {
         $cast = new AsCurrency;
         $model = new class extends Model {};
@@ -26,7 +26,7 @@ class CurrencyRuleTest extends TestCase
 
     #[TestWith(['GBP'])]
     #[TestWith([''])]
-    public function test_get_throws_exception_for_invalid_value(string $value): void
+    public function test_get_throws_exception(string $value): void
     {
         $this->expectException(ValueError::class);
         $this->expectExceptionMessage(sprintf(
@@ -43,7 +43,7 @@ class CurrencyRuleTest extends TestCase
 
     #[TestWith(['EUR', CurrencyType::EUR])]
     #[TestWith(['USD', CurrencyType::USD])]
-    public function test_set_accepts_currency_enum(string $value, CurrencyType $expected): void
+    public function test_set_currency(string $value, CurrencyType $expected): void
     {
         $cast = new AsCurrency;
         $model = new class extends Model {};
@@ -56,7 +56,7 @@ class CurrencyRuleTest extends TestCase
 
     #[TestWith(['GBP'])]
     #[TestWith([''])]
-    public function test_set_throws_exception_for_invalid_string(string $value): void
+    public function test_set_throws_exception(string $value): void
     {
         $this->expectException(ValueError::class);
         $this->expectExceptionMessage(sprintf(
