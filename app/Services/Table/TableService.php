@@ -21,7 +21,6 @@ class TableService
         private readonly CalculateAverageBuyPrice $averageBuyPrice,
         private readonly CalculateMarketValue $marketValue,
         private readonly CalculateProfitOrLoss $profitOrLoss,
-
         private readonly DividendService $dividendService,
         private readonly StockRepository $stockRepository,
         private readonly StockService $stockService

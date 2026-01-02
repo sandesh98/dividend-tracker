@@ -23,8 +23,10 @@ class DividendFactory extends Factory
             'paid_out_at' => $this->faker->dateTime(),
             'fx' => $this->faker->randomFloat(4, 0.5, 1.5),
             'dividend_amount' => $this->faker->passthrough(
-                Money::ofMinor($this->faker->randomNumber(),
-                    $this->faker->randomElement(['EUR', 'USD'])),
+                Money::ofMinor(
+                    $this->faker->randomNumber(),
+                    $this->faker->randomElement(['EUR', 'USD'])
+                ),
             ),
             'description' => $this->faker->randomElement([DividendType::Dividend->value, DividendType::DividendTax->value]),
         ];
