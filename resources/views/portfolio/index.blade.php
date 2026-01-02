@@ -18,8 +18,8 @@
             'value' => $availableCash,
         ])
         @include('portfolio.components.header-card', [
-            'title' => 'Transactiekosten',
-            'value' => $transactionCosts,
+            'title' => 'Gemaakte kosten',
+            'value' => $transactionCost,
         ])
     </div>
 

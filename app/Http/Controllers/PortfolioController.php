@@ -3,27 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
-use App\Services\Dividends\DividendService;
 use App\Services\Stocks\StockService;
 use App\Services\Table\TableService;
-use App\Services\Transactions\TransactionService;
+use App\Services\Transactions\CalculateAvailableCash;
+use App\Services\Transactions\CalculateTransactionCost;
 
 class PortfolioController extends Controller
 {
     public function __construct(
-        private readonly TransactionService $transactionService,
-        private readonly DividendService $dividendService,
+        private readonly CalculateTransactionCost $transactionCost,
+        private readonly CalculateAvailableCash $availableCash,
         private readonly TableService $tableService,
     ) {}
 
     public function index()
     {
-        $transactionCosts = $this->transactionService->getTransactionCosts();
-        $availableCash = $this->transactionService->getAvailableCash();
-        //        $dividend = $this->dividendService->getDividendSum();
+        $transactionCost = $this->transactionCost->__invoke();
+        $availableCash = $this->availableCash->__invoke();
         [$active, $closed] = $this->tableService->loadTable();
 
-        return view('portfolio.index', compact('availableCash', 'transactionCosts', 'active', 'closed'));
+        return view('portfolio.index', compact('availableCash', 'transactionCost', 'active', 'closed'));
     }
 
     public function show(Stock $stock)

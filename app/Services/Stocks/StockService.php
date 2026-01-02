@@ -3,8 +3,6 @@
 namespace App\Services\Stocks;
 
 use App\Models\Stock;
-use App\Services\Dividends\DividendService;
-use App\Services\Transactions\TransactionService;
 use App\Value\CurrencyType;
 use App\Value\TransactionType;
 use Brick\Math\BigDecimal;
@@ -23,9 +21,6 @@ readonly class StockService
      * Create a new StockService instance.
      */
     public function __construct(
-        private DividendService $dividendService,
-        private TransactionService $transactionService,
-        private InvestmentCalculator $investmentCalculator,
         private SellCalculator $sellCalculator
     ) {}
 
