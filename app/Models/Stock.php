@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Stock extends Model
 {
-    protected $fillable = ['product', 'isin', 'type', 'ticker', 'currency', 'price', 'display_name'];
-
     /**
      * Get the attributes that should be cast.
      *
