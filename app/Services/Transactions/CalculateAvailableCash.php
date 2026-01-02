@@ -4,12 +4,15 @@ namespace App\Services\Transactions;
 
 use App\Services\Transactions\Calculators\CalculateDeposit;
 use App\Services\Transactions\Calculators\CalculateWithdrawal;
+use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 
 class CalculateAvailableCash
 {
     /**
      * Create a new service instance.
+     *
+     * @return void
      */
     public function __construct(
         private readonly CalculateDeposit $calculateDeposit,
@@ -20,7 +23,7 @@ class CalculateAvailableCash
      * Calculate available cash.
      *
      * @throws \Brick\Money\Exception\MoneyMismatchException
-     * @throws \Brick\Money\Exception\UnknownCurrencyException
+     * @throws UnknownCurrencyException
      */
     public function __invoke(): Money
     {

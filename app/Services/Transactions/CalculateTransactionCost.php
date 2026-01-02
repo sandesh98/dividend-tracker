@@ -5,6 +5,7 @@ namespace App\Services\Transactions;
 use App\Models\Trade;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
+use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 
 class CalculateTransactionCost
@@ -12,7 +13,7 @@ class CalculateTransactionCost
     /**
      * Calculate transaction costs.
      *
-     * @throws \Brick\Money\Exception\UnknownCurrencyException
+     * @throws UnknownCurrencyException
      */
     public function __invoke(): Money
     {
