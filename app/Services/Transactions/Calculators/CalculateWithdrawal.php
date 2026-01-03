@@ -5,6 +5,7 @@ namespace App\Services\Transactions\Calculators;
 use App\Models\CashMovement;
 use App\Value\CurrencyType;
 use App\Value\DescriptionType;
+use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 
 class CalculateWithdrawal
@@ -12,7 +13,7 @@ class CalculateWithdrawal
     /**
      * Calculate withdrawals.
      *
-     * @throws \Brick\Money\Exception\UnknownCurrencyException
+     * @throws UnknownCurrencyException
      */
     public function __invoke(): Money
     {
