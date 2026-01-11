@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Value\CashMovementType;
 use App\Value\CurrencyType;
-use App\Value\DescriptionType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,9 +22,7 @@ class CashMovementFactory extends Factory
             'occurred_at' => $this->faker->dateTime(),
             'total_transaction_value' => $this->faker->numberBetween(100, 100000),
             'currency' => CurrencyType::EUR->value,
-            'description' => $this->faker->randomElement(
-                [DescriptionType::Deposit->value, DescriptionType::Withdrawal->value]
-            ),
+            'description' => CashMovementType::cases(),
         ];
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Services\Transactions\Calculators;
 
 use App\Services\Transactions\Calculators\CalculateWithdrawal;
-use App\Value\DescriptionType;
+use App\Value\CashMovementType;
 use Brick\Money\Money;
 use Database\Factories\CashMovementFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,12 +16,12 @@ class CalculateWithdrawalTest extends TestCase
     public function test_it_calculates_deposits(): void
     {
         CashMovementFactory::new()->createOneQuietly([
-            'description' => DescriptionType::Withdrawal->value,
+            'description' => CashMovementType::Withdrawal,
             'total_transaction_value' => 200,
         ]);
 
         CashMovementFactory::new()->createOneQuietly([
-            'description' => DescriptionType::Withdrawal->value,
+            'description' => CashMovementType::Withdrawal,
             'total_transaction_value' => 50,
         ]);
 
