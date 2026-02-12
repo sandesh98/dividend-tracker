@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamp('occurred_at');
             $table->string('description');
-            $table->string('currency');
-            $table->integer('total_transaction_value');
+            $table->string('amount_currency');
+            $table->integer('amount');
             $table->timestamps();
         });
     }

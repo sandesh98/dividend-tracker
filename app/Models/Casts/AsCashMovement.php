@@ -34,6 +34,6 @@ class AsCashMovement implements CastsAttributes
             return CashMovementType::from($value)->value;
         }
 
-        throw new InvalidArgumentException("Invalid description for {$key}");
+        throw new InvalidArgumentException("Invalid description for: {$key}");
     }
 }

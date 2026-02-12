@@ -4,6 +4,7 @@ namespace Tests\Feature\Services\Transactions\Calculators;
 
 use App\Services\Transactions\Calculators\CalculateDeposit;
 use App\Value\CashMovementType;
+use App\Value\CurrencyType;
 use Brick\Money\Money;
 use Database\Factories\CashMovementFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,13 +17,13 @@ class CalculateDepositTest extends TestCase
     public function test_it_calculates_deposits(): void
     {
         CashMovementFactory::new()->createOneQuietly([
+            'amount' => Money::of(200, CurrencyType::EUR->value),
             'description' => CashMovementType::Deposit,
-            'total_transaction_value' => 200,
         ]);
 
         CashMovementFactory::new()->createOneQuietly([
+            'amount' => Money::of(50, CurrencyType::EUR->value),
             'description' => CashMovementType::Deposit,
-            'total_transaction_value' => 50,
         ]);
 
         $service = app(CalculateDeposit::class)->__invoke();
