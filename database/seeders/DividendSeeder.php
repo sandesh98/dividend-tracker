@@ -7,15 +7,21 @@ use App\Models\Stock;
 use App\Models\Transaction;
 use App\Value\CurrencyType;
 use App\Value\DividendType;
+use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 
 class DividendSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
+     *
+     * @throws UnknownCurrencyException
      */
     public function run(): void
     {
@@ -28,6 +34,8 @@ class DividendSeeder extends Seeder
 
     /**
      * Get all EUR dividend transactions
+     *
+     * @return Collection
      */
     private function getEURTransactions(): Collection
     {
@@ -41,6 +49,8 @@ class DividendSeeder extends Seeder
 
     /**
      * Get all USD dividend transactions
+     *
+     * @return Collection
      */
     private function getUSDTransactions(): Collection
     {
@@ -61,6 +71,9 @@ class DividendSeeder extends Seeder
 
     /**
      * Determine the FX value for the transaction
+     *
+     * @param  int|null  $fx
+     * @return int
      */
     private function setFX(?int $fx): int
     {
@@ -69,10 +82,16 @@ class DividendSeeder extends Seeder
 
     /**
      * Process the EUR dividend transactions
+     *
+     * @param  Collection  $transactions
+     * @return void
+     *
+     * @throws UnknownCurrencyException
      */
     private function processEURTransaction(Collection $transactions): void
     {
         $stocks = Stock::all()->keyBy('isin');
+        $now = Date::now();
 
         foreach ($transactions as $transaction) {
             $stock = $stocks->get($transaction->isin);
@@ -85,8 +104,8 @@ class DividendSeeder extends Seeder
                     $this->setAmount($transaction->mutation_value),
                     CurrencyType::EUR->value
                 ),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
 
             $dividend->stock()->associate($stock);
@@ -97,6 +116,11 @@ class DividendSeeder extends Seeder
 
     /**
      * Process the USD dividend transactions
+     *
+     * @param  Collection  $transactions
+     * @return void
+     *
+     * @throws UnknownCurrencyException
      */
     private function processUSDTransaction(Collection $transactions): void
     {
@@ -111,7 +135,7 @@ class DividendSeeder extends Seeder
 
             $stocks = Stock::all()->keyBy('isin');
 
-            if (in_array($transaction['description'], ['Dividend', 'Dividendbelasting'])) {
+            if (in_array($transaction['description'], [DividendType::Dividend->value, DividendType::DividendTax->value], true)) {
                 $stock = $stocks->get($transaction['isin']);
 
                 $dividend = new Dividend([
@@ -133,15 +157,12 @@ class DividendSeeder extends Seeder
 
     /**
      * Set the dividend amount to a positive value
+     *
+     * @param  mixed  $amount
+     * @return float|int
      */
-    private function setAmount($amount): float|int
+    private function setAmount(mixed $amount): float|int
     {
-        // In the case of dividend tax we want to set its value to a positive value.
-        // This makes working with the data easier.
-        if ($amount < 0) {
-            return abs($amount);
-        }
-
-        return $amount;
+        return $amount < 0 ? abs($amount) : $amount;
     }
 }

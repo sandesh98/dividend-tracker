@@ -12,6 +12,8 @@ class CashMovementSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
     public function run(): void
     {
@@ -29,6 +31,9 @@ class CashMovementSeeder extends Seeder
 
     /**
      * Determine the mutation value.
+     *
+     * @param  int  $value
+     * @return int
      */
     private function determineMutationValue(int $value): int
     {
