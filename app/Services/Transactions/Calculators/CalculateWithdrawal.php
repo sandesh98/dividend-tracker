@@ -19,7 +19,7 @@ class CalculateWithdrawal
     {
         $withdrawal = CashMovement::query()
             ->where('description', DescriptionType::Withdrawal)
-            ->sum('total_transaction_value');
+            ->sum('amount');
 
         return Money::ofMinor($withdrawal, CurrencyType::EUR->value);
     }

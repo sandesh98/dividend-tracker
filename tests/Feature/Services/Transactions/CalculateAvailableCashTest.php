@@ -4,6 +4,7 @@ namespace Tests\Feature\Services\Transactions;
 
 use App\Services\Transactions\CalculateAvailableCash;
 use App\Value\CashMovementType;
+use App\Value\CurrencyType;
 use Brick\Money\Money;
 use Database\Factories\CashMovementFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,23 +17,23 @@ class CalculateAvailableCashTest extends TestCase
     public function test_it_calculates_available_cash(): void
     {
         CashMovementFactory::new()->createOneQuietly([
+            'amount' => Money::of(500, CurrencyType::EUR->value),
             'description' => CashMovementType::Deposit,
-            'total_transaction_value' => 500,
         ]);
 
         CashMovementFactory::new()->createOneQuietly([
+            'amount' => Money::of(50, CurrencyType::EUR->value),
             'description' => CashMovementType::Deposit,
-            'total_transaction_value' => 50,
         ]);
 
         CashMovementFactory::new()->createOneQuietly([
+            'amount' => Money::of(200, CurrencyType::EUR->value),
             'description' => CashMovementType::Withdrawal,
-            'total_transaction_value' => 200,
         ]);
 
         CashMovementFactory::new()->createOneQuietly([
+            'amount' => Money::of(20, CurrencyType::EUR->value),
             'description' => CashMovementType::Withdrawal,
-            'total_transaction_value' => 20,
         ]);
 
         $service = app(CalculateAvailableCash::class)->__invoke();

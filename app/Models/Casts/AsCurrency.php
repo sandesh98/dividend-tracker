@@ -34,6 +34,6 @@ class AsCurrency implements CastsAttributes
             return CurrencyType::from($value)->value;
         }
 
-        throw new InvalidArgumentException("Invalid currency value for {$key}");
+        throw new InvalidArgumentException("Invalid currency value for: {$key}");
     }
 }
