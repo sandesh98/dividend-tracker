@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Casts\AsCashMovement;
+use App\Models\Casts\AsMoney;
 use Illuminate\Database\Eloquent\Model;
 
 class CashMovement extends Model
@@ -15,6 +16,7 @@ class CashMovement extends Model
     public function casts(): array
     {
         return [
+            'amount' => AsMoney::class,
             'description' => AsCashMovement::class,
             'occurred_at' => 'datetime',
         ];

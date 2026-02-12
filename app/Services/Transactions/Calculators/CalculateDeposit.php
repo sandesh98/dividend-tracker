@@ -19,7 +19,7 @@ class CalculateDeposit
     {
         $deposit = CashMovement::query()
             ->where('description', DescriptionType::Deposit)
-            ->sum('total_transaction_value');
+            ->sum('amount');
 
         return Money::ofMinor($deposit, CurrencyType::EUR->value);
     }

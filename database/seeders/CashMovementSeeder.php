@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\CashMovement;
 use App\Models\Transaction;
 use App\Value\CashMovementType;
+use Brick\Money\Money;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -16,21 +17,26 @@ class CashMovementSeeder extends Seeder
     public function run(): void
     {
         Transaction::query()
-            ->whereIn('description', [CashMovementType::Deposit, CashMovementType::Withdrawal])
+            ->whereIn('description', [
+                CashMovementType::Deposit,
+                CashMovementType::Withdrawal,
+            ])
             ->each(function (Transaction $transaction) {
                 $cashMovement = new CashMovement;
                 $cashMovement->occurred_at = Carbon::parse("{$transaction->date} {$transaction->time}");
                 $cashMovement->description = $transaction->description;
-                $cashMovement->currency = $transaction->mutation;
-                $cashMovement->total_transaction_value = $this->determineMutationValue($transaction->mutation_value);
+                $cashMovement->amount = Money::of(
+                    $this->parseMutationValue($transaction->mutation_value),
+                    $transaction->mutation
+                );
                 $cashMovement->save();
             });
     }
 
     /**
-     * Determine the mutation value.
+     * Parse the mutation value.
      */
-    private function determineMutationValue(int $value): int
+    private function parseMutationValue(int $value): int
     {
         return $value < 0 ? abs($value) : $value;
     }

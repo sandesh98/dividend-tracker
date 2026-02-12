@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Value\CashMovementType;
-use App\Value\CurrencyType;
+use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,10 +19,14 @@ class CashMovementFactory extends Factory
     public function definition(): array
     {
         return [
+            'amount' => $this->faker->passthrough(
+                Money::ofMinor(
+                    $this->faker->randomNumber(),
+                    $this->faker->randomElement(['EUR', 'USD'])
+                ),
+            ),
+            'description' => $this->faker->randomElement(CashMovementType::cases()),
             'occurred_at' => $this->faker->dateTime(),
-            'total_transaction_value' => $this->faker->numberBetween(100, 100000),
-            'currency' => CurrencyType::EUR->value,
-            'description' => CashMovementType::cases(),
         ];
     }
 }
