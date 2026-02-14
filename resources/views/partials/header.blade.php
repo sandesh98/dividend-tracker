@@ -1,6 +1,6 @@
-<header class="my-5">
+<header class="my-8">
     @if (isset($subheader))
-        <div class="subtitle fw-semibold mb-0">{{ $subheader }}</div>
+        <p class="page-subtitle mb-0">{{ $subheader }}</p>
     @endif
-    <h1 class="title fw-bold">{{ $header }}</h1>
+    <h1 class="page-title">{{ $header }}</h1>
 </header>

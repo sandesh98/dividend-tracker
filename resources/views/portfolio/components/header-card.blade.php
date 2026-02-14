@@ -1,6 +1,4 @@
-<div class="col-lg-3 col-md-6">
-    <div class="card bg-light border-0 p-4">
-        <div class="mb-0">{{ $title }}</div>
-        <div class="fw-bold fs-2 mb-0">{{ $value }}</div>
-    </div>
+<div class="card card-muted p-4">
+    <p class="text-muted mb-2">{{ $title }}</p>
+    <p class="mb-0" style="font-family:'AvertaStd-Bold';font-size:1.6rem;">{{ $value }}</p>
 </div>

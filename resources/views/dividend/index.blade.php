@@ -1,35 +1,27 @@
 @extends('layout.master')
 
 @section('main')
-
     @include('partials.header', ['header' => 'Dividend'])
 
-    <div>
+    <div class="card p-4 my-6">
         <canvas id="dividendChart"></canvas>
     </div>
 
     <div x-data="{ tab: '{{ $years[0] ?? '' }}' }">
-        <nav class="nav nav-pills" role="tablist">
+        <div class="tabs-list">
             @foreach ($years as $year)
-                <a class="nav-link rounded-pill"
-                   :class="tab === '{{ $year }}' ? 'active' : ''"
-                   x-on:click.prevent="tab = '{{ $year }}'"
-                   href="#">
-                    {{ $year }}
-                </a>
+                <a href="#" class="tabs-trigger" :class="tab === '{{ $year }}' ? 'is-active' : ''" x-on:click.prevent="tab = '{{ $year }}'">{{ $year }}</a>
             @endforeach
-        </nav>
+        </div>
 
-        <hr class="border opacity-80">
-
-        <div class="tab-content">
+        <div class="my-4">
             @foreach ($years as $year)
-                <div x-show="tab === '{{ $year }}'" x-cloak class="tab-pane fade show">
+                <div x-show="tab === '{{ $year }}'" x-cloak class="table-wrap">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Aandeel</th>
-                                <th scope="col">Waarde</th>
+                                <th>Aandeel</th>
+                                <th>Waarde</th>
                             </tr>
                         </thead>
                         <tbody>

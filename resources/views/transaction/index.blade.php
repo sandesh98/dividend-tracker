@@ -1,38 +1,30 @@
 @extends('layout.master')
 
 @section('main')
-
     @include('partials.header', ['header' => 'Transacties'])
 
-    <div class="table-responsive">
+    <div class="table-wrap">
         <table class="table">
             <thead>
-                <tr class="text-nowrap fw-bold">
-                    <th scope="col">Datum</th>
-                    <th scope="col">Aandeel</th>
-                    <th scope="col">Actie</th>
-                    <th scope="col">Bedrag</th>
+                <tr>
+                    <th>Datum</th>
+                    <th>Aandeel</th>
+                    <th>Actie</th>
+                    <th>Bedrag</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-nowrap">
-                        10-03-2020
-                    </td>
-                    <td class="text-nowrap">
-                        APPLE COMMON ST.
-                    </td>
-                    <td class="text-nowrap">
-                        3 aandelen gekocht
-                    </td>
-                    <td class="text-nowrap">
-                        <div class="d-flex gap-2">
-                            <span class="mr-auto text-success">↗</span>
-                            <div class="ml-auto">€ 838,34</div>
+                    <td>10-03-2020</td>
+                    <td>APPLE COMMON ST.</td>
+                    <td>3 aandelen gekocht</td>
+                    <td>
+                        <div class="flex justify-between">
+                            <span class="text-success">↗</span>
+                            <span>€ 838,34</span>
                         </div>
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </div>
