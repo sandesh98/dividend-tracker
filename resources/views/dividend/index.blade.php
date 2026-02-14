@@ -8,47 +8,41 @@
         <canvas id="dividendChart"></canvas>
     </div>
 
-    <nav class="nav nav-pills" id="nav-tab" role="tablist">
-        @foreach ($years as $year)
-            <a class="nav-link {{ $loop->first ? 'active' : '' }} rounded-pill"
-               id="nav-tab-{{ $year }}"
-               data-bs-toggle="tab"
-               data-bs-target="#nav-{{ $year }}"
-               type="button"
-               role="tab"
-               aria-controls="nav-{{ $year }}"
-               aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                {{ $year }}
-            </a>
-        @endforeach
-    </nav>
+    <div x-data="{ tab: '{{ $years[0] ?? '' }}' }">
+        <nav class="nav nav-pills" role="tablist">
+            @foreach ($years as $year)
+                <a class="nav-link rounded-pill"
+                   :class="tab === '{{ $year }}' ? 'active' : ''"
+                   x-on:click.prevent="tab = '{{ $year }}'"
+                   href="#">
+                    {{ $year }}
+                </a>
+            @endforeach
+        </nav>
 
-    <hr class="border opacity-80">
+        <hr class="border opacity-80">
 
-    <div class="tab-content" id="nav-tabContent">
-        @foreach ($years as $year)
-            <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
-                 id="nav-{{ $year }}"
-                 role="tabpanel"
-                 aria-labelledby="nav-tab-{{ $year }}"
-                 tabindex="0">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Aandeel</th>
-                            <th scope="col">Waarde</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($dividendByYear[$year] as $dividend)
+        <div class="tab-content">
+            @foreach ($years as $year)
+                <div x-show="tab === '{{ $year }}'" x-cloak class="tab-pane fade show">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $dividend['name'] }}</td>
-                                <td>{{ $dividend['amount'] }}</td>
+                                <th scope="col">Aandeel</th>
+                                <th scope="col">Waarde</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endforeach
+                        </thead>
+                        <tbody>
+                            @foreach ($dividendByYear[$year] as $dividend)
+                                <tr>
+                                    <td>{{ $dividend['name'] }}</td>
+                                    <td>{{ $dividend['amount'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endforeach
+        </div>
     </div>
 @endsection

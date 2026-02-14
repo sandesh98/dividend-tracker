@@ -27,7 +27,7 @@
                     </td>
                     <td class="text-nowrap">
                         <div class="d-flex gap-2">
-                            <span class="mr-auto"><i class="bi bi-arrow-up-right-circle-fill text-success"></i></span>
+                            <span class="mr-auto text-success">↗</span>
                             <div class="ml-auto">€ 838,34</div>
                         </div>
                     </td>

@@ -3,22 +3,18 @@
 @section('main')
     @include('partials.header', ['header' => $stock->display_name, 'subheader' => $stock->isin])
 
-    <div class="row">
+    <div class="row" x-data="{ tab: 'transactions' }">
         <div class="col-lg-8">
 
-            <nav class="nav nav-pills" id="nav-tab" role="tablist">
-                <a class="nav-link active rounded-pill" id="transactions" data-bs-toggle="tab"
-                    data-bs-target="#nav-transactions" type="button" role="tab" aria-controls="transactions"
-                    aria-selected="true">Transacties</a>
-                <a class="nav-link rounded-pill" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Dividenden</a>
+            <nav class="nav nav-pills" role="tablist">
+                <a class="nav-link rounded-pill" :class="tab === 'transactions' ? 'active' : ''" href="#" x-on:click.prevent="tab = 'transactions'">Transacties</a>
+                <a class="nav-link rounded-pill" :class="tab === 'dividends' ? 'active' : ''" href="#" x-on:click.prevent="tab = 'dividends'">Dividenden</a>
             </nav>
 
             <hr class="border opacity-80">
 
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-transactions" role="tabpanel" aria-labelledby="transactions"
-                    tabindex="0">
+            <div class="tab-content">
+                <div x-show="tab === 'transactions'" x-cloak class="tab-pane fade show active">
                     <div class="d-grid gap-3">
                         <div class="col-auto">
                             <span class="bg-dark text-white px-2 py-2 rounded date-badge">Januari 2024</span>
@@ -29,8 +25,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
-                    tabindex="0">
+                <div x-show="tab === 'dividends'" x-cloak class="tab-pane fade show">
                     <div class="d-grid gap-3">
                         <div class="col-auto">
                             <span class="bg-dark text-white px-2 py-2 rounded date-badge">Januari 2024</span>

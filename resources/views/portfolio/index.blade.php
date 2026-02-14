@@ -56,23 +56,15 @@
         <table class="table">
             <thead>
                 <tr class="text-nowrap">
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Naam van het aandeel">Aandeel</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Huidige prijs * koers">Marktwaarde</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Aankoopprijs * aantal">Tot geïnvesteerd</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Het aantal aandelingen in bezit">Aantal</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Gemiddelde aankoopkoers">GAK</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
+                    <th scope="col"><span title="Naam van het aandeel">Aandeel</span></th>
+                    <th scope="col"><span title="Huidige prijs * koers">Marktwaarde</span></th>
+                    <th scope="col"><span title="Aankoopprijs * aantal">Tot geïnvesteerd</span></th>
+                    <th scope="col"><span title="Het aantal aandelingen in bezit">Aantal</span></th>
+                    <th scope="col"><span title="Gemiddelde aankoopkoers">GAK</span></th>
+                    <th scope="col"><span title="Totaal ontvangen dividend">Dividenden</span></th>
+                    <th scope="col"><span title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
                             winst / verlies</span></th>
-                    <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Gerealiseerde waarde zonder transactiekosten en dividenden">Winst /
+                    <th scope="col"><span title="Gerealiseerde waarde zonder transactiekosten en dividenden">Winst /
                             verlies</span></th>
                 </tr>
             </thead>
@@ -126,8 +118,7 @@
                             <div class="d-flex justify-content-between w-100 text-nowrap">
                                 <span class="d-flex gap-3">
                                     <img src="{{ $stock['realizedProfitLoss']->getMinorAmount()->toInt() > 0 ? asset('build/icons/graph-up.svg') : asset('build/icons/graph-down.svg') }}"
-                                    <img src="{{ $stock['realizedProfitLoss'] }}"
-                                        alt="graph up icon">
+                                        alt="graph icon">
                                     <span class="ml-2">€</span>
                                 </span>
                                 <div class="ml-auto">{{ $stock['realizedProfitLoss'] }}</div>
@@ -158,7 +149,7 @@
             x-on:click="open = !open; $nextTick(() => document.getElementById('myTable').scrollIntoView({ behavior: 'smooth' }))">
             <div class="card-body py-2">
                 <div class="d-flex align-items-center gap-2">
-                    <i :class="open ? 'bi bi-plus fs-4' : 'bi bi-dash fs-4'"></i>
+                    <span class='fs-5 fw-bold' x-text="open ? '+' : '-'"></span>
                     <span>Alle gesloten aandelen</span>
                 </div>
             </div>
@@ -169,19 +160,13 @@
                 <table class="table">
                     <thead>
                         <tr class="text-nowrap">
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Naam van het aandeel">Gesloten aandeel</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Laatste koersprijs">Laatste prijs</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Gemiddelde verkoopprijs">GVP</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Totaal ontvangen dividend">Dividenden</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
+                            <th scope="col"><span title="Naam van het aandeel">Gesloten aandeel</span></th>
+                            <th scope="col"><span title="Laatste koersprijs">Laatste prijs</span></th>
+                            <th scope="col"><span title="Gemiddelde verkoopprijs">GVP</span></th>
+                            <th scope="col"><span title="Totaal ontvangen dividend">Dividenden</span></th>
+                            <th scope="col"><span title="Totale winst of verlies van een aandeel inclusief transactiekosten en dividenden">Totale
                                     winst / verlies</span></th>
-                            <th scope="col"><span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="Prestatie van een aandeel na de laatste verkoop transactie">Prestatie na
+                            <th scope="col"><span title="Prestatie van een aandeel na de laatste verkoop transactie">Prestatie na
                                     gesloten</span></th>
                         </tr>
                     </thead>
